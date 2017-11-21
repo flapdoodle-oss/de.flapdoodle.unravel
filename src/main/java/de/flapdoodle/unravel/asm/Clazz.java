@@ -7,6 +7,7 @@ import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import io.vavr.collection.List;
+import io.vavr.collection.Set;
 
 
 @Immutable
@@ -21,6 +22,11 @@ public abstract class Clazz {
 	@Auxiliary
 	public JavaVersion javaVersion() {
 		return JavaVersion.of(version());
+	}
+	
+	@Auxiliary
+	public Set<AccessFlags> accessFlags() {
+		return AccessFlags.flags(Scope.Clazz, access());
 	}
 	
 	public static ImmutableClazz.Builder builder() {
