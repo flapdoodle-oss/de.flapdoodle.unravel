@@ -1,5 +1,5 @@
 package de.flapdoodle.unravel.samples.asm.basics;
 
-abstract class AbstractProtectedClass {
+abstract class ClassAbstractProtected {
 
 }
