@@ -25,13 +25,24 @@ public class Classes {
 		return () -> byteCodeInputStream(clazz);
 	}
 	
+	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> base, String className) {
+		return () -> byteCodeInputStream(base, className);
+	}
+	
+	private static InputStream byteCodeInputStream(java.lang.Class<?> base, String className) {
+		return byteCodeInputStream(base.getResource(className+".class"));
+	}
+
 	private static InputStream byteCodeInputStream(java.lang.Class<?> clazz) {
+		return byteCodeInputStream(clazz.getResource(clazz.getSimpleName()+".class"));
+	}
+	
+	private static InputStream byteCodeInputStream(URL resource) {
 		try {
-			URL resource = clazz.getResource(clazz.getSimpleName()+".class");
-			return Resources.asByteSource(Preconditions.checkNotNull(resource,"could not get resource of %s",clazz)).openStream();
+			return Resources.asByteSource(Preconditions.checkNotNull(resource,"could not get resource of %s",resource)).openStream();
 		}
 		catch (IOException e) {
-			throw new RuntimeException("could get bytecode of "+clazz, e);
+			throw new RuntimeException("could get bytecode of "+resource, e);
 		}
 	}
 	
