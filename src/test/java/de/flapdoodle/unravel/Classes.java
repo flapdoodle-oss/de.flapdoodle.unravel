@@ -1,5 +1,7 @@
 package de.flapdoodle.unravel;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -12,7 +14,6 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
 
@@ -30,16 +31,26 @@ public class Classes {
 	}
 	
 	private static InputStream byteCodeInputStream(java.lang.Class<?> base, String className) {
-		return byteCodeInputStream(base.getResource(className+".class"));
+		return byteCodeInputStream(checkNotNull(resourceNameOf(base, className),"%s.%s",base,className));
 	}
 
 	private static InputStream byteCodeInputStream(java.lang.Class<?> clazz) {
-		return byteCodeInputStream(clazz.getResource(clazz.getSimpleName()+".class"));
+		return byteCodeInputStream(checkNotNull(clazz.getResource(resourceNameOf(clazz)),"%s",clazz));
+	}
+
+	private static URL resourceNameOf(java.lang.Class<?> base, String className) {
+		return base.getResource(className+".class");
+	}
+
+	private static String resourceNameOf(java.lang.Class<?> clazz) {
+		String name = clazz.getName();
+		int idx = name.lastIndexOf('.');
+		return idx!=-1 ? name.substring(idx+1)+".class" : name+".class";
 	}
 	
 	private static InputStream byteCodeInputStream(URL resource) {
 		try {
-			return Resources.asByteSource(Preconditions.checkNotNull(resource,"could not get resource of %s",resource)).openStream();
+			return Resources.asByteSource(checkNotNull(resource,"resource is null")).openStream();
 		}
 		catch (IOException e) {
 			throw new RuntimeException("could get bytecode of "+resource, e);
