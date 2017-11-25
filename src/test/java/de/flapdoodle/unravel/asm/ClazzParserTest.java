@@ -20,101 +20,88 @@ public class ClazzParserTest {
 
 	@Test
 	public void classPublic() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(ClassPublic.class));
-		assertEquals(rawName(ClassPublic.class), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC), result.accessFlags());
+		check(ClassPublic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER));
 	}
 
 	@Test
 	public void classFinalPublic() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(ClassFinalPublic.class));
-		assertEquals(rawName(ClassFinalPublic.class), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_FINAL), result.accessFlags());
+		check(ClassFinalPublic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
 	}
 
 	@Test
 	public void classProtected() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(ClassPublic.class, "ClassProtected"));
-		assertEquals(rawName(ClassPublic.class, "ClassProtected"), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_SUPER), result.accessFlags());
+		check(ClassPublic.class, "ClassProtected", java8(), accessFlags(AccessFlags.ACC_SUPER));
 	}
 
 	@Test
 	public void classAbstractProtected() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(ClassPublic.class, "ClassAbstractProtected"));
-		assertEquals(rawName(ClassPublic.class, "ClassAbstractProtected"), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_SUPER, AccessFlags.ACC_ABSTRACT), result.accessFlags());
+		check(ClassPublic.class, "ClassAbstractProtected", java8(), accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_ABSTRACT));
 	}
 
 	@Test
 	public void classAbstractPublic() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(ClassAbstractPublic.class));
-		assertEquals(rawName(ClassAbstractPublic.class), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT), result.accessFlags());
+		check(ClassAbstractPublic.class, java8(), accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT));
 	}
 
 	@Test
 	public void interfacePublic() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(InterfacePublic.class));
-		assertEquals(rawName(InterfacePublic.class), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT), result.accessFlags());
+		check(InterfacePublic.class, java8(), accessFlags(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT));
 	}
 
 	@Test
 	public void interfaceProtected() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(InterfacePublic.class, "InterfaceProtected"));
-		assertEquals(rawName(InterfacePublic.class, "InterfaceProtected"), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT), result.accessFlags());
+		check(InterfacePublic.class, "InterfaceProtected", java8(), accessFlags(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT));
 	}
 
 	@Test
 	public void annotationPublic() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(AnnotationPublic.class));
-		assertEquals(rawName(AnnotationPublic.class), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT), result.accessFlags());
+		check(AnnotationPublic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT));
 	}
 
 	@Test
 	public void annotationProtected() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(AnnotationPublic.class, "AnnotationProtected"));
-		assertEquals(rawName(AnnotationPublic.class, "AnnotationProtected"), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT), result.accessFlags());
+		check(AnnotationPublic.class, "AnnotationProtected", java8(), accessFlags(AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT));
 	}
 
 	@Test
 	public void enumPublic() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(EnumPublic.class));
-		assertEquals(rawName(EnumPublic.class), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL), result.accessFlags());
+		check(EnumPublic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
 	}
 
 	@Test
 	public void enumProtected() {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(EnumPublic.class, "EnumProtected"));
-		assertEquals(rawName(EnumPublic.class, "EnumProtected"), result.clazzName().raw());
-		assertEquals(JavaVersion.V1_8, result.javaVersion());
-		assertEquals(HashSet.of(AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL), result.accessFlags());
+		check(EnumPublic.class, "EnumProtected", java8(), accessFlags(AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
 	}
 
 	@Test
 	public void inner() {
 		check(Inner.ClassNonStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER));
+		check(Inner.ClassStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_SUPER));
+		check(Inner.InterfaceNonStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE));
+		check(Inner.InterfaceStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE));
+		check(Inner.EnumNonStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
+		check(Inner.EnumStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
+		check(Inner.AnnotationNonStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION));
+		check(Inner.AnnotationStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION));
 	}
 	
 	@SafeVarargs
 	private static Clazz check(Class<?> clazz, Consumer<Clazz> ...checks) {
 		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(clazz));
 		assertEquals(rawName(clazz), result.clazzName().raw());
+		for (Consumer<Clazz> check : checks) {
+			check.accept(result);
+		}
+		return result;
+	}
+	
+	@SafeVarargs
+	private static Clazz check(Class<?> base, String clazzName, Consumer<Clazz> ...checks) {
+		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(base, clazzName));
+		assertEquals(rawName(base, clazzName), result.clazzName().raw());
+		for (Consumer<Clazz> check : checks) {
+			check.accept(result);
+		}
 		return result;
 	}
 
