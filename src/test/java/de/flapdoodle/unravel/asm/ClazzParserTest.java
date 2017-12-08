@@ -1,125 +1,154 @@
 package de.flapdoodle.unravel.asm;
 
-import static org.junit.Assert.assertEquals;
+import static de.flapdoodle.unravel.Assertions.assertThat;
+import static de.flapdoodle.unravel.Classes.byteCodeOf;
 
-import java.util.function.Consumer;
+import java.io.InputStream;
+import java.util.function.Supplier;
 
 import org.junit.Test;
 
-import de.flapdoodle.unravel.Classes;
+import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.AnnotationPublic;
 import de.flapdoodle.unravel.samples.asm.basics.ClassAbstractPublic;
 import de.flapdoodle.unravel.samples.asm.basics.ClassFinalPublic;
 import de.flapdoodle.unravel.samples.asm.basics.ClassPublic;
 import de.flapdoodle.unravel.samples.asm.basics.EnumPublic;
+import de.flapdoodle.unravel.samples.asm.basics.Fields;
 import de.flapdoodle.unravel.samples.asm.basics.Inner;
 import de.flapdoodle.unravel.samples.asm.basics.InterfacePublic;
-import io.vavr.collection.HashSet;
 
 public class ClazzParserTest {
 
-	@Test
-	public void classPublic() {
-		check(ClassPublic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER));
-	}
-
-	@Test
-	public void classFinalPublic() {
-		check(ClassFinalPublic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
-	}
-
-	@Test
-	public void classProtected() {
-		check(ClassPublic.class, "ClassProtected", java8(), accessFlags(AccessFlags.ACC_SUPER));
-	}
-
-	@Test
-	public void classAbstractProtected() {
-		check(ClassPublic.class, "ClassAbstractProtected", java8(), accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_ABSTRACT));
-	}
-
-	@Test
-	public void classAbstractPublic() {
-		check(ClassAbstractPublic.class, java8(), accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT));
-	}
-
-	@Test
-	public void interfacePublic() {
-		check(InterfacePublic.class, java8(), accessFlags(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT));
-	}
-
-	@Test
-	public void interfaceProtected() {
-		check(InterfacePublic.class, "InterfaceProtected", java8(), accessFlags(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT));
-	}
-
-	@Test
-	public void annotationPublic() {
-		check(AnnotationPublic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT));
-	}
-
-	@Test
-	public void annotationProtected() {
-		check(AnnotationPublic.class, "AnnotationProtected", java8(), accessFlags(AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT));
-	}
-
-	@Test
-	public void enumPublic() {
-		check(EnumPublic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
-	}
-
-	@Test
-	public void enumProtected() {
-		check(EnumPublic.class, "EnumProtected", java8(), accessFlags(AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
-	}
-
-	@Test
-	public void inner() {
-		check(Inner.ClassNonStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER));
-		check(Inner.ClassStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_SUPER));
-		check(Inner.InterfaceNonStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE));
-		check(Inner.InterfaceStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE));
-		check(Inner.EnumNonStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
-		check(Inner.EnumStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL));
-		check(Inner.AnnotationNonStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION));
-		check(Inner.AnnotationStatic.class, java8(), accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION));
-	}
-	
-	@SafeVarargs
-	private static Clazz check(Class<?> clazz, Consumer<Clazz> ...checks) {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(clazz));
-		assertEquals(rawName(clazz), result.clazzName().raw());
-		for (Consumer<Clazz> check : checks) {
-			check.accept(result);
+	public static class FieldsTest {
+		
+		@Test
+		public void fieldTypes() {
+			assertThat(parse(byteCodeOf(Fields.class)))
+				.isJava8()
+				.fields(fields -> {
+					assertThat(fields).size().isEqualTo(1);
+					assertThat(fields).element(0)
+						.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC, AccessFlags.ACC_FINAL);
+				});
+			
 		}
-		return result;
 	}
-	
-	@SafeVarargs
-	private static Clazz check(Class<?> base, String clazzName, Consumer<Clazz> ...checks) {
-		Clazz result = new ClazzParser().parse(Classes.byteCodeOf(base, clazzName));
-		assertEquals(rawName(base, clazzName), result.clazzName().raw());
-		for (Consumer<Clazz> check : checks) {
-			check.accept(result);
+
+	public static class ClassesTest {
+		@Test
+		public void classPublic() {
+			assertThat(parse(byteCodeOf(ClassPublic.class)))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(ClassPublic.class))
+				.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER)
+				.superClass(Object.class);
 		}
-		return result;
-	}
-
-	private static Consumer<Clazz> java8() {
-		return clazz -> assertEquals("javaVersion", JavaVersion.V1_8, clazz.javaVersion());
+	
+		@Test
+		public void classFinalPublic() {
+			assertThat(parse(byteCodeOf(ClassFinalPublic.class)))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(ClassFinalPublic.class))
+				.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL) 
+				.superClass(Object.class);
+		}
+	
+		@Test
+		public void classProtected() {
+			assertThat(parse(byteCodeOf(ClassPublic.class, "ClassProtected")))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(ClassPublic.class, "ClassProtected"))
+				.accessFlags(AccessFlags.ACC_SUPER)
+				.superClass(Object.class);
+		}
+	
+		@Test
+		public void classAbstractProtected() {
+			assertThat(parse(byteCodeOf(ClassPublic.class, "ClassAbstractProtected")))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(ClassPublic.class, "ClassAbstractProtected"))
+				.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_ABSTRACT)
+				.superClass(Object.class);
+		}
+	
+		@Test
+		public void classAbstractPublic() {
+			assertThat(parse(byteCodeOf(ClassAbstractPublic.class)))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(ClassAbstractPublic.class))
+				.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT)
+				.superClass(Object.class);
+		}
+	
+		@Test
+		public void interfacePublic() {
+			assertThat(parse(byteCodeOf(InterfacePublic.class)))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(InterfacePublic.class))
+				.accessFlags(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT)
+				.superClass(Object.class);
+		}
+	
+		@Test
+		public void interfaceProtected() {
+			assertThat(parse(byteCodeOf(InterfacePublic.class, "InterfaceProtected")))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(InterfacePublic.class, "InterfaceProtected"))
+				.accessFlags(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT)
+				.superClass(Object.class);
+		}
+	
+		@Test
+		public void annotationPublic() {
+			assertThat(parse(byteCodeOf(AnnotationPublic.class)))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(AnnotationPublic.class))
+				.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT)
+				.superClass(Object.class);
+		}
+	
+		@Test
+		public void annotationProtected() {
+			assertThat(parse(byteCodeOf(AnnotationPublic.class, "AnnotationProtected")))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(AnnotationPublic.class, "AnnotationProtected"))
+				.accessFlags(AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT)
+				.superClass(Object.class);
+		}
+	
+		@Test
+		public void enumPublic() {
+			assertThat(parse(byteCodeOf(EnumPublic.class)))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(EnumPublic.class))
+				.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL)
+				.superClass(Enum.class);
+		}
+	
+		@Test
+		public void enumProtected() {
+			assertThat(parse(byteCodeOf(EnumPublic.class, "EnumProtected")))
+				.isJava8()
+				.classNameIs(Classnames.signatureOf(EnumPublic.class, "EnumProtected"))
+				.accessFlags(AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL)
+				.superClass(Enum.class);
+		}
+	
+		@Test
+		public void inner() {
+			assertThat(parse(byteCodeOf(Inner.ClassNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER).superClass(Object.class);
+			assertThat(parse(byteCodeOf(Inner.ClassStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_SUPER).superClass(Object.class);
+			assertThat(parse(byteCodeOf(Inner.InterfaceNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE).superClass(Object.class);
+			assertThat(parse(byteCodeOf(Inner.InterfaceStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE).superClass(Object.class);
+			assertThat(parse(byteCodeOf(Inner.EnumNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL).superClass(Enum.class);
+			assertThat(parse(byteCodeOf(Inner.EnumStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL).superClass(Enum.class);
+			assertThat(parse(byteCodeOf(Inner.AnnotationNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION).superClass(Object.class);
+			assertThat(parse(byteCodeOf(Inner.AnnotationStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION).superClass(Object.class);
+		}
 	}
 	
-	private static Consumer<Clazz> accessFlags(AccessFlags ...flags) {
-		return clazz -> {
-			assertEquals("accessFlags", HashSet.of(flags), clazz.accessFlags());
-		};
-	}
-
-	private static String rawName(Class<?> type) {
-		return type.getName().replace('.', '/');
-	}
-
-	private static String rawName(Class<?> base, String className) {
-		return base.getPackage().getName().replace('.', '/') + "/" + className;
+	private static Clazz parse(Supplier<InputStream> byteCodeOf) {
+		return new ClazzParser().parse(byteCodeOf);
 	}
 }

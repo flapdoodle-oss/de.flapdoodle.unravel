@@ -19,6 +19,8 @@ public abstract class Clazz {
 	public abstract Optional<ClazzName> superClazz();
 	public abstract List<ClazzName> interfaces();
 	
+	public abstract List<Field> fields();
+	
 	@Auxiliary
 	public JavaVersion javaVersion() {
 		return JavaVersion.of(version());

@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 
 import de.flapdoodle.unravel.asm.ImmutableClazz.Builder;
@@ -43,11 +44,27 @@ public class ClazzParser {
 				builder.addInterfaces(ClazzName.raw(interfaze));
 			}
 		}
+		
+		@Override
+		public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
+			builder.addFields(Field.builder()
+					.access(access)
+					.build());
+			return null;
+		}
 
 		public Clazz clazz() {
 			return builder.build();
 		}
 	}
+	
+//	private static class Fields extends FieldVisitor {
+//
+//		public Fields() {
+//			super(Opcodes.ASM6);
+//		}
+//		
+//	}
 
 
 	private static void log(String method, Object ... parameter) {
