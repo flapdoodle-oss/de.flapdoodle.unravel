@@ -29,7 +29,11 @@ public class ClazzParserTest {
 				.fields(fields -> {
 					assertThat(fields).size().isEqualTo(1);
 					assertThat(fields).element(0)
-						.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC, AccessFlags.ACC_FINAL);
+						.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC, AccessFlags.ACC_FINAL)
+						.name("privateStaticFinalString")
+						.type("Ljava/lang/String;")
+						.hasNoSignature()
+						.value("Foo");
 				});
 			
 		}

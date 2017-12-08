@@ -2,6 +2,7 @@ package de.flapdoodle.unravel.asm;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.objectweb.asm.ClassReader;
@@ -49,6 +50,10 @@ public class ClazzParser {
 		public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 			builder.addFields(Field.builder()
 					.access(access)
+					.name(name)
+					.type(TypeSignature.raw(desc))
+					.signature(Optional.ofNullable(signature))
+					.value(Optional.ofNullable(value))
 					.build());
 			return null;
 		}
