@@ -51,7 +51,7 @@ public class ClazzParser {
 			builder.addFields(Field.builder()
 					.access(access)
 					.name(name)
-					.type(TypeSignature.raw(desc))
+					.type(FieldType.raw(desc))
 					.signature(Optional.ofNullable(signature))
 					.value(Optional.ofNullable(value))
 					.build());

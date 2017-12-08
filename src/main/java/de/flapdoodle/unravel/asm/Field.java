@@ -10,7 +10,7 @@ import io.vavr.collection.Set;
 @Immutable
 public abstract class Field {
 	public abstract String name();
-	public abstract TypeSignature type();
+	public abstract FieldType type();
 	public abstract Optional<String> signature();
 	public abstract Optional<Object> value();
 	

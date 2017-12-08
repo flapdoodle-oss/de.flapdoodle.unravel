@@ -4,12 +4,11 @@ import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Parameter;
 
 @Immutable
-public abstract class TypeSignature {
+public abstract class FieldType {
 	@Parameter
 	protected abstract String raw();
 	
-	public static TypeSignature raw(String rawName) {
-		return ImmutableTypeSignature.of(rawName);
+	public static FieldType raw(String rawName) {
+		return ImmutableFieldType.of(rawName);
 	}
-
 }
