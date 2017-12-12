@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -57,6 +58,21 @@ public class ClazzParser {
 					.value(Optional.ofNullable(value))
 					.build());
 			return null;
+		}
+		
+		@Override
+		public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+			throw new NotImplementedException("desc: "+desc+", visible: "+visible);
+		}
+		
+		@Override
+		public void visitOuterClass(String owner, String name, String desc) {
+			throw new NotImplementedException("owner: "+owner+",name: "+name+",desc:"+desc);
+		}
+		
+		@Override
+		public void visitInnerClass(String name, String outerName, String innerName, int access) {
+			if (false) throw new NotImplementedException("name: "+name+",outerName: "+outerName+",innerName: "+innerName+",access:"+access);
 		}
 
 		public Clazz clazz() {
