@@ -11,7 +11,7 @@ import io.vavr.collection.Set;
 public abstract class Field {
 	public abstract String name();
 	public abstract FieldType type();
-	public abstract Optional<String> signature();
+	public abstract Optional<String> genericSignature();
 	public abstract Optional<Object> value();
 	
 	protected abstract int access();

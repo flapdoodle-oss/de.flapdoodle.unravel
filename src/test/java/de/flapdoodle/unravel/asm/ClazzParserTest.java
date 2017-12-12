@@ -26,8 +26,10 @@ public class ClazzParserTest {
 		public void fieldTypes() {
 			assertThat(parse(byteCodeOf(Fields.class)))
 				.isJava8()
+				.classNameIs(Classnames.signatureOf(Fields.class))
+				.signature("<K:Ljava/lang/Object;V:Ljava/lang/Object;>Ljava/lang/Object;")
 				.fields(fields -> {
-					assertThat(fields).size().isEqualTo(3);
+					assertThat(fields).size().isEqualTo(4);
 					assertThat(fields).element(0)
 						.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC, AccessFlags.ACC_FINAL)
 						.name("privateStaticFinalString")
@@ -43,11 +45,18 @@ public class ClazzParserTest {
 						.hasNoSignature()
 						.hasNoValue();
 					assertThat(fields).element(2)
-						.accessFlags(AccessFlags.ACC_PRIVATE)
+						.accessFlags(AccessFlags.ACC_PROTECTED)
 						.name("privateListOfString")
 						.clazz("java.util.List")
 						.arrayDimension(0)
 						.signature("Ljava/util/List<Ljava/lang/String;>;")
+						.hasNoValue();
+					assertThat(fields).element(3)
+						.accessFlags(AccessFlags.ACC_PUBLIC)
+						.name("publicMap")
+						.clazz("java.util.Map")
+						.arrayDimension(0)
+						.signature("Ljava/util/Map<TK;TV;>;")
 						.hasNoValue();
 				});
 			

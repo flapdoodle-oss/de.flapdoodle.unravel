@@ -21,6 +21,16 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
 		return this;
 	}
 	
+	public ClazzAssert signature(String signature) {
+		Assertions.assertThat(actual.genericSignature()).describedAs("genericSignature").isPresent().contains(signature);
+		return this;
+	}
+
+	public ClazzAssert hasNoSignature() {
+		Assertions.assertThat(actual.genericSignature()).describedAs("genericSignature").isEmpty();
+		return this;
+	}
+	
 	public ClazzAssert accessFlags(AccessFlags ... values) {
 		Assertions.assertThat(actual.accessFlags()).containsOnly(values);
 		return this;

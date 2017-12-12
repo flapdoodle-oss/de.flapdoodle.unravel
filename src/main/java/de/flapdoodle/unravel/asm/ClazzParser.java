@@ -37,6 +37,7 @@ public class ClazzParser {
 		@Override
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 			builder.clazzName(ClazzName.raw(name))
+				.genericSignature(Optional.ofNullable(signature))
 				.version(version)
 				.access(access)
 				.superClazz(ClazzName.raw(superName));
@@ -52,7 +53,7 @@ public class ClazzParser {
 					.access(access)
 					.name(name)
 					.type(FieldType.raw(desc))
-					.signature(Optional.ofNullable(signature))
+					.genericSignature(Optional.ofNullable(signature))
 					.value(Optional.ofNullable(value))
 					.build());
 			return null;

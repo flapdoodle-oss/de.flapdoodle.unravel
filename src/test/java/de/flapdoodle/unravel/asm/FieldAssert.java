@@ -35,12 +35,12 @@ public class FieldAssert extends AbstractAssert<FieldAssert, Field> {
 	}
 	
 	public FieldAssert signature(String signature) {
-		Assertions.assertThat(actual.signature()).describedAs("signature").isPresent().contains(signature);
+		Assertions.assertThat(actual.genericSignature()).describedAs("genericSignature").isPresent().contains(signature);
 		return this;
 	}
 
 	public FieldAssert hasNoSignature() {
-		Assertions.assertThat(actual.signature()).describedAs("signature").isEmpty();
+		Assertions.assertThat(actual.genericSignature()).describedAs("genericSignature").isEmpty();
 		return this;
 	}
 
