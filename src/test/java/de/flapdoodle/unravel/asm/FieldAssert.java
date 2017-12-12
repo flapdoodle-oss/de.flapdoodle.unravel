@@ -19,11 +19,21 @@ public class FieldAssert extends AbstractAssert<FieldAssert, Field> {
 		return this;
 	}
 
-	public FieldAssert type(String type) {
+	public FieldAssert rawType(String type) {
 		Assertions.assertThat(actual.type().raw()).describedAs("type").isEqualTo(type);
 		return this;
 	}
-
+	
+	public FieldAssert clazz(String type) {
+		Assertions.assertThat(actual.type().clazz().value()).describedAs("clazz").isEqualTo(type);
+		return this;
+	}
+	
+	public FieldAssert arrayDimension(int arrayDimension) {
+		Assertions.assertThat(actual.type().arrayDimension()).describedAs("arrayDimension").isEqualTo(arrayDimension);
+		return this;
+	}
+	
 	public FieldAssert signature(String signature) {
 		Assertions.assertThat(actual.signature()).describedAs("signature").isPresent().contains(signature);
 		return this;

@@ -27,13 +27,28 @@ public class ClazzParserTest {
 			assertThat(parse(byteCodeOf(Fields.class)))
 				.isJava8()
 				.fields(fields -> {
-					assertThat(fields).size().isEqualTo(1);
+					assertThat(fields).size().isEqualTo(3);
 					assertThat(fields).element(0)
 						.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC, AccessFlags.ACC_FINAL)
 						.name("privateStaticFinalString")
-						.type("Ljava/lang/String;")
+						.clazz("java.lang.String")
+						.arrayDimension(0)
 						.hasNoSignature()
 						.value("Foo");
+					assertThat(fields).element(1)
+						.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_FINAL)
+						.name("privateFinalString")
+						.clazz("java.lang.String")
+						.arrayDimension(0)
+						.hasNoSignature()
+						.hasNoValue();
+					assertThat(fields).element(2)
+						.accessFlags(AccessFlags.ACC_PRIVATE)
+						.name("privateListOfString")
+						.clazz("java.util.List")
+						.arrayDimension(0)
+						.signature("Ljava/util/List<Ljava/lang/String;>;")
+						.hasNoValue();
 				});
 			
 		}

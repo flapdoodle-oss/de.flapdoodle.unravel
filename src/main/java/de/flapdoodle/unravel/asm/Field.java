@@ -7,7 +7,7 @@ import org.immutables.value.Value.Immutable;
 
 import io.vavr.collection.Set;
 
-@Immutable
+@Immutable 
 public abstract class Field {
 	public abstract String name();
 	public abstract FieldType type();
