@@ -10,4 +10,11 @@ public abstract class Classnames {
 		return base.getPackage().getName().replace('.', '/') + "/" + className;
 	}
 
+	public static String nameOf(Class<?> base, String className) {
+		return base.getPackage().getName() + "." + className;
+	}
+
+	public static String nameOf(Class<?> type) {
+		return type.getName();
+	}
 }

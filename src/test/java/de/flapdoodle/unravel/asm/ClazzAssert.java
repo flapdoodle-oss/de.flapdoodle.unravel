@@ -46,7 +46,12 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
 		Assertions.assertThat(actual.clazzName().raw()).isEqualTo(name);
 		return this;
 	}
-	
+
+	public ClazzAssert typeNameIs(String name) {
+		Assertions.assertThat(actual.typeName().value()).isEqualTo(name);
+		return this;
+	}
+
 	public ClazzAssert fields(Consumer<List<Field>> fieldsConsumer) {
 		fieldsConsumer.accept(actual.fields());
 		return this;

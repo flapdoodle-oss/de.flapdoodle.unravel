@@ -16,6 +16,7 @@ public abstract class Clazz {
 	protected abstract int version();
 	protected abstract int access();
 	public abstract ClazzName clazzName();
+	public abstract TypeName typeName();
 	public abstract Optional<String> genericSignature();
 	public abstract Optional<ClazzName> superClazz();
 	public abstract List<ClazzName> interfaces();

@@ -38,6 +38,7 @@ public class ClazzParser {
 		@Override
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 			builder.clazzName(ClazzName.raw(name))
+				.typeName(TypeName.of(name.replace('/', '.')))
 				.genericSignature(Optional.ofNullable(signature))
 				.version(version)
 				.access(access)
