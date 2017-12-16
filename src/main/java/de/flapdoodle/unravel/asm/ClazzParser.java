@@ -37,15 +37,14 @@ public class ClazzParser {
 		
 		@Override
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-			builder.clazzName(ClazzName.raw(name))
-				.typeName(TypeName.of(name.replace('/', '.')))
+			builder.typeName(TypeName.of(name.replace('/', '.')))
 				.genericSignature(Optional.ofNullable(signature))
 				.version(version)
 				.access(access)
-				.superClazz(ClazzName.raw(superName));
+				.superClazz(TypeName.of(superName.replace('/', '.')));
 			
 			for (String interfaze : interfaces) {
-				builder.addInterfaces(ClazzName.raw(interfaze));
+				builder.addInterfaces(TypeName.of(interfaze.replace('/', '.')));
 			}
 		}
 		

@@ -38,15 +38,10 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
 	
 	public ClazzAssert superClass(Class<?> type) {
 		Assertions.assertThat(actual.superClazz()).isPresent();
-		Assertions.assertThat(actual.superClazz().get().raw()).isEqualTo(Classnames.signatureOf(type));
+		Assertions.assertThat(actual.superClazz().get().value()).isEqualTo(Classnames.nameOf(type));
 		return this;
 	}
 	
-	public ClazzAssert classNameIs(String name) {
-		Assertions.assertThat(actual.clazzName().raw()).isEqualTo(name);
-		return this;
-	}
-
 	public ClazzAssert typeNameIs(String name) {
 		Assertions.assertThat(actual.typeName().value()).isEqualTo(name);
 		return this;

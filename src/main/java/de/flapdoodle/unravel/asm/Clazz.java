@@ -15,11 +15,10 @@ import io.vavr.collection.Set;
 public abstract class Clazz {
 	protected abstract int version();
 	protected abstract int access();
-	public abstract ClazzName clazzName();
 	public abstract TypeName typeName();
 	public abstract Optional<String> genericSignature();
-	public abstract Optional<ClazzName> superClazz();
-	public abstract List<ClazzName> interfaces();
+	public abstract Optional<TypeName> superClazz();
+	public abstract List<TypeName> interfaces();
 	
 	public abstract List<Field> fields();
 	

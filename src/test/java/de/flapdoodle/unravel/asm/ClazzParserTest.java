@@ -26,7 +26,7 @@ public class ClazzParserTest {
 		public void fieldTypes() {
 			assertThat(parse(byteCodeOf(Fields.class)))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(Fields.class))
+				.typeNameIs(Classnames.nameOf(Fields.class))
 				.signature("<K:Ljava/lang/Object;V:Ljava/lang/Object;>Ljava/lang/Object;")
 				.fields(fields -> {
 					assertThat(fields).size().isEqualTo(4);
@@ -68,7 +68,7 @@ public class ClazzParserTest {
 		public void classPublic() {
 			assertThat(parse(byteCodeOf(ClassPublic.class)))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(ClassPublic.class))
+				.typeNameIs(Classnames.nameOf(ClassPublic.class))
 				.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER)
 				.superClass(Object.class);
 		}
@@ -77,7 +77,7 @@ public class ClazzParserTest {
 		public void classFinalPublic() {
 			assertThat(parse(byteCodeOf(ClassFinalPublic.class)))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(ClassFinalPublic.class))
+				.typeNameIs(Classnames.nameOf(ClassFinalPublic.class))
 				.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL) 
 				.superClass(Object.class);
 		}
@@ -86,7 +86,7 @@ public class ClazzParserTest {
 		public void classProtected() {
 			assertThat(parse(byteCodeOf(ClassPublic.class, "ClassProtected")))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(ClassPublic.class, "ClassProtected"))
+				.typeNameIs(Classnames.nameOf(ClassPublic.class, "ClassProtected"))
 				.accessFlags(AccessFlags.ACC_SUPER)
 				.superClass(Object.class);
 		}
@@ -95,7 +95,7 @@ public class ClazzParserTest {
 		public void classAbstractProtected() {
 			assertThat(parse(byteCodeOf(ClassPublic.class, "ClassAbstractProtected")))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(ClassPublic.class, "ClassAbstractProtected"))
+				.typeNameIs(Classnames.nameOf(ClassPublic.class, "ClassAbstractProtected"))
 				.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_ABSTRACT)
 				.superClass(Object.class);
 		}
@@ -104,7 +104,7 @@ public class ClazzParserTest {
 		public void classAbstractPublic() {
 			assertThat(parse(byteCodeOf(ClassAbstractPublic.class)))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(ClassAbstractPublic.class))
+				.typeNameIs(Classnames.nameOf(ClassAbstractPublic.class))
 				.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT)
 				.superClass(Object.class);
 		}
@@ -113,7 +113,7 @@ public class ClazzParserTest {
 		public void interfacePublic() {
 			assertThat(parse(byteCodeOf(InterfacePublic.class)))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(InterfacePublic.class))
+				.typeNameIs(Classnames.nameOf(InterfacePublic.class))
 				.accessFlags(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT)
 				.superClass(Object.class);
 		}
@@ -122,7 +122,7 @@ public class ClazzParserTest {
 		public void interfaceProtected() {
 			assertThat(parse(byteCodeOf(InterfacePublic.class, "InterfaceProtected")))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(InterfacePublic.class, "InterfaceProtected"))
+				.typeNameIs(Classnames.nameOf(InterfacePublic.class, "InterfaceProtected"))
 				.accessFlags(AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT)
 				.superClass(Object.class);
 		}
@@ -131,7 +131,7 @@ public class ClazzParserTest {
 		public void annotationPublic() {
 			assertThat(parse(byteCodeOf(AnnotationPublic.class)))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(AnnotationPublic.class))
+				.typeNameIs(Classnames.nameOf(AnnotationPublic.class))
 				.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT)
 				.superClass(Object.class);
 		}
@@ -140,7 +140,7 @@ public class ClazzParserTest {
 		public void annotationProtected() {
 			assertThat(parse(byteCodeOf(AnnotationPublic.class, "AnnotationProtected")))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(AnnotationPublic.class, "AnnotationProtected"))
+				.typeNameIs(Classnames.nameOf(AnnotationPublic.class, "AnnotationProtected"))
 				.accessFlags(AccessFlags.ACC_ANNOTATION, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT)
 				.superClass(Object.class);
 		}
@@ -149,7 +149,7 @@ public class ClazzParserTest {
 		public void enumPublic() {
 			assertThat(parse(byteCodeOf(EnumPublic.class)))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(EnumPublic.class))
+				.typeNameIs(Classnames.nameOf(EnumPublic.class))
 				.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL)
 				.superClass(Enum.class);
 		}
@@ -158,7 +158,7 @@ public class ClazzParserTest {
 		public void enumProtected() {
 			assertThat(parse(byteCodeOf(EnumPublic.class, "EnumProtected")))
 				.isJava8()
-				.classNameIs(Classnames.signatureOf(EnumPublic.class, "EnumProtected"))
+				.typeNameIs(Classnames.nameOf(EnumPublic.class, "EnumProtected"))
 				.accessFlags(AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL)
 				.superClass(Enum.class);
 		}
