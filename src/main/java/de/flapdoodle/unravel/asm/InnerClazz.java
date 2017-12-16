@@ -1,5 +1,7 @@
 package de.flapdoodle.unravel.asm;
 
+import java.util.Optional;
+
 import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
 
@@ -9,8 +11,8 @@ import io.vavr.collection.Set;
 public abstract class InnerClazz {
 	protected abstract int access();
 	public abstract TypeName typeName();
-	public abstract TypeName innerName();
-	public abstract TypeName outerName();
+	public abstract Optional<TypeName> innerName();
+	public abstract Optional<TypeName> outerName();
 	
 	@Auxiliary
 	public Set<AccessFlags> accessFlags() {

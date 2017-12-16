@@ -78,8 +78,8 @@ public class ClazzParser {
 		public void visitInnerClass(String name, String outerName, String innerName, int access) {
 			builder.addInnerClasses(InnerClazz.builder()
 					.typeName(typeNameOf(name))
-					.innerName(typeNameOf(innerName))
-					.outerName(typeNameOf(outerName))
+					.innerName(Optional.ofNullable(innerName).map(n -> typeNameOf(n)))
+					.outerName(Optional.ofNullable(outerName).map(n -> typeNameOf(n)))
 					.access(access)
 					.build());
 		}

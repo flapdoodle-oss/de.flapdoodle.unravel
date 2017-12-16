@@ -184,8 +184,13 @@ public class ClazzParserTest {
 				.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC)
 				.superClass(Object.class)
 				.innerClasses(classes -> {
-					classes.size().isEqualTo(1); 
+					classes.size().isEqualTo(2); 
 					classes.element(0)
+						.typeName(Classnames.nameOf(InnerOuter.class)+"$1")
+						.noInnerName()
+						.noOuterName()
+						.accessFlags();
+					classes.element(1)
 						.typeName(Classnames.nameOf(InnerOuter.Inner.class))
 						.innerName(Inner.class.getSimpleName())
 						.outerName(Classnames.nameOf(InnerOuter.class))

@@ -19,13 +19,23 @@ public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, InnerClaz
 		return this;
 	}
 	
+	public InnerClazzAssert noInnerName() {
+		Assertions.assertThat(actual.innerName()).describedAs("innerName").isEmpty();
+		return this;
+	}
+	
 	public InnerClazzAssert innerName(String name) {
-		Assertions.assertThat(actual.innerName().value()).describedAs("innerName").isEqualTo(name);
+		Assertions.assertThat(actual.innerName()).describedAs("innerName").contains(TypeName.of(name));
+		return this;
+	}
+	
+	public InnerClazzAssert noOuterName() {
+		Assertions.assertThat(actual.outerName()).describedAs("outerName").isEmpty();
 		return this;
 	}
 	
 	public InnerClazzAssert outerName(String name) {
-		Assertions.assertThat(actual.outerName().value()).describedAs("outerName").isEqualTo(name);
+		Assertions.assertThat(actual.outerName()).describedAs("outerName").contains(TypeName.of(name));
 		return this;
 	}
 }
