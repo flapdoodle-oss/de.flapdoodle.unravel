@@ -177,11 +177,23 @@ public class ClazzParserTest {
 						.typeName(Classnames.nameOf(Inner.AnnotationStatic.class))
 						.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION);
 					classes.element(2)
-					.typeName(Classnames.nameOf(Inner.ClassNonStatic.class))
-					.accessFlags(AccessFlags.ACC_PUBLIC);
+						.typeName(Classnames.nameOf(Inner.ClassNonStatic.class))
+						.accessFlags(AccessFlags.ACC_PUBLIC);
 					classes.element(3)
 						.typeName(Classnames.nameOf(Inner.ClassStatic.class))
 						.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC);
+					classes.element(4)
+						.typeName(Classnames.nameOf(Inner.EnumNonStatic.class))
+						.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_FINAL);
+					classes.element(5)
+						.typeName(Classnames.nameOf(Inner.EnumStatic.class))
+						.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_FINAL);
+					classes.element(6)
+						.typeName(Classnames.nameOf(Inner.InterfaceNonStatic.class))
+						.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT);
+					classes.element(7)
+						.typeName(Classnames.nameOf(Inner.InterfaceStatic.class))
+						.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT);
 				});
 			assertThat(parse(byteCodeOf(Inner.ClassNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER).superClass(Object.class);
 			assertThat(parse(byteCodeOf(Inner.ClassStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_SUPER).superClass(Object.class);
