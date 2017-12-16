@@ -37,15 +37,19 @@ public class ClazzParser {
 		
 		@Override
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-			builder.typeName(TypeName.of(name.replace('/', '.')))
+			builder.typeName(typeNameOf(name))
 				.genericSignature(Optional.ofNullable(signature))
 				.version(version)
 				.access(access)
-				.superClazz(TypeName.of(superName.replace('/', '.')));
+				.superClazz(typeNameOf(superName));
 			
 			for (String interfaze : interfaces) {
-				builder.addInterfaces(TypeName.of(interfaze.replace('/', '.')));
+				builder.addInterfaces(typeNameOf(interfaze));
 			}
+		}
+
+		private static TypeName typeNameOf(String name) {
+			return TypeName.of(name.replace('/', '.'));
 		}
 		
 		@Override
@@ -72,7 +76,12 @@ public class ClazzParser {
 		
 		@Override
 		public void visitInnerClass(String name, String outerName, String innerName, int access) {
-			if (false) throw new NotImplementedException("name: "+name+",outerName: "+outerName+",innerName: "+innerName+",access:"+access);
+			builder.addInnerClasses(InnerClazz.builder()
+					.typeName(typeNameOf(name))
+					.innerName(typeNameOf(innerName))
+					.outerName(typeNameOf(outerName))
+					.access(access)
+					.build());
 		}
 
 		public Clazz clazz() {

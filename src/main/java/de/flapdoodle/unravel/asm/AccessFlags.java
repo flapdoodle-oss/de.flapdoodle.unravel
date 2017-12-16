@@ -2,6 +2,7 @@ package de.flapdoodle.unravel.asm;
 
 import static de.flapdoodle.unravel.asm.Scope.Clazz;
 import static de.flapdoodle.unravel.asm.Scope.Field;
+import static de.flapdoodle.unravel.asm.Scope.Inner;
 import static de.flapdoodle.unravel.asm.Scope.Method;
 import static de.flapdoodle.unravel.asm.Scope.Module;
 import static de.flapdoodle.unravel.asm.Scope.ModuleRequires;
@@ -15,7 +16,7 @@ public enum AccessFlags {
   ACC_PUBLIC(0x0001, Clazz, Field, Method), // class, field, method
   ACC_PRIVATE(0x0002, Clazz, Field, Method), // class, field, method
   ACC_PROTECTED(0x0004, Clazz, Field, Method), // class, field, method
-  ACC_STATIC(0x0008, Field, Method), // field, method
+  ACC_STATIC(0x0008, Clazz, Field, Method), // field, method - added: clazz
   ACC_FINAL(0x0010, Clazz, Field, Method, Parameter), // class, field, method, parameter
   ACC_SUPER(0x0020, Clazz), // class
   ACC_SYNCHRONIZED(0x0020, Method), // method
@@ -32,7 +33,7 @@ public enum AccessFlags {
   ACC_STRICT(0x0800, Method), // method
   ACC_SYNTHETIC(0x1000, Clazz, Field, Method, Parameter, Module), // class, field, method, parameter, module *
   ACC_ANNOTATION(0x2000, Clazz), // class
-  ACC_ENUM(0x4000, Clazz), // class(?) field inner
+  ACC_ENUM(0x4000, Clazz, Field, Inner), // class(?) field inner
   ACC_MANDATED(0x8000, Parameter, Module), // parameter, module, module *
   ACC_MODULE(0x8000, Clazz); // class
 

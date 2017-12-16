@@ -10,4 +10,7 @@ public class FieldsAssert extends FactoryBasedNavigableIterableAssert<FieldsAsse
 		super(actual, FieldsAssert.class, t -> new FieldAssert(t));
 	}
 
+	public static FieldsAssert assertThatFields(List<Field> fields) {
+		return new FieldsAssert(fields);
+	}
 }

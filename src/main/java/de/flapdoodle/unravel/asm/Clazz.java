@@ -19,6 +19,7 @@ public abstract class Clazz {
 	public abstract Optional<String> genericSignature();
 	public abstract Optional<TypeName> superClazz();
 	public abstract List<TypeName> interfaces();
+	public abstract List<InnerClazz> innerClasses();
 	
 	public abstract List<Field> fields();
 	

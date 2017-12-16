@@ -6,7 +6,6 @@ import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.classes.Classnames;
-import io.vavr.collection.List;
 
 public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
 
@@ -47,11 +46,16 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
 		return this;
 	}
 
-	public ClazzAssert fields(Consumer<List<Field>> fieldsConsumer) {
-		fieldsConsumer.accept(actual.fields());
+	public ClazzAssert fields(Consumer<FieldsAssert> fieldsAssertConsumer) {
+		fieldsAssertConsumer.accept(FieldsAssert.assertThatFields(actual.fields()));
 		return this;
 	}
-
+	
+	public ClazzAssert innerClasses(Consumer<InnerClazzesAssert> innerClassesAssertConsumer) {
+		innerClassesAssertConsumer.accept(InnerClazzesAssert.assertThatInnerClasses(actual.innerClasses()));
+		return this;
+	}
+	
 	public static ClazzAssert assertThat(Clazz actual) {
 		return new ClazzAssert(actual);
 	}

@@ -16,6 +16,7 @@ import de.flapdoodle.unravel.samples.asm.basics.ClassPublic;
 import de.flapdoodle.unravel.samples.asm.basics.EnumPublic;
 import de.flapdoodle.unravel.samples.asm.basics.Fields;
 import de.flapdoodle.unravel.samples.asm.basics.Inner;
+import de.flapdoodle.unravel.samples.asm.basics.InnerOuter;
 import de.flapdoodle.unravel.samples.asm.basics.InterfacePublic;
 
 public class ClazzParserTest {
@@ -29,29 +30,29 @@ public class ClazzParserTest {
 				.typeNameIs(Classnames.nameOf(Fields.class))
 				.signature("<K:Ljava/lang/Object;V:Ljava/lang/Object;>Ljava/lang/Object;")
 				.fields(fields -> {
-					assertThat(fields).size().isEqualTo(4);
-					assertThat(fields).element(0)
+					fields.size().isEqualTo(4);
+					fields.element(0)
 						.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC, AccessFlags.ACC_FINAL)
 						.name("privateStaticFinalString")
 						.clazz("java.lang.String")
 						.arrayDimension(0)
 						.hasNoSignature()
 						.value("Foo");
-					assertThat(fields).element(1)
+					fields.element(1)
 						.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_FINAL)
 						.name("privateFinalString")
 						.clazz("java.lang.String")
 						.arrayDimension(0)
 						.hasNoSignature()
 						.hasNoValue();
-					assertThat(fields).element(2)
+					fields.element(2)
 						.accessFlags(AccessFlags.ACC_PROTECTED)
 						.name("privateListOfString")
 						.clazz("java.util.List")
 						.arrayDimension(0)
 						.signature("Ljava/util/List<Ljava/lang/String;>;")
 						.hasNoValue();
-					assertThat(fields).element(3)
+					fields.element(3)
 						.accessFlags(AccessFlags.ACC_PUBLIC)
 						.name("publicMap")
 						.clazz("java.util.Map")
@@ -173,6 +174,29 @@ public class ClazzParserTest {
 			assertThat(parse(byteCodeOf(Inner.EnumStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ENUM, AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL).superClass(Enum.class);
 			assertThat(parse(byteCodeOf(Inner.AnnotationNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION).superClass(Object.class);
 			assertThat(parse(byteCodeOf(Inner.AnnotationStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION).superClass(Object.class);
+		}
+		
+		@Test
+		public void innerOuter() {
+			assertThat(parse(byteCodeOf(InnerOuter.class)))
+				.isJava8()
+				.typeNameIs(Classnames.nameOf(InnerOuter.class))
+				.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC)
+				.superClass(Object.class)
+				.innerClasses(classes -> {
+					classes.size().isEqualTo(1); 
+					classes.element(0)
+						.typeName(Classnames.nameOf(InnerOuter.Inner.class))
+						.innerName(Inner.class.getSimpleName())
+						.outerName(Classnames.nameOf(InnerOuter.class))
+						.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_STATIC);
+				});
+			
+			assertThat(parse(byteCodeOf(InnerOuter.class,"Outer")))
+				.isJava8()
+				.typeNameIs(Classnames.nameOf(InnerOuter.class,"Outer"))
+				.accessFlags(AccessFlags.ACC_SUPER)
+				.superClass(Object.class);
 		}
 	}
 	
