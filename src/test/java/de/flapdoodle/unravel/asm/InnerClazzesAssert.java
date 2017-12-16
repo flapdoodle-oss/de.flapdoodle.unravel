@@ -13,5 +13,4 @@ public class InnerClazzesAssert extends FactoryBasedNavigableIterableAssert<Inne
 	public static InnerClazzesAssert assertThatInnerClasses(List<InnerClazz> fields) {
 		return new InnerClazzesAssert(fields);
 	}
-
 }

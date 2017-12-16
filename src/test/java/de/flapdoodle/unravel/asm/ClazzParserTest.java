@@ -166,6 +166,23 @@ public class ClazzParserTest {
 	
 		@Test
 		public void inner() {
+			assertThat(parse(byteCodeOf(Inner.class)))
+				.isJava8()
+				.innerClasses(classes -> {
+					classes.size().isEqualTo(8);
+					classes.element(0)
+						.typeName(Classnames.nameOf(Inner.AnnotationNonStatic.class))
+						.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION);
+					classes.element(1)
+						.typeName(Classnames.nameOf(Inner.AnnotationStatic.class))
+						.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION);
+					classes.element(2)
+					.typeName(Classnames.nameOf(Inner.ClassNonStatic.class))
+					.accessFlags(AccessFlags.ACC_PUBLIC);
+					classes.element(3)
+						.typeName(Classnames.nameOf(Inner.ClassStatic.class))
+						.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC);
+				});
 			assertThat(parse(byteCodeOf(Inner.ClassNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER).superClass(Object.class);
 			assertThat(parse(byteCodeOf(Inner.ClassStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_SUPER).superClass(Object.class);
 			assertThat(parse(byteCodeOf(Inner.InterfaceNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE).superClass(Object.class);

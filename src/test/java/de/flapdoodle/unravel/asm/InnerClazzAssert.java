@@ -9,33 +9,37 @@ public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, InnerClaz
 		super(actual, InnerClazzAssert.class);
 	}
 	
+	private String propertyDescription(String property) {
+		return descriptionText().isEmpty() ? property : property+" of "+descriptionText();
+	}
+	
 	public InnerClazzAssert accessFlags(AccessFlags ... values) {
-		Assertions.assertThat(actual.accessFlags()).describedAs("accessFlags").containsOnly(values);
+		Assertions.assertThat(actual.accessFlags()).describedAs(propertyDescription("accessFlags")).containsOnly(values);
 		return this;
 	}
 	
 	public InnerClazzAssert typeName(String name) {
-		Assertions.assertThat(actual.typeName().value()).describedAs("typeName").isEqualTo(name);
+		Assertions.assertThat(actual.typeName().value()).describedAs(propertyDescription("typeName")).isEqualTo(name);
 		return this;
 	}
 	
 	public InnerClazzAssert noInnerName() {
-		Assertions.assertThat(actual.innerName()).describedAs("innerName").isEmpty();
+		Assertions.assertThat(actual.innerName()).describedAs(propertyDescription("innerName")).isEmpty();
 		return this;
 	}
 	
 	public InnerClazzAssert innerName(String name) {
-		Assertions.assertThat(actual.innerName()).describedAs("innerName").contains(TypeName.of(name));
+		Assertions.assertThat(actual.innerName()).describedAs(propertyDescription("innerName")).contains(TypeName.of(name));
 		return this;
 	}
 	
 	public InnerClazzAssert noOuterName() {
-		Assertions.assertThat(actual.outerName()).describedAs("outerName").isEmpty();
+		Assertions.assertThat(actual.outerName()).describedAs(propertyDescription("outerName")).isEmpty();
 		return this;
 	}
 	
 	public InnerClazzAssert outerName(String name) {
-		Assertions.assertThat(actual.outerName()).describedAs("outerName").contains(TypeName.of(name));
+		Assertions.assertThat(actual.outerName()).describedAs(propertyDescription("outerName")).contains(TypeName.of(name));
 		return this;
 	}
 }
