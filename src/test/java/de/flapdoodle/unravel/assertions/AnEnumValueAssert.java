@@ -1,4 +1,4 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.assertions;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;

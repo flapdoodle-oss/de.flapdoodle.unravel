@@ -1,4 +1,4 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.assertions;
 
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;

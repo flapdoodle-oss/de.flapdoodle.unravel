@@ -1,4 +1,4 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.assertions;
 
 public interface CommonAsserts {
 
