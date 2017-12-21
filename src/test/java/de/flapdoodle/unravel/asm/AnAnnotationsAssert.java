@@ -11,7 +11,7 @@ public class AnAnnotationsAssert extends FactoryBasedNavigableIterableAssert<AnA
 		super(actual, AnAnnotationsAssert.class, t -> new AnAnnotationAssert(t));
 	}
 
-	public static AnAnnotationsAssert assertThatAnnotations(List<AnAnnotation> fields) {
-		return new AnAnnotationsAssert(fields);
+	public static AnAnnotationsAssert assertThatAnnotations(List<AnAnnotation> annotations) {
+		return new AnAnnotationsAssert(annotations);
 	}
 }

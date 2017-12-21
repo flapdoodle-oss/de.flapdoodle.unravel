@@ -1,12 +1,13 @@
 package de.flapdoodle.unravel.asm;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Consumer;
 
 import org.assertj.core.api.AbstractAssert;
 
 import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.types.AnAnnotation;
+import io.vavr.collection.List;
 
 public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnnotation> {
 
@@ -44,13 +45,21 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 	}
 
 	public AnAnnotationAssert attributeMapContains(String key, Object ... expected) {
-		List<Object> values = actual.attributeMap().get(key)
+		java.util.List<Object> values = actual.attributeMap().get(key)
 				.map(t -> t.toJavaList())
 				.getOrElse(new ArrayList<>());
 		Assertions.assertThat(values).describedAs(propertyDescription("attributeMap."+key)).contains(expected);
 		return this;
 	}
 
+	public AnAnnotationAssert annotationAttributes(String key, Consumer<AnAnnotationsAssert> annotationsAssertConsumer) {
+		List<AnAnnotation> values = actual.annotationAttributes().get(key)
+				.map(t -> t.toList())
+				.getOrElse(io.vavr.collection.List.empty());
+		annotationsAssertConsumer.accept(AnAnnotationsAssert.assertThatAnnotations(values).describedAs(propertyDescription("attributeMap."+key)));
+		return this;
+	}
+	
 //	public AnAnnotationAssert arrayDimension(int arrayDimension) {
 //		Assertions.assertThat(actual.type().arrayDimension()).describedAs(propertyDescription("arrayDimension")).isEqualTo(arrayDimension);
 //		return this;

@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public class Annotations {
+public class AnnotationsPlayground {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface Samples {
@@ -45,6 +45,7 @@ public class Annotations {
 			ElementType.TYPE_PARAMETER,
 	})
 	public @interface Simple {
+		
 	}
 	
 	public static class Foo {

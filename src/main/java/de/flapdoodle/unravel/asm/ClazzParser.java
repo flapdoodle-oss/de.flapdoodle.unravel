@@ -15,13 +15,13 @@ import org.objectweb.asm.Type;
 
 import de.flapdoodle.checks.Preconditions;
 import de.flapdoodle.unravel.types.AClass;
-import de.flapdoodle.unravel.types.AnAnnotation;
-import de.flapdoodle.unravel.types.AnInnerClass;
 import de.flapdoodle.unravel.types.AField;
 import de.flapdoodle.unravel.types.AFieldType;
+import de.flapdoodle.unravel.types.ATypeName;
+import de.flapdoodle.unravel.types.AnAnnotation;
+import de.flapdoodle.unravel.types.AnInnerClass;
 import de.flapdoodle.unravel.types.ImmutableAClass.Builder;
 import de.flapdoodle.unravel.types.ImmutableAnAnnotation;
-import de.flapdoodle.unravel.types.ATypeName;
 
 public class ClazzParser {
 
@@ -76,7 +76,7 @@ public class ClazzParser {
 		
 		@Override
 		public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-			return new Annotations(builder, desc, visible);
+			return new AnAnnotationVisitor(desc, visible, builder::addAnnotations);
 		}
 		
 		@Override
