@@ -1,14 +1,12 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.types;
 
 import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
 import org.objectweb.asm.Type;
 
-import de.flapdoodle.unravel.asm.ImmutableFieldType.Builder;
-
 @Immutable
 public abstract class FieldType {
-	protected abstract String raw();
+	public abstract String raw();
 	
 	public abstract TypeName clazz();
 	public abstract int arrayDimension();
@@ -30,7 +28,7 @@ public abstract class FieldType {
 				.build();
 	}
 
-	public static Builder builder() {
+	public static ImmutableFieldType.Builder builder() {
 		return ImmutableFieldType.builder();
 	}
 }

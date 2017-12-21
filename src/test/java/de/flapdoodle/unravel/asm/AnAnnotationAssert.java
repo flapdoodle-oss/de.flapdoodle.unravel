@@ -6,6 +6,7 @@ import java.util.List;
 import org.assertj.core.api.AbstractAssert;
 
 import de.flapdoodle.unravel.Assertions;
+import de.flapdoodle.unravel.types.AnAnnotation;
 
 public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnnotation> {
 

@@ -1,12 +1,12 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.types;
 
-import static de.flapdoodle.unravel.asm.Scope.Clazz;
-import static de.flapdoodle.unravel.asm.Scope.Field;
-import static de.flapdoodle.unravel.asm.Scope.Inner;
-import static de.flapdoodle.unravel.asm.Scope.Method;
-import static de.flapdoodle.unravel.asm.Scope.Module;
-import static de.flapdoodle.unravel.asm.Scope.ModuleRequires;
-import static de.flapdoodle.unravel.asm.Scope.Parameter;
+import static de.flapdoodle.unravel.types.Scope.Clazz;
+import static de.flapdoodle.unravel.types.Scope.Field;
+import static de.flapdoodle.unravel.types.Scope.Inner;
+import static de.flapdoodle.unravel.types.Scope.Method;
+import static de.flapdoodle.unravel.types.Scope.Module;
+import static de.flapdoodle.unravel.types.Scope.ModuleRequires;
+import static de.flapdoodle.unravel.types.Scope.Parameter;
 
 import de.flapdoodle.checks.Preconditions;
 import io.vavr.collection.HashSet;

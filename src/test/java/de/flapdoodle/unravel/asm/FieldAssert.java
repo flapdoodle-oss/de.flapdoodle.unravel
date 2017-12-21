@@ -3,6 +3,9 @@ package de.flapdoodle.unravel.asm;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
+import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.Field;
+
 public class FieldAssert extends AbstractAssert<FieldAssert, Field> {
 
 	public FieldAssert(Field actual) {

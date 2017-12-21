@@ -1,9 +1,11 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.types;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.objectweb.asm.Type;
+
+import de.flapdoodle.unravel.types.FieldType;
 
 public class FieldTypeTest {
 

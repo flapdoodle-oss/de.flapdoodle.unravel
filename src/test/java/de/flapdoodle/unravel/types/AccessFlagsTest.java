@@ -1,4 +1,4 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.types;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

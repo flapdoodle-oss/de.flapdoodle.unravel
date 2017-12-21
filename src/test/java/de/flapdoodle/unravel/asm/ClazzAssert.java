@@ -6,6 +6,9 @@ import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.classes.Classnames;
+import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.Clazz;
+import de.flapdoodle.unravel.types.JavaVersion;
 
 public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
 

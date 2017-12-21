@@ -1,4 +1,4 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.types;
 
 import java.util.Optional;
 

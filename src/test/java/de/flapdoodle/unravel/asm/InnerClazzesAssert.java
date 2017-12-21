@@ -2,6 +2,7 @@ package de.flapdoodle.unravel.asm;
 
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
+import de.flapdoodle.unravel.types.InnerClazz;
 import io.vavr.collection.List;
 
 public class InnerClazzesAssert extends FactoryBasedNavigableIterableAssert<InnerClazzesAssert, Iterable<? extends InnerClazz>, InnerClazz, InnerClazzAssert> {

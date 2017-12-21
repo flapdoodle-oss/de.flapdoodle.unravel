@@ -1,4 +1,4 @@
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.types;
 
 import org.immutables.builder.Builder.Parameter;
 import org.immutables.value.Value.Immutable;

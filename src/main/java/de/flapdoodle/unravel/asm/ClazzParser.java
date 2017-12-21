@@ -14,7 +14,14 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import de.flapdoodle.checks.Preconditions;
-import de.flapdoodle.unravel.asm.ImmutableClazz.Builder;
+import de.flapdoodle.unravel.types.AnAnnotation;
+import de.flapdoodle.unravel.types.Clazz;
+import de.flapdoodle.unravel.types.Field;
+import de.flapdoodle.unravel.types.FieldType;
+import de.flapdoodle.unravel.types.ImmutableAnAnnotation;
+import de.flapdoodle.unravel.types.ImmutableClazz.Builder;
+import de.flapdoodle.unravel.types.InnerClazz;
+import de.flapdoodle.unravel.types.TypeName;
 
 public class ClazzParser {
 

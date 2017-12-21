@@ -20,6 +20,8 @@ import de.flapdoodle.unravel.samples.asm.basics.Fields;
 import de.flapdoodle.unravel.samples.asm.basics.Inner;
 import de.flapdoodle.unravel.samples.asm.basics.InnerOuter;
 import de.flapdoodle.unravel.samples.asm.basics.InterfacePublic;
+import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.Clazz;
 
 public class ClazzParserTest {
 

@@ -3,6 +3,10 @@ package de.flapdoodle.unravel.asm;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
+import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.InnerClazz;
+import de.flapdoodle.unravel.types.TypeName;
+
 public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, InnerClazz> {
 
 	public InnerClazzAssert(InnerClazz actual) {
