@@ -23,6 +23,7 @@ public abstract class AClass {
 	public abstract List<AnAnnotation> annotations();
 	
 	public abstract List<AField> fields();
+	public abstract List<AMethod> methods();
 	
 	@Auxiliary
 	public JavaVersion javaVersion() {
