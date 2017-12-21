@@ -7,12 +7,12 @@ import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.Clazz;
+import de.flapdoodle.unravel.types.AClass;
 import de.flapdoodle.unravel.types.JavaVersion;
 
-public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
+public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
 
-	public ClazzAssert(Clazz actual) {
+	public ClazzAssert(AClass actual) {
 		super(actual, ClazzAssert.class);
 	}
 	
@@ -64,7 +64,7 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
 		return this;
 	}
 	
-	public static ClazzAssert assertThat(Clazz actual) {
+	public static ClazzAssert assertThat(AClass actual) {
 		return new ClazzAssert(actual);
 	}
 }

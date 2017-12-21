@@ -10,9 +10,9 @@ import io.vavr.collection.Set;
 
 @Immutable 
 @VavrEncodingEnabled
-public abstract class Field {
+public abstract class AField {
 	public abstract String name();
-	public abstract FieldType type();
+	public abstract AFieldType type();
 	public abstract Optional<String> genericSignature();
 	public abstract Optional<Object> value();
 	
@@ -23,7 +23,7 @@ public abstract class Field {
 		return AccessFlags.flags(Scope.Field, access());
 	}
 
-	public static ImmutableField.Builder builder() {
-		return ImmutableField.builder();
+	public static ImmutableAField.Builder builder() {
+		return ImmutableAField.builder();
 	}
 }

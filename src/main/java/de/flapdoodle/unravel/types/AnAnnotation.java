@@ -11,7 +11,7 @@ import io.vavr.collection.Set;
 @VavrEncodingEnabled
 public abstract class AnAnnotation {
 	@Parameter
-	public abstract TypeName clazz();
+	public abstract ATypeName clazz();
 	@Parameter
 	public abstract boolean visible();
 	public abstract Set<String> usedAttributes();
@@ -19,9 +19,9 @@ public abstract class AnAnnotation {
 	public abstract Multimap<String, Object> attributeMap();
 	
 	public abstract Multimap<String, AnAnnotation> annotationAttributes();
-	public abstract Multimap<String, TypeName> clazzAttributes();
+	public abstract Multimap<String, ATypeName> clazzAttributes();
 	
-	public static ImmutableAnAnnotation.Builder builder(TypeName typeName, boolean visible) {
+	public static ImmutableAnAnnotation.Builder builder(ATypeName typeName, boolean visible) {
 		return ImmutableAnAnnotation.builder(typeName, visible);
 	}
 }

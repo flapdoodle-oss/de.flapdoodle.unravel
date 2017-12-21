@@ -5,10 +5,10 @@ import org.immutables.value.Value.Immutable;
 import org.objectweb.asm.Type;
 
 @Immutable
-public abstract class FieldType {
+public abstract class AFieldType {
 	public abstract String raw();
 	
-	public abstract TypeName clazz();
+	public abstract ATypeName clazz();
 	public abstract int arrayDimension();
 	
 	@Auxiliary
@@ -16,19 +16,19 @@ public abstract class FieldType {
 		return arrayDimension()>0;
 	}
 	
-	public static FieldType raw(String rawName) {
+	public static AFieldType raw(String rawName) {
 		Type type = Type.getType(rawName);
 		int arrayDimension = type.getSort()==Type.ARRAY ? type.getDimensions() : 0;
 		String className = arrayDimension == 0 ? type.getClassName() : type.getElementType().getClassName();
 		
 		return builder()
 				.raw(rawName)
-				.clazz(TypeName.of(className))
+				.clazz(ATypeName.of(className))
 				.arrayDimension(arrayDimension)
 				.build();
 	}
 
-	public static ImmutableFieldType.Builder builder() {
-		return ImmutableFieldType.builder();
+	public static ImmutableAFieldType.Builder builder() {
+		return ImmutableAFieldType.builder();
 	}
 }

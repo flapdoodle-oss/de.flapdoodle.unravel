@@ -4,11 +4,11 @@ import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Parameter;
 
 @Immutable
-public interface TypeName {
+public interface ATypeName {
 	@Parameter
 	String value();
 	
-	public static TypeName of(String name) {
-		return ImmutableTypeName.of(name);
+	public static ATypeName of(String name) {
+		return ImmutableATypeName.of(name);
 	}
 }

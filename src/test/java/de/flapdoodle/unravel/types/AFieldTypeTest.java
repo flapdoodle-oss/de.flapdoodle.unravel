@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.objectweb.asm.Type;
 
-import de.flapdoodle.unravel.types.FieldType;
+import de.flapdoodle.unravel.types.AFieldType;
 
-public class FieldTypeTest {
+public class AFieldTypeTest {
 
 	@Test
 	public void simpleStringField() {
-		FieldType fieldType = FieldType.raw("Ljava/lang/String;");
+		AFieldType fieldType = AFieldType.raw("Ljava/lang/String;");
 		assertThat(fieldType.clazz().value()).isEqualTo("java.lang.String");
 		assertThat(fieldType.arrayDimension()).isEqualTo(0);
 		
@@ -19,7 +19,7 @@ public class FieldTypeTest {
 
 	@Test
 	public void stringArrayField() {
-		FieldType fieldType = FieldType.raw("[[Ljava/lang/String;");
+		AFieldType fieldType = AFieldType.raw("[[Ljava/lang/String;");
 		assertThat(fieldType.clazz().value()).isEqualTo("java.lang.String");
 		assertThat(fieldType.arrayDimension()).isEqualTo(2);
 	}

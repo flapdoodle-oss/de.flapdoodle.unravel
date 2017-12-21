@@ -4,11 +4,11 @@ import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.Field;
+import de.flapdoodle.unravel.types.AField;
 
-public class FieldAssert extends AbstractAssert<FieldAssert, Field> {
+public class FieldAssert extends AbstractAssert<FieldAssert, AField> {
 
-	public FieldAssert(Field actual) {
+	public FieldAssert(AField actual) {
 		super(actual, FieldAssert.class);
 	}
 	

@@ -8,18 +8,18 @@ import org.immutables.value.Value.Immutable;
 import io.vavr.collection.Set;
 
 @Immutable
-public abstract class InnerClazz {
+public abstract class AnInnerClass {
 	protected abstract int access();
-	public abstract TypeName typeName();
-	public abstract Optional<TypeName> innerName();
-	public abstract Optional<TypeName> outerName();
+	public abstract ATypeName typeName();
+	public abstract Optional<ATypeName> innerName();
+	public abstract Optional<ATypeName> outerName();
 	
 	@Auxiliary
 	public Set<AccessFlags> accessFlags() {
 		return AccessFlags.flags(Scope.Clazz, access());
 	}
 
-	public static ImmutableInnerClazz.Builder builder() {
-		return ImmutableInnerClazz.builder();
+	public static ImmutableAnInnerClass.Builder builder() {
+		return ImmutableAnInnerClass.builder();
 	}
 }

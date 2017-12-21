@@ -14,18 +14,18 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import de.flapdoodle.checks.Preconditions;
+import de.flapdoodle.unravel.types.AClass;
 import de.flapdoodle.unravel.types.AnAnnotation;
-import de.flapdoodle.unravel.types.Clazz;
-import de.flapdoodle.unravel.types.Field;
-import de.flapdoodle.unravel.types.FieldType;
+import de.flapdoodle.unravel.types.AnInnerClass;
+import de.flapdoodle.unravel.types.AField;
+import de.flapdoodle.unravel.types.AFieldType;
+import de.flapdoodle.unravel.types.ImmutableAClass.Builder;
 import de.flapdoodle.unravel.types.ImmutableAnAnnotation;
-import de.flapdoodle.unravel.types.ImmutableClazz.Builder;
-import de.flapdoodle.unravel.types.InnerClazz;
-import de.flapdoodle.unravel.types.TypeName;
+import de.flapdoodle.unravel.types.ATypeName;
 
 public class ClazzParser {
 
-	public Clazz parse(Supplier<? extends InputStream> classStream) {
+	public AClass parse(Supplier<? extends InputStream> classStream) {
 		try (InputStream is = classStream.get()) {
 			ClassReader reader = new ClassReader(is);
 			Visitor classVisitor = new Visitor();
@@ -39,7 +39,7 @@ public class ClazzParser {
 	
 	private static class Visitor extends ClassVisitor {
 		
-		private final Builder builder = Clazz.builder();
+		private final Builder builder = AClass.builder();
 		
 		public Visitor() {
 			super(Opcodes.ASM6);
@@ -58,16 +58,16 @@ public class ClazzParser {
 			}
 		}
 
-		private static TypeName typeNameOf(String name) {
-			return TypeName.of(name.replace('/', '.'));
+		private static ATypeName typeNameOf(String name) {
+			return ATypeName.of(name.replace('/', '.'));
 		}
 		
 		@Override
 		public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
-			builder.addFields(Field.builder()
+			builder.addFields(AField.builder()
 					.access(access)
 					.name(name)
-					.type(FieldType.raw(desc))
+					.type(AFieldType.raw(desc))
 					.genericSignature(Optional.ofNullable(signature))
 					.value(Optional.ofNullable(value))
 					.build());
@@ -86,7 +86,7 @@ public class ClazzParser {
 		
 		@Override
 		public void visitInnerClass(String name, String outerName, String innerName, int access) {
-			builder.addInnerClasses(InnerClazz.builder()
+			builder.addInnerClasses(AnInnerClass.builder()
 					.typeName(typeNameOf(name))
 					.innerName(Optional.ofNullable(innerName).map(n -> typeNameOf(n)))
 					.outerName(Optional.ofNullable(outerName).map(n -> typeNameOf(n)))
@@ -94,7 +94,7 @@ public class ClazzParser {
 					.build());
 		}
 
-		public Clazz clazz() {
+		public AClass clazz() {
 			return builder.build();
 		}
 	}
@@ -107,7 +107,7 @@ public class ClazzParser {
 		public Annotations(Builder clazzBuilder, String desc, boolean visible) {
 			super(Opcodes.ASM6);
 			this.clazzBuilder = clazzBuilder;
-			this.builder = AnAnnotation.builder(TypeName.of(Type.getType(desc).getClassName()), visible);
+			this.builder = AnAnnotation.builder(ATypeName.of(Type.getType(desc).getClassName()), visible);
 		}
 		
 		@Override

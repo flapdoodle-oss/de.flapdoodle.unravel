@@ -12,17 +12,17 @@ import io.vavr.collection.Set;
 
 @Immutable
 @VavrEncodingEnabled
-public abstract class Clazz {
+public abstract class AClass {
 	protected abstract int version();
 	protected abstract int access();
-	public abstract TypeName typeName();
+	public abstract ATypeName typeName();
 	public abstract Optional<String> genericSignature();
-	public abstract Optional<TypeName> superClazz();
-	public abstract List<TypeName> interfaces();
-	public abstract List<InnerClazz> innerClasses();
+	public abstract Optional<ATypeName> superClazz();
+	public abstract List<ATypeName> interfaces();
+	public abstract List<AnInnerClass> innerClasses();
 	public abstract List<AnAnnotation> annotations();
 	
-	public abstract List<Field> fields();
+	public abstract List<AField> fields();
 	
 	@Auxiliary
 	public JavaVersion javaVersion() {
@@ -34,7 +34,7 @@ public abstract class Clazz {
 		return AccessFlags.flags(Scope.Clazz, access());
 	}
 	
-	public static ImmutableClazz.Builder builder() {
-		return ImmutableClazz.builder();
+	public static ImmutableAClass.Builder builder() {
+		return ImmutableAClass.builder();
 	}
 }

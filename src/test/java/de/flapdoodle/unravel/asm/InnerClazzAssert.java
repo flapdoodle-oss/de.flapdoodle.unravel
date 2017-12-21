@@ -4,12 +4,12 @@ import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.InnerClazz;
-import de.flapdoodle.unravel.types.TypeName;
+import de.flapdoodle.unravel.types.AnInnerClass;
+import de.flapdoodle.unravel.types.ATypeName;
 
-public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, InnerClazz> {
+public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, AnInnerClass> {
 
-	public InnerClazzAssert(InnerClazz actual) {
+	public InnerClazzAssert(AnInnerClass actual) {
 		super(actual, InnerClazzAssert.class);
 	}
 	
@@ -33,7 +33,7 @@ public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, InnerClaz
 	}
 	
 	public InnerClazzAssert innerName(String name) {
-		Assertions.assertThat(actual.innerName()).describedAs(propertyDescription("innerName")).contains(TypeName.of(name));
+		Assertions.assertThat(actual.innerName()).describedAs(propertyDescription("innerName")).contains(ATypeName.of(name));
 		return this;
 	}
 	
@@ -43,7 +43,7 @@ public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, InnerClaz
 	}
 	
 	public InnerClazzAssert outerName(String name) {
-		Assertions.assertThat(actual.outerName()).describedAs(propertyDescription("outerName")).contains(TypeName.of(name));
+		Assertions.assertThat(actual.outerName()).describedAs(propertyDescription("outerName")).contains(ATypeName.of(name));
 		return this;
 	}
 }

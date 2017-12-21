@@ -21,7 +21,7 @@ import de.flapdoodle.unravel.samples.asm.basics.Inner;
 import de.flapdoodle.unravel.samples.asm.basics.InnerOuter;
 import de.flapdoodle.unravel.samples.asm.basics.InterfacePublic;
 import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.Clazz;
+import de.flapdoodle.unravel.types.AClass;
 
 public class ClazzParserTest {
 
@@ -255,7 +255,7 @@ public class ClazzParserTest {
 		}
 	}
 	
-	private static Clazz parse(Supplier<InputStream> byteCodeOf) {
+	private static AClass parse(Supplier<InputStream> byteCodeOf) {
 		return new ClazzParser().parse(byteCodeOf);
 	}
 }
