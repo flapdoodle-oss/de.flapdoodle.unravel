@@ -34,7 +34,7 @@ public class ClazzParserTest {
 					annotations.element(0)
 						.clazz(Classnames.nameOf(Annotations.Sample.class))
 						.usedAttributes("value","intVal","clazzVal")
-						.attributeMapContains("value", "foo")
+						.attributeMapContains("value", "a string value")
 						.attributeMapContains("clazzVal", Type.getType(Annotations.Foo.class));
 				});
 		}

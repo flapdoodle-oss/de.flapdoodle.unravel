@@ -151,7 +151,9 @@ public class ClazzParser {
 
 		@Override
 		public AnnotationVisitor visitAnnotation(String name, String desc) {
-			throw new NotImplementedException("name: "+name+",desc:"+desc);
+			values.add(Type.getType(desc));
+			//throw new NotImplementedException("name: "+name+",desc:"+desc);
+			return this;
 		}
 		
 		@Override

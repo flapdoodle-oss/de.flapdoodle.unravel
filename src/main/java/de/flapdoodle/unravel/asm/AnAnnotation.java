@@ -18,6 +18,9 @@ public abstract class AnAnnotation {
 	@Deprecated
 	public abstract Multimap<String, Object> attributeMap();
 	
+	public abstract Multimap<String, AnAnnotation> annotationAttributes();
+	public abstract Multimap<String, TypeName> clazzAttributes();
+	
 	public static ImmutableAnAnnotation.Builder builder(TypeName typeName, boolean visible) {
 		return ImmutableAnAnnotation.builder(typeName, visible);
 	}
