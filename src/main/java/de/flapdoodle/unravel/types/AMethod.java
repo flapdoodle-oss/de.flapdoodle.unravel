@@ -14,9 +14,12 @@ import io.vavr.collection.Set;
 public abstract class AMethod {
 	protected abstract int access();
 	public abstract String name();
-	public abstract Optional<String> desc();
+	public abstract ATypeName returnType();
+	public abstract List<ATypeName> parameters();
+	
 	public abstract Optional<String> genericSignature();
 	public abstract List<ATypeName> exceptions();
+	public abstract List<AnAnnotation> annotations();
 
 	@Auxiliary
 	public Set<AccessFlags> accessFlags() {

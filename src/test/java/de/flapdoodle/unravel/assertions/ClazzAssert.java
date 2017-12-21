@@ -49,18 +49,23 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
 		return this;
 	}
 
-	public ClazzAssert fields(Consumer<AFieldsAssert> fieldsAssertConsumer) {
-		fieldsAssertConsumer.accept(AFieldsAssert.assertThatFields(actual.fields()).describedAs("fields"));
+	public ClazzAssert fields(Consumer<AFieldsAssert> consumer) {
+		consumer.accept(AFieldsAssert.assertThatFields(actual.fields()).describedAs("fields"));
 		return this;
 	}
 	
-	public ClazzAssert innerClasses(Consumer<InnerClazzesAssert> innerClassesAssertConsumer) {
-		innerClassesAssertConsumer.accept(InnerClazzesAssert.assertThatInnerClasses(actual.innerClasses()).describedAs("innerClasses"));
+	public ClazzAssert methods(Consumer<AMethodsAssert> consumer) {
+		consumer.accept(AMethodsAssert.assertThatMethods(actual.methods()).describedAs("methods"));
 		return this;
 	}
 	
-	public ClazzAssert annotations(Consumer<AnAnnotationsAssert> annotationsAssertConsumer) {
-		annotationsAssertConsumer.accept(AnAnnotationsAssert.assertThatAnnotations(actual.annotations()).describedAs("annotations"));
+	public ClazzAssert innerClasses(Consumer<InnerClazzesAssert> consumer) {
+		consumer.accept(InnerClazzesAssert.assertThatInnerClasses(actual.innerClasses()).describedAs("innerClasses"));
+		return this;
+	}
+	
+	public ClazzAssert annotations(Consumer<AnAnnotationsAssert> consumer) {
+		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(actual.annotations()).describedAs("annotations"));
 		return this;
 	}
 	

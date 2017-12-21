@@ -13,6 +13,7 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.ModuleVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
 
 import de.flapdoodle.unravel.types.AClass;
@@ -113,10 +114,15 @@ public class ClazzParser {
 		
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+			Type type = Type.getMethodType(desc);
+			String returnTypeName = type.getReturnType().getClassName();
+			List<ATypeName> argumentTypes = List.of(type.getArgumentTypes()).map(Type::getClassName).map(ATypeName::of);
+			
 			return new AMethodVisitor(AMethod.builder()
 				.access(access)
 				.name(name)
-				.desc(desc)
+				.returnType(ATypeName.of(returnTypeName))
+				.parameters(argumentTypes)
 				.genericSignature(Optional.ofNullable(signature))
 				.addAllExceptions(exceptions != null 
 					? List.of(exceptions).map(ATypeName::of) 

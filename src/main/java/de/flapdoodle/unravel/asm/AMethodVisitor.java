@@ -2,6 +2,8 @@ package de.flapdoodle.unravel.asm;
 
 import java.util.function.Consumer;
 
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -19,6 +21,21 @@ public class AMethodVisitor extends MethodVisitor {
 		super(Opcodes.ASM6);
 		this.builder = builder;
 		this.methodConsumer = methodConsumer;
+	}
+	
+	@Override
+	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+		return new AnAnnotationVisitor(desc, visible, builder::addAnnotations);
+	}
+	
+	@Override
+	public AnnotationVisitor visitAnnotationDefault() {
+		return NotImplementedException.with("visitAnnotationDefault");
+	}
+	
+	@Override
+	public void visitAttribute(Attribute attr) {
+		NotImplementedException.with("visitAttribute", "attr",attr);
 	}
 	
 	@Override
