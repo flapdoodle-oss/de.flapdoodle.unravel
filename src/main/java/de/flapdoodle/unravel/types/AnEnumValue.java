@@ -8,7 +8,7 @@ import org.immutables.vavr.encodings.VavrEncodingEnabled;
 @VavrEncodingEnabled
 public abstract class AnEnumValue {
 	@Parameter
-	public abstract ATypeName typeName();
+	public abstract ATypeName clazz();
 	@Parameter
 	public abstract String value();
 	

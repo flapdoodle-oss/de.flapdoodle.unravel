@@ -27,6 +27,9 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 	public void visit(String name, Object value) {
 		builder.addUsedAttributes(name);
 		builder.putAttributeMap(name, value);
+		if (value instanceof Type) {
+			builder.putClazzAttributes(name, ATypeName.of(((Type) value).getClassName()));
+		}
 	}
 	
 	@Override
@@ -66,6 +69,9 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 		public void visit(String name, Object value) {
 			Preconditions.checkArgument(name == null, "name is set: %s",name);
 			builder.putAttributeMap(this.name, value);
+			if (value instanceof Type) {
+				builder.putClazzAttributes(this.name, ATypeName.of(((Type) value).getClassName()));
+			}
 		}
 		
 		@Override

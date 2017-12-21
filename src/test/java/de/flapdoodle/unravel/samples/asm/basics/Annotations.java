@@ -44,7 +44,7 @@ public class Annotations {
 		
 	}
 	
-	enum SampleEnum {
+	public enum SampleEnum {
 		A,B,C
 	}
 	

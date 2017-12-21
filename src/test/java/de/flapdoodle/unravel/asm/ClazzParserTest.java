@@ -85,6 +85,18 @@ public class ClazzParserTest {
 					annotations.size().isEqualTo(1);
 					annotations.element(0)
 						.clazz(Classnames.nameOf(Annotations.Parameters.class))
+						.classAttributes("clazz", Classnames.nameOf(Annotations.WrapperSample.class))
+						.classAttributes("clazzArray", Classnames.nameOf(Annotations.Wrapper.class), Classnames.nameOf(Annotations.Wrapped.class))
+						.enumAttributes("sample", sub -> {
+							sub.size().isEqualTo(1);
+							sub.element(0).clazz(Classnames.nameOf(Annotations.SampleEnum.class))
+								.value("B");
+						})
+						.enumAttributes("sampleArray", sub -> {
+							sub.size().isEqualTo(2);
+							sub.element(0).clazz(Classnames.nameOf(Annotations.SampleEnum.class)).value("A");
+							sub.element(1).clazz(Classnames.nameOf(Annotations.SampleEnum.class)).value("C");
+						})
 						.annotationAttributes("wrapped", sub -> {
 							sub.size().isEqualTo(1);
 							sub.element(0).clazz(Classnames.nameOf(Annotations.WrappedWrapped.class))

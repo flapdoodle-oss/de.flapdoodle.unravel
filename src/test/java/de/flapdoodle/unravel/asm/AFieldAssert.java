@@ -6,53 +6,53 @@ import org.assertj.core.api.Assertions;
 import de.flapdoodle.unravel.types.AField;
 import de.flapdoodle.unravel.types.AccessFlags;
 
-public class FieldAssert extends AbstractAssert<FieldAssert, AField> implements CommonAsserts {
+public class AFieldAssert extends AbstractAssert<AFieldAssert, AField> implements CommonAsserts {
 
-	public FieldAssert(AField actual) {
-		super(actual, FieldAssert.class);
+	public AFieldAssert(AField actual) {
+		super(actual, AFieldAssert.class);
 	}
 	
-	public FieldAssert accessFlags(AccessFlags ... values) {
+	public AFieldAssert accessFlags(AccessFlags ... values) {
 		Assertions.assertThat(actual.accessFlags()).describedAs(propertyDescription("accessFlags")).containsOnly(values);
 		return this;
 	}
 	
-	public FieldAssert name(String name) {
+	public AFieldAssert name(String name) {
 		Assertions.assertThat(actual.name()).describedAs(propertyDescription("name")).isEqualTo(name);
 		return this;
 	}
 
-	public FieldAssert rawType(String type) {
+	public AFieldAssert rawType(String type) {
 		Assertions.assertThat(actual.type().raw()).describedAs(propertyDescription("type")).isEqualTo(type);
 		return this;
 	}
 	
-	public FieldAssert clazz(String type) {
+	public AFieldAssert clazz(String type) {
 		Assertions.assertThat(actual.type().clazz().value()).describedAs(propertyDescription("clazz")).isEqualTo(type);
 		return this;
 	}
 	
-	public FieldAssert arrayDimension(int arrayDimension) {
+	public AFieldAssert arrayDimension(int arrayDimension) {
 		Assertions.assertThat(actual.type().arrayDimension()).describedAs(propertyDescription("arrayDimension")).isEqualTo(arrayDimension);
 		return this;
 	}
 	
-	public FieldAssert signature(String signature) {
+	public AFieldAssert signature(String signature) {
 		Assertions.assertThat(actual.genericSignature()).describedAs(propertyDescription("genericSignature")).isPresent().contains(signature);
 		return this;
 	}
 
-	public FieldAssert hasNoSignature() {
+	public AFieldAssert hasNoSignature() {
 		Assertions.assertThat(actual.genericSignature()).describedAs(propertyDescription("genericSignature")).isEmpty();
 		return this;
 	}
 
-	public FieldAssert value(Object value) {
+	public AFieldAssert value(Object value) {
 		Assertions.assertThat(actual.value()).describedAs("value").isPresent().contains(value);
 		return this;
 	}
 	
-	public FieldAssert hasNoValue() {
+	public AFieldAssert hasNoValue() {
 		Assertions.assertThat(actual.value()).describedAs("value").isEmpty();
 		return this;
 	}

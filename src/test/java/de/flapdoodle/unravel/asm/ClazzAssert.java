@@ -49,8 +49,8 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
 		return this;
 	}
 
-	public ClazzAssert fields(Consumer<FieldsAssert> fieldsAssertConsumer) {
-		fieldsAssertConsumer.accept(FieldsAssert.assertThatFields(actual.fields()).describedAs("fields"));
+	public ClazzAssert fields(Consumer<AFieldsAssert> fieldsAssertConsumer) {
+		fieldsAssertConsumer.accept(AFieldsAssert.assertThatFields(actual.fields()).describedAs("fields"));
 		return this;
 	}
 	
