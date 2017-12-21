@@ -6,8 +6,8 @@ import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.classes.Classnames;
-import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.AClass;
+import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.JavaVersion;
 
 public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
@@ -50,17 +50,17 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
 	}
 
 	public ClazzAssert fields(Consumer<FieldsAssert> fieldsAssertConsumer) {
-		fieldsAssertConsumer.accept(FieldsAssert.assertThatFields(actual.fields()));
+		fieldsAssertConsumer.accept(FieldsAssert.assertThatFields(actual.fields()).describedAs("fields"));
 		return this;
 	}
 	
 	public ClazzAssert innerClasses(Consumer<InnerClazzesAssert> innerClassesAssertConsumer) {
-		innerClassesAssertConsumer.accept(InnerClazzesAssert.assertThatInnerClasses(actual.innerClasses()));
+		innerClassesAssertConsumer.accept(InnerClazzesAssert.assertThatInnerClasses(actual.innerClasses()).describedAs("innerClasses"));
 		return this;
 	}
 	
 	public ClazzAssert annotations(Consumer<AnAnnotationsAssert> annotationsAssertConsumer) {
-		annotationsAssertConsumer.accept(AnAnnotationsAssert.assertThatAnnotations(actual.annotations()));
+		annotationsAssertConsumer.accept(AnAnnotationsAssert.assertThatAnnotations(actual.annotations()).describedAs("annotations"));
 		return this;
 	}
 	

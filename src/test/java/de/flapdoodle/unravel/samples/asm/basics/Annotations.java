@@ -43,4 +43,39 @@ public class Annotations {
 	public static class WrapperSample {
 		
 	}
+	
+	enum SampleEnum {
+		A,B,C
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface Parameters {
+		String string() default "defaultString";
+		String[] stringArray() default {"a","b"};
+		
+		int integer();
+		long[] integerArray();
+		
+		SampleEnum sample();
+		SampleEnum[] sampleArray();
+		
+		Class<?> clazz();
+		Class<?>[] clazzArray();
+		
+		WrappedWrapped wrapped();
+		WrappedWrapped[] wrappedArray();
+	}
+	
+	@Parameters(
+			integer=2,
+			integerArray={1,2,3},
+			sample=SampleEnum.B,
+			sampleArray={SampleEnum.A,SampleEnum.C},
+			clazz=WrapperSample.class,
+			clazzArray={Wrapper.class, Wrapped.class},
+			wrapped=@WrappedWrapped("X"),
+			wrappedArray={@WrappedWrapped("Y"),@WrappedWrapped("Z")})
+	public static class ParameterSample {
+		
+	}
 }

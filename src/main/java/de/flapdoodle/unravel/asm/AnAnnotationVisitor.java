@@ -9,6 +9,7 @@ import org.objectweb.asm.Type;
 import de.flapdoodle.checks.Preconditions;
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AnAnnotation;
+import de.flapdoodle.unravel.types.AnEnumValue;
 import de.flapdoodle.unravel.types.ImmutableAnAnnotation.Builder;
 
 public class AnAnnotationVisitor extends AnnotationVisitor {
@@ -30,7 +31,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 	
 	@Override
 	public AnnotationVisitor visitAnnotation(String name, String desc) {
-		throw new NotImplementedException("name: "+name+",desc:"+desc);
+		return new AnAnnotationVisitor(desc, true, an -> builder.putAnnotationAttributes(name, an));
 	}
 	
 	@Override
@@ -41,7 +42,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 	
 	@Override
 	public void visitEnum(String name, String desc, String value) {
-		throw new NotImplementedException("name: "+name+",desc:"+desc+",value:"+value);
+		builder.putEnumAttributes(name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()),value));
 	}
 
 	@Override
@@ -80,7 +81,8 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 		
 		@Override
 		public void visitEnum(String name, String desc, String value) {
-			throw new NotImplementedException("name: "+name+",desc:"+desc+",value:"+value);
+			Preconditions.checkArgument(name == null, "name is set: %s",name);
+			builder.putEnumAttributes(this.name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()),value));
 		}
 		
 		@Override

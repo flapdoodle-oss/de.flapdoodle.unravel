@@ -78,6 +78,30 @@ public class ClazzParserTest {
 		}
 		
 		@Test
+		public void parameters() {
+			assertThat(parse(byteCodeOf(Annotations.ParameterSample.class)))
+				.isJava8()
+				.annotations(annotations -> {
+					annotations.size().isEqualTo(1);
+					annotations.element(0)
+						.clazz(Classnames.nameOf(Annotations.Parameters.class))
+						.annotationAttributes("wrapped", sub -> {
+							sub.size().isEqualTo(1);
+							sub.element(0).clazz(Classnames.nameOf(Annotations.WrappedWrapped.class))
+								.attributeMapContains("value", "X");
+						})
+						.annotationAttributes("wrappedArray", sub -> {
+							sub.size().isEqualTo(2);
+							sub.element(0).clazz(Classnames.nameOf(Annotations.WrappedWrapped.class))
+								.attributeMapContains("value", "Y");
+							sub.element(1).clazz(Classnames.nameOf(Annotations.WrappedWrapped.class))
+								.attributeMapContains("value", "Z");
+						});
+				});
+			
+		}
+		
+		@Test
 		public void annotations() {
 			assertThat(parse(byteCodeOf(AnnotationsPlayground.Clazz.class)))
 				.isJava8()

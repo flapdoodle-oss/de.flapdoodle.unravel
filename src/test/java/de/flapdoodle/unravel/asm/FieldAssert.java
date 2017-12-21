@@ -3,17 +3,13 @@ package de.flapdoodle.unravel.asm;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.AField;
+import de.flapdoodle.unravel.types.AccessFlags;
 
-public class FieldAssert extends AbstractAssert<FieldAssert, AField> {
+public class FieldAssert extends AbstractAssert<FieldAssert, AField> implements CommonAsserts {
 
 	public FieldAssert(AField actual) {
 		super(actual, FieldAssert.class);
-	}
-	
-	private String propertyDescription(String property) {
-		return descriptionText().isEmpty() ? property : property+" of "+descriptionText();
 	}
 	
 	public FieldAssert accessFlags(AccessFlags ... values) {

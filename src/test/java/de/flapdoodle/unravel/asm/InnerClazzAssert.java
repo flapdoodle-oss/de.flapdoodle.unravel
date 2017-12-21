@@ -3,18 +3,14 @@ package de.flapdoodle.unravel.asm;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
+import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.AnInnerClass;
-import de.flapdoodle.unravel.types.ATypeName;
 
-public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, AnInnerClass> {
+public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, AnInnerClass> implements CommonAsserts {
 
 	public InnerClazzAssert(AnInnerClass actual) {
 		super(actual, InnerClazzAssert.class);
-	}
-	
-	private String propertyDescription(String property) {
-		return descriptionText().isEmpty() ? property : property+" of "+descriptionText();
 	}
 	
 	public InnerClazzAssert accessFlags(AccessFlags ... values) {

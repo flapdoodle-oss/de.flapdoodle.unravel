@@ -9,14 +9,10 @@ import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.types.AnAnnotation;
 import io.vavr.collection.List;
 
-public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnnotation> {
+public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnnotation> implements CommonAsserts {
 
 	public AnAnnotationAssert(AnAnnotation actual) {
 		super(actual, AnAnnotationAssert.class);
-	}
-	
-	private String propertyDescription(String property) {
-		return descriptionText().isEmpty() ? property : property+" of "+descriptionText();
 	}
 	
 //	public AnAnnotationAssert accessFlags(AccessFlags ... values) {
@@ -56,7 +52,7 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 		List<AnAnnotation> values = actual.annotationAttributes().get(key)
 				.map(t -> t.toList())
 				.getOrElse(io.vavr.collection.List.empty());
-		annotationsAssertConsumer.accept(AnAnnotationsAssert.assertThatAnnotations(values).describedAs(propertyDescription("attributeMap."+key)));
+		annotationsAssertConsumer.accept(AnAnnotationsAssert.assertThatAnnotations(values).describedAs(propertyDescription("annotationAttributes")));
 		return this;
 	}
 	
