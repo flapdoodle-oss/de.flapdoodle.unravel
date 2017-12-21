@@ -20,6 +20,7 @@ public abstract class Clazz {
 	public abstract Optional<TypeName> superClazz();
 	public abstract List<TypeName> interfaces();
 	public abstract List<InnerClazz> innerClasses();
+	public abstract List<AnAnnotation> annotations();
 	
 	public abstract List<Field> fields();
 	

@@ -56,6 +56,11 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, Clazz> {
 		return this;
 	}
 	
+	public ClazzAssert annotations(Consumer<AnAnnotationsAssert> annotationsAssertConsumer) {
+		annotationsAssertConsumer.accept(AnAnnotationsAssert.assertThatAnnotations(actual.annotations()));
+		return this;
+	}
+	
 	public static ClazzAssert assertThat(Clazz actual) {
 		return new ClazzAssert(actual);
 	}

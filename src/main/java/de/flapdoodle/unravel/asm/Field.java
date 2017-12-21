@@ -4,10 +4,12 @@ import java.util.Optional;
 
 import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
+import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import io.vavr.collection.Set;
 
 @Immutable 
+@VavrEncodingEnabled
 public abstract class Field {
 	public abstract String name();
 	public abstract FieldType type();

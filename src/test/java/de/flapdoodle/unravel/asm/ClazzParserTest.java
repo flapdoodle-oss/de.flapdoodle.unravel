@@ -7,9 +7,11 @@ import java.io.InputStream;
 import java.util.function.Supplier;
 
 import org.junit.Test;
+import org.objectweb.asm.Type;
 
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.AnnotationPublic;
+import de.flapdoodle.unravel.samples.asm.basics.Annotations;
 import de.flapdoodle.unravel.samples.asm.basics.ClassAbstractPublic;
 import de.flapdoodle.unravel.samples.asm.basics.ClassFinalPublic;
 import de.flapdoodle.unravel.samples.asm.basics.ClassPublic;
@@ -21,6 +23,23 @@ import de.flapdoodle.unravel.samples.asm.basics.InterfacePublic;
 
 public class ClazzParserTest {
 
+	public static class AnnotationsTest {
+		
+		@Test
+		public void annotations() {
+			assertThat(parse(byteCodeOf(Annotations.Clazz.class)))
+				.isJava8()
+				.annotations(annotations -> {
+					annotations.size().isEqualTo(1);
+					annotations.element(0)
+						.clazz(Classnames.nameOf(Annotations.Sample.class))
+						.usedAttributes("value","intVal","clazzVal")
+						.attributeMapContains("value", "foo")
+						.attributeMapContains("clazzVal", Type.getType(Annotations.Foo.class));
+				});
+		}
+	}
+	
 	public static class FieldsTest {
 		
 		@Test
