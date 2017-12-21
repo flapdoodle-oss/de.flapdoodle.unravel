@@ -25,8 +25,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 
 	@Override
 	public void visit(String name, Object value) {
-		builder.addUsedAttributes(name);
-		builder.putAttributeMap(name, value);
+		builder.putValueAttributes(name, value);
 		if (value instanceof Type) {
 			builder.putClazzAttributes(name, ATypeName.of(((Type) value).getClassName()));
 		}
@@ -39,7 +38,6 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 	
 	@Override
 	public AnnotationVisitor visitArray(String name) {
-		builder.addUsedAttributes(name);
 		return new Array(name, builder);
 	}
 	
@@ -68,7 +66,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 		@Override
 		public void visit(String name, Object value) {
 			Preconditions.checkArgument(name == null, "name is set: %s",name);
-			builder.putAttributeMap(this.name, value);
+			builder.putValueAttributes(this.name, value);
 			if (value instanceof Type) {
 				builder.putClazzAttributes(this.name, ATypeName.of(((Type) value).getClassName()));
 			}
@@ -82,7 +80,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 		
 		@Override
 		public AnnotationVisitor visitArray(String name) {
-			throw new NotImplementedException("name: "+name);
+			throw new NotImplementedException("visitArray name: "+name);
 		}
 		
 		@Override

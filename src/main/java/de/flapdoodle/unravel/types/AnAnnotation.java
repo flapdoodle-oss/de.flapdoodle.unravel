@@ -5,7 +5,6 @@ import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import io.vavr.collection.Multimap;
-import io.vavr.collection.Set;
 
 @Immutable
 @VavrEncodingEnabled
@@ -14,10 +13,8 @@ public abstract class AnAnnotation {
 	public abstract ATypeName clazz();
 	@Parameter
 	public abstract boolean visible();
-	public abstract Set<String> usedAttributes();
-	@Deprecated
-	public abstract Multimap<String, Object> attributeMap();
 	
+	public abstract Multimap<String, Object> valueAttributes();
 	public abstract Multimap<String, AnAnnotation> annotationAttributes();
 	public abstract Multimap<String, ATypeName> clazzAttributes();
 	public abstract Multimap<String, AnEnumValue> enumAttributes();

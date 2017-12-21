@@ -37,16 +37,11 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 		return this;
 	}
 	
-	public AnAnnotationAssert usedAttributes(String ... values) {
-		Assertions.assertThat(actual.usedAttributes()).describedAs(propertyDescription("usedAttributes")).contains(values);
-		return this;
-	}
-
-	public AnAnnotationAssert attributeMapContains(String key, Object ... expected) {
-		java.util.List<Object> values = actual.attributeMap().get(key)
+	public AnAnnotationAssert valueAttributesContains(String key, Object ... expected) {
+		java.util.List<Object> values = actual.valueAttributes().get(key)
 				.map(t -> t.toJavaList())
 				.getOrElse(new ArrayList<>());
-		Assertions.assertThat(values).describedAs(propertyDescription("attributeMap."+key)).contains(expected);
+		Assertions.assertThat(values).describedAs(propertyDescription("valueAttributes."+key)).contains(expected);
 		return this;
 	}
 
@@ -73,28 +68,4 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 		Assertions.assertThat(values).describedAs(propertyDescription("classAttributes")).containsAll(List.of(match).map(ATypeName::of));
 		return this;
 	}
-//	public AnAnnotationAssert arrayDimension(int arrayDimension) {
-//		Assertions.assertThat(actual.type().arrayDimension()).describedAs(propertyDescription("arrayDimension")).isEqualTo(arrayDimension);
-//		return this;
-//	}
-//	
-//	public AnAnnotationAssert signature(String signature) {
-//		Assertions.assertThat(actual.genericSignature()).describedAs(propertyDescription("genericSignature")).isPresent().contains(signature);
-//		return this;
-//	}
-//
-//	public AnAnnotationAssert hasNoSignature() {
-//		Assertions.assertThat(actual.genericSignature()).describedAs(propertyDescription("genericSignature")).isEmpty();
-//		return this;
-//	}
-//
-//	public AnAnnotationAssert value(Object value) {
-//		Assertions.assertThat(actual.value()).describedAs("value").isPresent().contains(value);
-//		return this;
-//	}
-//	
-//	public AnAnnotationAssert hasNoValue() {
-//		Assertions.assertThat(actual.value()).describedAs("value").isEmpty();
-//		return this;
-//	}
 }
