@@ -125,7 +125,8 @@ public class ClazzParser {
 				.parameters(argumentTypes)
 				.genericSignature(Optional.ofNullable(signature))
 				.addAllExceptions(exceptions != null 
-					? List.of(exceptions).map(ATypeName::of) 
+					? List.of(exceptions)
+							.map(Visitor::typeNameOf)
 					: List.of()), 
 				builder::addMethods);
 		}

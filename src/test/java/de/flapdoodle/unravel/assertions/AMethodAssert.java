@@ -1,5 +1,7 @@
 package de.flapdoodle.unravel.assertions;
 
+import java.util.function.Consumer;
+
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
@@ -29,10 +31,29 @@ public class AMethodAssert extends AbstractAssert<AMethodAssert, AMethod> implem
 	}
 
 	public AMethodAssert parameterTypes(String ...names) {
-		Assertions.assertThat(actual.parameters().map(ATypeName::value)).describedAs(propertyDescription("parameterTypes")).contains(names);
+		if (names.length==0) {
+			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).isEmpty();
+		} else {
+			Assertions.assertThat(actual.parameters().map(ATypeName::value)).describedAs(propertyDescription("parameterTypes")).contains(names);
+		}
 		return this;
 	}
 
+	public AMethodAssert exceptions(String ...names) {
+		if (names.length==0) {
+			Assertions.assertThat(actual.exceptions()).describedAs(propertyDescription("exceptions")).isEmpty();
+		} else {
+			Assertions.assertThat(actual.exceptions().map(ATypeName::value)).describedAs(propertyDescription("exceptions")).contains(names);
+		}
+		return this;
+	}
+	
+	public AMethodAssert annotations(Consumer<AnAnnotationsAssert> consumer) {
+		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(actual.annotations()).describedAs("annotations"));
+		return this;
+	}
+
+	
 //	public AMethodAssert rawType(String type) {
 //		Assertions.assertThat(actual.type().raw()).describedAs(propertyDescription("type")).isEqualTo(type);
 //		return this;
