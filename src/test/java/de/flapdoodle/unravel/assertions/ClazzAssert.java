@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.types.AClass;
+import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.JavaVersion;
 
@@ -41,6 +42,15 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
 	public ClazzAssert superClass(Class<?> type) {
 		Assertions.assertThat(actual.superClazz()).isPresent();
 		Assertions.assertThat(actual.superClazz().get().value()).isEqualTo(Classnames.nameOf(type));
+		return this;
+	}
+	
+	public ClazzAssert interfaces(String ... name) {
+		if (name.length==0) {
+			Assertions.assertThat(actual.interfaces()).isEmpty();
+		} else {
+			Assertions.assertThat(actual.interfaces().map(ATypeName::value)).contains(name);
+		}
 		return this;
 	}
 	
