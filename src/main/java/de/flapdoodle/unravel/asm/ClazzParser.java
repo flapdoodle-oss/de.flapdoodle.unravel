@@ -50,21 +50,17 @@ public class ClazzParser {
 		
 		@Override
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-			builder.typeName(typeNameOf(name))
+			builder.typeName(Visitors.typeNameOf(name))
 				.genericSignature(Optional.ofNullable(signature))
 				.version(version)
 				.access(access)
-				.superClazz(typeNameOf(superName));
+				.superClazz(Visitors.typeNameOf(superName));
 			
 			for (String interfaze : interfaces) {
-				builder.addInterfaces(typeNameOf(interfaze));
+				builder.addInterfaces(Visitors.typeNameOf(interfaze));
 			}
 		}
 
-		private static ATypeName typeNameOf(String name) {
-			return ATypeName.of(name.replace('/', '.'));
-		}
-		
 		@Override
 		public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
 			builder.addFields(AField.builder()
@@ -90,9 +86,9 @@ public class ClazzParser {
 		@Override
 		public void visitInnerClass(String name, String outerName, String innerName, int access) {
 			builder.addInnerClasses(AnInnerClass.builder()
-					.typeName(typeNameOf(name))
-					.innerName(Optional.ofNullable(innerName).map(n -> typeNameOf(n)))
-					.outerName(Optional.ofNullable(outerName).map(n -> typeNameOf(n)))
+					.typeName(Visitors.typeNameOf(name))
+					.innerName(Optional.ofNullable(innerName).map(n -> Visitors.typeNameOf(n)))
+					.outerName(Optional.ofNullable(outerName).map(n -> Visitors.typeNameOf(n)))
 					.access(access)
 					.build());
 		}
@@ -126,7 +122,7 @@ public class ClazzParser {
 				.genericSignature(Optional.ofNullable(signature))
 				.addAllExceptions(exceptions != null 
 					? List.of(exceptions)
-							.map(Visitor::typeNameOf)
+							.map(Visitors::typeNameOf)
 					: List.of()), 
 				builder::addMethods);
 		}

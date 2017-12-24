@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class MethodSignatures<A,B extends List<?>,C extends Map<A, B>,D extends IOException> implements Consumer<String> {
+public abstract class MethodSignatures<A,B extends List<?>,C extends Map<A, B>,D extends IOException> implements Consumer<String> {
 	// static
 	static {
 	}
@@ -48,8 +48,8 @@ public class MethodSignatures<A,B extends List<?>,C extends Map<A, B>,D extends 
 	}
 	
 	@Sample
-	public void annotations() {
-		
+	public String annotations(@Sample String a, @Sample String b) {
+		return a+b;
 	}
 	
 	@Override
@@ -57,8 +57,12 @@ public class MethodSignatures<A,B extends List<?>,C extends Map<A, B>,D extends 
 		
 	}
 	
+	// abstract
+	public abstract String abstractMethod();
+	
 	@Retention(RetentionPolicy.RUNTIME)
 	public static @interface Sample {
 		
 	}
+	
 }

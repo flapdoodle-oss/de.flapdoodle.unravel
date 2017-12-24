@@ -10,7 +10,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.assertions.AnAnnotationsAssert;
 import de.flapdoodle.unravel.classes.Classnames;
+import de.flapdoodle.unravel.samples.asm.methods.MethodCode;
 import de.flapdoodle.unravel.samples.asm.methods.MethodSignatures;
 import de.flapdoodle.unravel.samples.asm.methods.MethodsPlayground;
 import de.flapdoodle.unravel.types.AccessFlags;
@@ -18,11 +20,41 @@ import de.flapdoodle.unravel.types.AccessFlags;
 public class MethodsTest extends AbstractClazzParserTest {
 
 	@Test
+	public void codeCalls() {
+		assertThat(parse(byteCodeOf(MethodCode.class)))
+		.isJava8()
+		.fields(fields -> {
+			fields.size().isEqualTo(3);
+			fields.element(0).name("xx");
+			fields.element(1).name("y");
+			fields.element(2).name("z");
+		})
+		.methods(methods -> {
+			methods.size().isEqualTo(2);
+			methods.element(1)
+				.name("simple")
+				.returnType(Classnames.nameOf(String.class))
+				.parameterTypes(Classnames.nameOf(List.class))
+				.annotations(AnAnnotationsAssert::isEmpty)
+				.calls(calls -> {
+					calls.fieldCalls(fieldCalls -> {
+						fieldCalls.size().isEqualTo(2);
+						fieldCalls.element(0)
+							.clazz(Classnames.nameOf(MethodCode.class)).name("y").type(Classnames.nameOf(String.class));
+						fieldCalls.element(1)
+							.clazz(Classnames.nameOf(MethodCode.class)).name("z").type(Classnames.nameOf(String.class));
+					});
+				})
+				;
+		});
+	}
+	
+	@Test
 	public void signatures() {
 		assertThat(parse(byteCodeOf(MethodSignatures.class)))
 			.isJava8()
 			.methods(methods -> {
-				methods.size().isEqualTo(17);
+				methods.size().isEqualTo(18);
 				methods.element(0).name("privateStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PRIVATE);
 				methods.element(1).name("protectedStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PROTECTED);
 				methods.element(2).name("packageProtectedStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC);
@@ -55,12 +87,14 @@ public class MethodsTest extends AbstractClazzParserTest {
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(14).name("annotations")
-					.returnType(Classnames.nameOf(void.class))
-					.parameterTypes()
+					.returnType(Classnames.nameOf(String.class))
+					.parameterTypes(Classnames.nameOf(String.class), Classnames.nameOf(String.class))
 					.exceptions()
 					.annotations(annotations -> {
-						annotations.size().isEqualTo(1);
+						annotations.size().isEqualTo(3);
 						annotations.element(0).clazz(Classnames.nameOf(MethodSignatures.Sample.class));
+						annotations.element(1).clazz(Classnames.nameOf(MethodSignatures.Sample.class));
+						annotations.element(2).clazz(Classnames.nameOf(MethodSignatures.Sample.class));
 					})
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				
@@ -70,7 +104,13 @@ public class MethodsTest extends AbstractClazzParserTest {
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 			
-				methods.element(16).name("accept")
+				methods.element(16).name("abstractMethod")
+					.returnType(Classnames.nameOf(String.class))
+					.parameterTypes()
+					.exceptions()
+					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT);
+				
+				methods.element(17).name("accept")
 					.returnType(Classnames.nameOf(void.class))
 					.parameterTypes(Classnames.nameOf(Object.class))
 					.exceptions()

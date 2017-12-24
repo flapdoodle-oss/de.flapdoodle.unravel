@@ -17,7 +17,7 @@ public class NotImplementedException extends RuntimeException {
 		StringBuilder sb=new StringBuilder();
 		sb.append(message).append(" ");
 		for (int i=0;i<parameterMapAsList.length;i=i+2) {
-			sb.append(parameterMapAsList[i]).append(": ").append(parameterMapAsList[i+1]);
+			sb.append(parameterMapAsList[i]).append(": ").append(parameterMapAsList[i+1]).append(", ");
 		}
 		return sb.toString();
 	}

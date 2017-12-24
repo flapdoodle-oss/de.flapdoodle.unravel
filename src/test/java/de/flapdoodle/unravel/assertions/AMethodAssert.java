@@ -53,6 +53,10 @@ public class AMethodAssert extends AbstractAssert<AMethodAssert, AMethod> implem
 		return this;
 	}
 
+	public AMethodAssert calls(Consumer<CallsAssert> consumer) {
+		consumer.accept(new CallsAssert(actual.calls()).describedAs("calls"));
+		return this;
+	}
 	
 //	public AMethodAssert rawType(String type) {
 //		Assertions.assertThat(actual.type().raw()).describedAs(propertyDescription("type")).isEqualTo(type);
