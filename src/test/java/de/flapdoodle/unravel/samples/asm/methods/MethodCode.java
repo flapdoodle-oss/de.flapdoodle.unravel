@@ -17,6 +17,11 @@ public class MethodCode {
 		z="hallo";
 		int u1=len(clazz);
 		u1=CONST;
+		try {
+			x.length();
+		} catch (IllegalArgumentException|IllegalStateException iax) {
+			u1=17;
+		}
 		return x;
 	}
 	

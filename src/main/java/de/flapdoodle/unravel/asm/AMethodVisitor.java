@@ -78,12 +78,48 @@ public class AMethodVisitor extends MethodVisitor {
 	}
 	
 	@Override
+	public void visitMethodInsn(int opcode, String owner, String name, String desc) {
+		super.visitMethodInsn(opcode, owner, name, desc);
+		NotImplementedException.with("visitMethodInsn","opcode",opcode, "owner", owner,"name",name,"desc",desc);
+	}
+	
+	@Override
+	public void visitTryCatchBlock(Label start, Label end, Label handler, String type) {
+		super.visitTryCatchBlock(start, end, handler, type);
+		callsBuilder.addTypeReferenceCalls(TypeReferenceCall.of(Visitors.typeNameOf(type)));
+	}
+	
+	@Override
+	public void visitTypeInsn(int opcode, String type) {
+		super.visitTypeInsn(opcode, type);
+		callsBuilder.addTypeReferenceCalls(TypeReferenceCall.of(Visitors.typeNameOf(type)));
+	}
+	
+	@Override
 	public void visitFrame(int type, int nLocal, Object[] local, int nStack, Object[] stack) {
 		super.visitFrame(type, nLocal, local, nStack, stack);
-		NotImplementedException.with("visitFrame", "type",type,"nLocal",nLocal,"local",local,"nStack",stack);
+		List<ATypeName> localTypeNames = typeNamesOfFrame(local);
+		callsBuilder.addAllTypeReferenceCalls(localTypeNames.map(TypeReferenceCall::of));
+		List<ATypeName> stackTypeNames = typeNamesOfFrame(stack);
+		callsBuilder.addAllTypeReferenceCalls(stackTypeNames.map(TypeReferenceCall::of));
 	}
 	
 	
+	private List<ATypeName> typeNamesOfFrame(Object[] local) {
+		return List.of(local)
+			.filter(o -> o!=null)
+			.flatMap(o -> {
+				if (o instanceof String) {
+					return List.of((String) o);
+				}
+				if (o instanceof Integer) {
+					return List.of();
+				}
+				throw new RuntimeException("could not map "+o+" to String");
+			})
+			.map(Visitors::typeNameOf);
+	}
+
 	// Annotations
 	@Override
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {

@@ -68,7 +68,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 							.clazz(Classnames.nameOf(MethodCode.class)).name("z").type(Classnames.nameOf(String.class));
 					});
 					calls.methodCalls(methodCalls -> {
-						methodCalls.size().isEqualTo(2);
+						methodCalls.size().isEqualTo(3);
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(List.class))
 							.name("get")
@@ -77,9 +77,20 @@ public class MethodsTest extends AbstractClazzParserTest {
 							.clazz(Classnames.nameOf(MethodCode.class))
 							.name("len")
 							.parameterTypes(Classnames.nameOf(Class.class));
+						methodCalls.element(2)
+							.clazz(Classnames.nameOf(String.class))
+							.name("length")
+							.parameterTypes();
 					});
 					calls.typeReferenceCalls(typeCalls -> {
-						typeCalls.isEmpty();
+						typeCalls.size().isEqualTo(7);
+						typeCalls.element(0).clazz(Classnames.nameOf(List.class));
+						typeCalls.element(1).clazz(Classnames.nameOf(IllegalStateException.class));
+						typeCalls.element(2).clazz(Classnames.nameOf(Class.class));
+						typeCalls.element(3).clazz(Classnames.nameOf(String.class));
+						typeCalls.element(4).clazz(Classnames.nameOf(RuntimeException.class));
+						typeCalls.element(5).clazz(Classnames.nameOf(MethodCode.class));
+						typeCalls.element(6).clazz(Classnames.nameOf(IllegalArgumentException.class));
 					});
 				})
 				;
