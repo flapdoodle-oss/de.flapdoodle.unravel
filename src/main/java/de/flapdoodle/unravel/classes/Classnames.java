@@ -2,6 +2,8 @@ package de.flapdoodle.unravel.classes;
 
 import com.google.common.collect.ImmutableSet;
 
+import de.flapdoodle.unravel.types.AType;
+
 public abstract class Classnames {
 
 	public static String signatureOf(Class<?> type) {
@@ -18,6 +20,10 @@ public abstract class Classnames {
 
 	public static String nameOf(Class<?> type) {
 		return type.getName();
+	}
+	
+	public static AType typeOf(Class<?> type) {
+		return AType.of(nameOf(type), 0);
 	}
 	
 	private static ImmutableSet<Class<?>> INTERNAL_TYPES=ImmutableSet.<Class<?>>builder()

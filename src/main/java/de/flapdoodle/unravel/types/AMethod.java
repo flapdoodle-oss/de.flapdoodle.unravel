@@ -14,8 +14,8 @@ import io.vavr.collection.Set;
 public abstract class AMethod {
 	protected abstract int access();
 	public abstract String name();
-	public abstract ATypeName returnType();
-	public abstract List<ATypeName> parameters();
+	public abstract AType returnType();
+	public abstract List<AType> parameters();
 	
 	public abstract Optional<String> genericSignature();
 	public abstract List<ATypeName> exceptions();

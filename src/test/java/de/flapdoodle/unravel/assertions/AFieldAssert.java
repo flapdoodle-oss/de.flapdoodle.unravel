@@ -21,11 +21,6 @@ public class AFieldAssert extends AbstractAssert<AFieldAssert, AField> implement
 		Assertions.assertThat(actual.name()).describedAs(propertyDescription("name")).isEqualTo(name);
 		return this;
 	}
-
-	public AFieldAssert rawType(String type) {
-		Assertions.assertThat(actual.type().raw()).describedAs(propertyDescription("type")).isEqualTo(type);
-		return this;
-	}
 	
 	public AFieldAssert clazz(String type) {
 		Assertions.assertThat(actual.type().clazz().value()).describedAs(propertyDescription("clazz")).isEqualTo(type);

@@ -18,9 +18,8 @@ import org.objectweb.asm.TypePath;
 
 import de.flapdoodle.unravel.types.AClass;
 import de.flapdoodle.unravel.types.AField;
-import de.flapdoodle.unravel.types.AFieldType;
 import de.flapdoodle.unravel.types.AMethod;
-import de.flapdoodle.unravel.types.ATypeName;
+import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.AnInnerClass;
 import de.flapdoodle.unravel.types.ImmutableAClass.Builder;
 import io.vavr.collection.List;
@@ -66,7 +65,7 @@ public class ClazzParser {
 			builder.addFields(AField.builder()
 					.access(access)
 					.name(name)
-					.type(AFieldType.raw(desc))
+					.type(Visitors.typeOf(desc))
 					.genericSignature(Optional.ofNullable(signature))
 					.value(Optional.ofNullable(value))
 					.build());
@@ -111,13 +110,12 @@ public class ClazzParser {
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			Type type = Type.getMethodType(desc);
-			String returnTypeName = type.getReturnType().getClassName();
-			List<ATypeName> argumentTypes = List.of(type.getArgumentTypes()).map(Type::getClassName).map(ATypeName::of);
+			List<AType> argumentTypes = List.of(type.getArgumentTypes()).map(Visitors::typeOf);
 			
 			return new AMethodVisitor(AMethod.builder()
 				.access(access)
 				.name(name)
-				.returnType(ATypeName.of(returnTypeName))
+				.returnType(Visitors.typeOf(type.getReturnType()))
 				.parameters(argumentTypes)
 				.genericSignature(Optional.ofNullable(signature))
 				.addAllExceptions(exceptions != null 

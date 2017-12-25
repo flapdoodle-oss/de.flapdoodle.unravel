@@ -12,7 +12,7 @@ import io.vavr.collection.Set;
 @VavrEncodingEnabled
 public abstract class AField {
 	public abstract String name();
-	public abstract AFieldType type();
+	public abstract AType type();
 	public abstract Optional<String> genericSignature();
 	public abstract Optional<Object> value();
 	

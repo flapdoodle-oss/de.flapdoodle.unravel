@@ -104,6 +104,17 @@ public class AMethodVisitor extends MethodVisitor {
 		callsBuilder.addAllTypeReferenceCalls(stackTypeNames.map(TypeReferenceCall::of));
 	}
 	
+	@Override
+	public void visitTableSwitchInsn(int min, int max, Label dflt, Label... labels) {
+		super.visitTableSwitchInsn(min, max, dflt, labels);
+		NotImplementedException.with("visitTableSwitchInsn", "min",min,"max",max,"dflt",dflt,"labels",List.of(labels));
+	}
+	
+	@Override
+	public void visitMultiANewArrayInsn(String desc, int dims) {
+		super.visitMultiANewArrayInsn(desc, dims);
+		callsBuilder.addTypeReferenceCalls(TypeReferenceCall.of(Visitors.typeOf(desc).clazz()));
+	}
 	
 	private List<ATypeName> typeNamesOfFrame(Object[] local) {
 		return List.of(local)
@@ -129,6 +140,12 @@ public class AMethodVisitor extends MethodVisitor {
 	@Override
 	public AnnotationVisitor visitAnnotationDefault() {
 		return NotImplementedException.with("visitAnnotationDefault");
+	}
+	
+	@Override
+	public AnnotationVisitor visitTryCatchAnnotation(int typeRef, TypePath typePath, String desc, boolean visible) {
+		NotImplementedException.with("visitTryCatchAnnotation", "typeRef",typeRef,"typePath",typePath,"desc",desc,"visible",visible);
+		return new AnAnnotationVisitor(desc, visible, builder::addAnnotations);
 	}
 	
 	@Override

@@ -22,6 +22,7 @@ public class MethodCode {
 		} catch (IllegalArgumentException|IllegalStateException iax) {
 			u1=17;
 		}
+		Double[][] d=new Double[1][2];
 		return x;
 	}
 	

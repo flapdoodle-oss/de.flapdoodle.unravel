@@ -36,7 +36,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 			methods.size().isEqualTo(3);
 			methods.element(0)
 				.name("<init>")
-				.returnType(Classnames.nameOf(void.class))
+				.returnType(Classnames.typeOf(void.class))
 				.parameterTypes()
 				.annotations(AnAnnotationsAssert::isEmpty)
 				.calls(calls -> {
@@ -52,8 +52,8 @@ public class MethodsTest extends AbstractClazzParserTest {
 				});
 			methods.element(1)
 				.name("simple")
-				.returnType(Classnames.nameOf(String.class))
-				.parameterTypes(Classnames.nameOf(List.class))
+				.returnType(Classnames.typeOf(String.class))
+				.parameterTypes(Classnames.typeOf(List.class))
 				.annotations(AnAnnotationsAssert::isEmpty)
 				.calls(calls -> {
 					calls.fieldCalls(fieldCalls -> {
@@ -83,14 +83,15 @@ public class MethodsTest extends AbstractClazzParserTest {
 							.parameterTypes();
 					});
 					calls.typeReferenceCalls(typeCalls -> {
-						typeCalls.size().isEqualTo(7);
+						typeCalls.size().isEqualTo(8);
 						typeCalls.element(0).clazz(Classnames.nameOf(List.class));
 						typeCalls.element(1).clazz(Classnames.nameOf(IllegalStateException.class));
 						typeCalls.element(2).clazz(Classnames.nameOf(Class.class));
-						typeCalls.element(3).clazz(Classnames.nameOf(String.class));
-						typeCalls.element(4).clazz(Classnames.nameOf(RuntimeException.class));
-						typeCalls.element(5).clazz(Classnames.nameOf(MethodCode.class));
-						typeCalls.element(6).clazz(Classnames.nameOf(IllegalArgumentException.class));
+						typeCalls.element(3).clazz(Classnames.nameOf(Double.class));
+						typeCalls.element(4).clazz(Classnames.nameOf(String.class));
+						typeCalls.element(5).clazz(Classnames.nameOf(RuntimeException.class));
+						typeCalls.element(6).clazz(Classnames.nameOf(MethodCode.class));
+						typeCalls.element(7).clazz(Classnames.nameOf(IllegalArgumentException.class));
 					});
 				})
 				;
@@ -109,34 +110,34 @@ public class MethodsTest extends AbstractClazzParserTest {
 				methods.element(3).name("publicStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC);
 				
 				methods.element(4).name("<init>").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
-				methods.element(5).name("<init>").returnType("void").parameterTypes(Classnames.nameOf(String.class)).exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
+				methods.element(5).name("<init>").returnType("void").parameterTypes(Classnames.typeOf(String.class)).exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(6).name("privateNonStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_PRIVATE);
 				methods.element(7).name("protectedNonStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_PROTECTED);
 				methods.element(8).name("packageProtectedNonStatic").returnType("void").parameterTypes().exceptions().accessFlags();
 				methods.element(9).name("publicNonStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
 
-				methods.element(10).name("stringInOut").returnType(Classnames.nameOf(String.class)).parameterTypes(Classnames.nameOf(String.class)).exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
+				methods.element(10).name("stringInOut").returnType(Classnames.typeOf(String.class)).parameterTypes(Classnames.typeOf(String.class)).exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
 				methods.element(11).name("stringInOutThrowsRuntime")
-					.returnType(Classnames.nameOf(String.class))
-					.parameterTypes(Classnames.nameOf(String.class))
+					.returnType(Classnames.typeOf(String.class))
+					.parameterTypes(Classnames.typeOf(String.class))
 					.exceptions(Classnames.nameOf(RuntimeException.class))
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				methods.element(12).name("stringInOutThrowsChecked")
-					.returnType(Classnames.nameOf(String.class))
-					.parameterTypes(Classnames.nameOf(String.class))
+					.returnType(Classnames.typeOf(String.class))
+					.parameterTypes(Classnames.typeOf(String.class))
 					.exceptions(Classnames.nameOf(ParseException.class),Classnames.nameOf(IOException.class))
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(13).name("generics")
-					.returnType(Classnames.nameOf(Map.class))
-					.parameterTypes(Classnames.nameOf(Object.class))
+					.returnType(Classnames.typeOf(Map.class))
+					.parameterTypes(Classnames.typeOf(Object.class))
 					.exceptions(Classnames.nameOf(IOException.class))
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(14).name("annotations")
-					.returnType(Classnames.nameOf(String.class))
-					.parameterTypes(Classnames.nameOf(String.class), Classnames.nameOf(String.class))
+					.returnType(Classnames.typeOf(String.class))
+					.parameterTypes(Classnames.typeOf(String.class), Classnames.typeOf(String.class))
 					.exceptions()
 					.annotations(annotations -> {
 						annotations.size().isEqualTo(3);
@@ -147,20 +148,20 @@ public class MethodsTest extends AbstractClazzParserTest {
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(15).name("accept")
-					.returnType(Classnames.nameOf(void.class))
-					.parameterTypes(Classnames.nameOf(String.class))
+					.returnType(Classnames.typeOf(void.class))
+					.parameterTypes(Classnames.typeOf(String.class))
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 			
 				methods.element(16).name("abstractMethod")
-					.returnType(Classnames.nameOf(String.class))
+					.returnType(Classnames.typeOf(String.class))
 					.parameterTypes()
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT);
 				
 				methods.element(17).name("accept")
-					.returnType(Classnames.nameOf(void.class))
-					.parameterTypes(Classnames.nameOf(Object.class))
+					.returnType(Classnames.typeOf(void.class))
+					.parameterTypes(Classnames.typeOf(Object.class))
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_BRIDGE);
 			});
@@ -179,13 +180,13 @@ public class MethodsTest extends AbstractClazzParserTest {
 				methods.element(1)
 					.name("hello")
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_STATIC)
-					.returnType(Classnames.nameOf(String.class))
+					.returnType(Classnames.typeOf(String.class))
 					.parameterTypes();
 				methods.element(2)
 					.name("keys")
 					.accessFlags(AccessFlags.ACC_PUBLIC)
-					.returnType(Classnames.nameOf(List.class))
-					.parameterTypes(Classnames.nameOf(Map.class));
+					.returnType(Classnames.typeOf(List.class))
+					.parameterTypes(Classnames.typeOf(Map.class));
 			});
 	}
 }

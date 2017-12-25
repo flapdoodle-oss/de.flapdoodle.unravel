@@ -6,6 +6,7 @@ import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.types.AMethod;
+import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
 
@@ -25,16 +26,21 @@ public class AMethodAssert extends AbstractAssert<AMethodAssert, AMethod> implem
 		return this;
 	}
 
-	public AMethodAssert returnType(String name) {
-		Assertions.assertThat(actual.returnType().value()).describedAs(propertyDescription("returnType")).isEqualTo(name);
+	public AMethodAssert returnType(String type) {
+		Assertions.assertThat(actual.returnType()).describedAs(propertyDescription("returnType")).isEqualTo(AType.of(type, 0));
+		return this;
+	}
+	
+	public AMethodAssert returnType(AType type) {
+		Assertions.assertThat(actual.returnType()).describedAs(propertyDescription("returnType")).isEqualTo(type);
 		return this;
 	}
 
-	public AMethodAssert parameterTypes(String ...names) {
-		if (names.length==0) {
+	public AMethodAssert parameterTypes(AType ...types) {
+		if (types.length==0) {
 			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).isEmpty();
 		} else {
-			Assertions.assertThat(actual.parameters().map(ATypeName::value)).describedAs(propertyDescription("parameterTypes")).contains(names);
+			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).contains(types);
 		}
 		return this;
 	}
