@@ -6,6 +6,7 @@ import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
+import io.vavr.collection.List;
 import io.vavr.collection.Set;
 
 @Immutable 
@@ -15,6 +16,7 @@ public abstract class AField {
 	public abstract AType type();
 	public abstract Optional<String> genericSignature();
 	public abstract Optional<Object> value();
+	public abstract List<AnAnnotation> annotations();
 	
 	protected abstract int access();
 	

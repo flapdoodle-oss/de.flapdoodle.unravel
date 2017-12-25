@@ -22,6 +22,7 @@ import de.flapdoodle.unravel.types.AMethod;
 import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.AnInnerClass;
 import de.flapdoodle.unravel.types.ImmutableAClass.Builder;
+import de.flapdoodle.unravel.types.ImmutableAField;
 import io.vavr.collection.List;
 
 public class ClazzParser {
@@ -62,14 +63,14 @@ public class ClazzParser {
 
 		@Override
 		public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
-			builder.addFields(AField.builder()
+			ImmutableAField.Builder fieldBuilder = AField.builder()
 					.access(access)
 					.name(name)
 					.type(Visitors.typeOf(desc))
 					.genericSignature(Optional.ofNullable(signature))
-					.value(Optional.ofNullable(value))
-					.build());
-			return null;
+					.value(Optional.ofNullable(value));
+			
+			return new AFieldVisitor(fieldBuilder, builder::addFields);
 		}
 		
 		@Override
