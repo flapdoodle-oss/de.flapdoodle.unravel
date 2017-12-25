@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
+import org.objectweb.asm.Handle;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -114,6 +115,18 @@ public class AMethodVisitor extends MethodVisitor {
 	public void visitMultiANewArrayInsn(String desc, int dims) {
 		super.visitMultiANewArrayInsn(desc, dims);
 		callsBuilder.addTypeReferenceCalls(TypeReferenceCall.of(Visitors.typeOf(desc).clazz()));
+	}
+	
+	@Override
+	public void visitInvokeDynamicInsn(String name, String desc, Handle bsm, Object... bsmArgs) {
+		super.visitInvokeDynamicInsn(name, desc, bsm, bsmArgs);
+		NotImplementedException.with("visitInvokeDynamicInsn", "name",name,"desc",desc,"bsm",bsm,"bsmArgs",List.of(bsmArgs));
+	}
+	
+	@Override
+	public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
+		super.visitLookupSwitchInsn(dflt, keys, labels);
+		NotImplementedException.with("visitLookupSwitchInsn", "dflt",dflt,"keys",List.of(keys),"labels",List.of(labels));
 	}
 	
 	private List<ATypeName> typeNamesOfFrame(Object[] local) {
