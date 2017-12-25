@@ -50,4 +50,14 @@ public class CallsAssert extends AbstractAssert<CallsAssert, Calls> implements C
 		return this;
 	}
 
+	public CallsAssert methodCalls(Consumer<MethodCallsAssert> consumer) {
+		consumer.accept(MethodCallsAssert.assertThatMethodCalls(actual.methodCalls()).describedAs("methodCalls"));
+		return this;
+	}
+
+	public CallsAssert typeReferenceCalls(Consumer<TypeReferenceCallsAssert> consumer) {
+		consumer.accept(TypeReferenceCallsAssert.assertThatTypeReferenceCalls(actual.typeReferenceCalls()).describedAs("typeReferenceCalls"));
+		return this;
+	}
+
 }

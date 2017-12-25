@@ -1,25 +1,26 @@
 package de.flapdoodle.unravel.samples.asm.methods;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 public class MethodCode {
 
+	private static final int CONST=123;
 	private String xx;
 	private String y;
 	private static String z;
 
 	public String simple(List<String> list) {
-		@One
 		String x = list.get(0);
-
+		Class<?> clazz = void.class;
+		
 		this.y= x;
 		z="hallo";
+		int u1=len(clazz);
+		u1=CONST;
 		return x;
 	}
 	
-	@Retention(RetentionPolicy.RUNTIME)
-	public static @interface One {	}
-
+	private static int len(Class<?> clazz) {
+		return clazz.getName().length();
+	}
 }

@@ -11,6 +11,8 @@ import java.util.Map;
 import org.junit.Test;
 
 import de.flapdoodle.unravel.assertions.AnAnnotationsAssert;
+import de.flapdoodle.unravel.assertions.FieldCallsAssert;
+import de.flapdoodle.unravel.assertions.TypeReferenceCallsAssert;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.methods.MethodCode;
 import de.flapdoodle.unravel.samples.asm.methods.MethodSignatures;
@@ -24,13 +26,30 @@ public class MethodsTest extends AbstractClazzParserTest {
 		assertThat(parse(byteCodeOf(MethodCode.class)))
 		.isJava8()
 		.fields(fields -> {
-			fields.size().isEqualTo(3);
-			fields.element(0).name("xx");
-			fields.element(1).name("y");
-			fields.element(2).name("z");
+			fields.size().isEqualTo(4);
+			fields.element(0).name("CONST");
+			fields.element(1).name("xx");
+			fields.element(2).name("y");
+			fields.element(3).name("z");
 		})
 		.methods(methods -> {
-			methods.size().isEqualTo(2);
+			methods.size().isEqualTo(3);
+			methods.element(0)
+				.name("<init>")
+				.returnType(Classnames.nameOf(void.class))
+				.parameterTypes()
+				.annotations(AnAnnotationsAssert::isEmpty)
+				.calls(calls -> {
+					calls.fieldCalls(FieldCallsAssert::isEmpty);
+					calls.methodCalls(methodCalls -> {
+						methodCalls.size().isEqualTo(1);
+						methodCalls.element(0)
+							.clazz(Classnames.nameOf(Object.class))
+							.name("<init>")
+							.parameterTypes();
+					});
+					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);					
+				});
 			methods.element(1)
 				.name("simple")
 				.returnType(Classnames.nameOf(String.class))
@@ -38,11 +57,29 @@ public class MethodsTest extends AbstractClazzParserTest {
 				.annotations(AnAnnotationsAssert::isEmpty)
 				.calls(calls -> {
 					calls.fieldCalls(fieldCalls -> {
-						fieldCalls.size().isEqualTo(2);
+						fieldCalls.size().isEqualTo(3);
 						fieldCalls.element(0)
-							.clazz(Classnames.nameOf(MethodCode.class)).name("y").type(Classnames.nameOf(String.class));
+							.clazz(Classnames.nameOf(Void.class))
+							.name("TYPE")
+							.type(Classnames.nameOf(Class.class));
 						fieldCalls.element(1)
+							.clazz(Classnames.nameOf(MethodCode.class)).name("y").type(Classnames.nameOf(String.class));
+						fieldCalls.element(2)
 							.clazz(Classnames.nameOf(MethodCode.class)).name("z").type(Classnames.nameOf(String.class));
+					});
+					calls.methodCalls(methodCalls -> {
+						methodCalls.size().isEqualTo(2);
+						methodCalls.element(0)
+							.clazz(Classnames.nameOf(List.class))
+							.name("get")
+							.parameterTypes(Classnames.nameOf(int.class));
+						methodCalls.element(1)
+							.clazz(Classnames.nameOf(MethodCode.class))
+							.name("len")
+							.parameterTypes(Classnames.nameOf(Class.class));
+					});
+					calls.typeReferenceCalls(typeCalls -> {
+						typeCalls.isEmpty();
 					});
 				})
 				;

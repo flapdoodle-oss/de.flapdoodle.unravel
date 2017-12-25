@@ -49,7 +49,9 @@ public abstract class MethodSignatures<A,B extends List<?>,C extends Map<A, B>,D
 	
 	@Sample
 	public String annotations(@Sample String a, @Sample String b) {
-		return a+b;
+		@Sample
+		String c = a+b;
+		return c;
 	}
 	
 	@Override
