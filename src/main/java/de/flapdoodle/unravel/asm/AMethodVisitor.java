@@ -44,7 +44,7 @@ public class AMethodVisitor extends MethodVisitor {
 	@Override
 	public void visitFieldInsn(int opcode, String owner, String name, String desc) {
 		super.visitFieldInsn(opcode, owner, name, desc);
-		callsBuilder.addFieldCalls(FieldCall.of(Visitors.typeNameOf(owner), name, ATypeName.of(Type.getType(desc).getClassName())));
+		callsBuilder.addFieldCalls(FieldCall.of(Visitors.typeNameOf(owner), name, Visitors.typeOf(desc)));
 	}
 	
 	@Override
@@ -60,8 +60,8 @@ public class AMethodVisitor extends MethodVisitor {
 		callsBuilder.addMethodCalls(MethodCall.builder()
 				.clazz(Visitors.typeNameOf(owner))
 				.name(name)
-				.returnType(ATypeName.of(type.getReturnType().getClassName()))
-				.parameters(List.of(type.getArgumentTypes()).map(Type::getClassName).map(ATypeName::of))
+				.returnType(Visitors.typeOf(type.getReturnType()))
+				.parameters(List.of(type.getArgumentTypes()).map(Visitors::typeOf))
 				.interfaceMethod(itf)
 				.build());
 	}
@@ -120,7 +120,11 @@ public class AMethodVisitor extends MethodVisitor {
 	@Override
 	public void visitInvokeDynamicInsn(String name, String desc, Handle bsm, Object... bsmArgs) {
 		super.visitInvokeDynamicInsn(name, desc, bsm, bsmArgs);
-		NotImplementedException.with("visitInvokeDynamicInsn", "name",name,"desc",desc,"bsm",bsm,"bsmArgs",List.of(bsmArgs));
+		try {
+			NotImplementedException.with("visitInvokeDynamicInsn", "name",name,"desc",desc,"bsmArgs",List.of(bsmArgs).map(s -> s+"("+s.getClass()+")"));
+		} catch (RuntimeException rx) {
+			rx.printStackTrace();
+		}
 	}
 	
 	@Override

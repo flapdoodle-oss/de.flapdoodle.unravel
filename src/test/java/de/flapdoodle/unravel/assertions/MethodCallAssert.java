@@ -3,7 +3,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import de.flapdoodle.unravel.types.ATypeName;
+import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.Calls.MethodCall;
 
 public class MethodCallAssert extends AbstractAssert<MethodCallAssert, MethodCall> implements CommonAsserts {
@@ -23,18 +23,22 @@ public class MethodCallAssert extends AbstractAssert<MethodCallAssert, MethodCal
 	}
 	
 	public MethodCallAssert returnType(String type) {
-		Assertions.assertThat(actual.returnType().value()).describedAs(propertyDescription("returnType")).isEqualTo(type);
+		Assertions.assertThat(actual.returnType()).describedAs(propertyDescription("returnType")).isEqualTo(AType.of(type, 0));
 		return this;
 	}
 	
-	public MethodCallAssert parameterTypes(String ...names) {
-		if (names.length==0) {
+	public MethodCallAssert returnType(AType type) {
+		Assertions.assertThat(actual.returnType()).describedAs(propertyDescription("returnType")).isEqualTo(type);
+		return this;
+	}
+	
+	public MethodCallAssert parameterTypes(AType ...types) {
+		if (types.length==0) {
 			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).isEmpty();
 		} else {
-			Assertions.assertThat(actual.parameters().map(ATypeName::value)).describedAs(propertyDescription("parameterTypes")).contains(names);
+			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).contains(types);
 		}
 		return this;
 	}
-
 
 }

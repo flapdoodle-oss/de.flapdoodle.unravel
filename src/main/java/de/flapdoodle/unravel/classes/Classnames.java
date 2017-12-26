@@ -23,7 +23,11 @@ public abstract class Classnames {
 	}
 	
 	public static AType typeOf(Class<?> type) {
-		return AType.of(nameOf(type), 0);
+		return typeOf(type,0);
+	}
+	
+	public static AType typeOf(Class<?> type, int arrayDimension) {
+		return AType.of(nameOf(type), arrayDimension);
 	}
 	
 	private static ImmutableSet<Class<?>> INTERNAL_TYPES=ImmutableSet.<Class<?>>builder()

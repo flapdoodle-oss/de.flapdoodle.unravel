@@ -46,17 +46,17 @@ public class CallsAssert extends AbstractAssert<CallsAssert, Calls> implements C
 //	}
 //	
 	public CallsAssert fieldCalls(Consumer<FieldCallsAssert> consumer) {
-		consumer.accept(FieldCallsAssert.assertThatFieldCalls(actual.fieldCalls()).describedAs("fieldCalls"));
+		consumer.accept(FieldCallsAssert.assertThatFieldCalls(actual.fieldCalls()).describedAs(propertyDescription("fieldCalls")));
 		return this;
 	}
 
 	public CallsAssert methodCalls(Consumer<MethodCallsAssert> consumer) {
-		consumer.accept(MethodCallsAssert.assertThatMethodCalls(actual.methodCalls()).describedAs("methodCalls"));
+		consumer.accept(MethodCallsAssert.assertThatMethodCalls(actual.methodCalls()).describedAs(propertyDescription("methodCalls")));
 		return this;
 	}
 
 	public CallsAssert typeReferenceCalls(Consumer<TypeReferenceCallsAssert> consumer) {
-		consumer.accept(TypeReferenceCallsAssert.assertThatTypeReferenceCalls(actual.typeReferenceCalls()).describedAs("typeReferenceCalls"));
+		consumer.accept(TypeReferenceCallsAssert.assertThatTypeReferenceCalls(actual.typeReferenceCalls()).describedAs(propertyDescription("typeReferenceCalls")));
 		return this;
 	}
 

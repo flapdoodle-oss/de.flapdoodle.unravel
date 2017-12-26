@@ -4,16 +4,16 @@ import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Parameter;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
+import io.vavr.collection.LinkedHashSet;
 import io.vavr.collection.List;
-import io.vavr.collection.Set;
 
 @Immutable
 @VavrEncodingEnabled
 public abstract class Calls {
 	
-	public abstract Set<FieldCall> fieldCalls();
-	public abstract Set<MethodCall> methodCalls();
-	public abstract Set<TypeReferenceCall> typeReferenceCalls();
+	public abstract LinkedHashSet<FieldCall> fieldCalls();
+	public abstract LinkedHashSet<MethodCall> methodCalls();
+	public abstract LinkedHashSet<TypeReferenceCall> typeReferenceCalls();
 	
 	@Immutable
 	public static interface FieldCall {
@@ -22,9 +22,9 @@ public abstract class Calls {
 		@Parameter
 		String name();
 		@Parameter
-		ATypeName type();
+		AType type();
 
-		public static FieldCall of(ATypeName clazz, String name, ATypeName type) {
+		public static FieldCall of(ATypeName clazz, String name, AType type) {
 			return ImmutableFieldCall.of(clazz, name, type);
 		}
 	}
@@ -33,8 +33,8 @@ public abstract class Calls {
 	public static interface MethodCall {
 		ATypeName clazz();
 		String name();
-		ATypeName returnType();
-		List<ATypeName> parameters();
+		AType returnType();
+		List<AType> parameters();
 		boolean interfaceMethod();
 
 		public static ImmutableMethodCall.Builder builder() {

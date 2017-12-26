@@ -3,6 +3,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
+import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.Calls.FieldCall;
 
 public class FieldCallAssert extends AbstractAssert<FieldCallAssert, FieldCall> implements CommonAsserts {
@@ -21,8 +22,8 @@ public class FieldCallAssert extends AbstractAssert<FieldCallAssert, FieldCall> 
 		return this;
 	}
 	
-	public FieldCallAssert type(String type) {
-		Assertions.assertThat(actual.type().value()).describedAs(propertyDescription("type")).isEqualTo(type);
+	public FieldCallAssert type(AType type) {
+		Assertions.assertThat(actual.type()).describedAs(propertyDescription("type")).isEqualTo(type);
 		return this;
 	}
 }

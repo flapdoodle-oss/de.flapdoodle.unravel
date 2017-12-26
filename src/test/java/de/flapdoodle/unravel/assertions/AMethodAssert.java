@@ -55,12 +55,12 @@ public class AMethodAssert extends AbstractAssert<AMethodAssert, AMethod> implem
 	}
 	
 	public AMethodAssert annotations(Consumer<AnAnnotationsAssert> consumer) {
-		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(actual.annotations()).describedAs("annotations"));
+		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(actual.annotations()).describedAs(propertyDescription("annotations")));
 		return this;
 	}
 
 	public AMethodAssert calls(Consumer<CallsAssert> consumer) {
-		consumer.accept(new CallsAssert(actual.calls()).describedAs("calls"));
+		consumer.accept(new CallsAssert(actual.calls()).describedAs(propertyDescription("calls")));
 		return this;
 	}
 	

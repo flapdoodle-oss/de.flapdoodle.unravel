@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -40,6 +41,10 @@ public abstract class MethodSignatures<A,B extends List<?>,C extends Map<A, B>,D
 	}
 	
 	public String stringInOutThrowsChecked(String param) throws ParseException, IOException {
+		return param;
+	}
+	
+	public String[] arrayInOut(String[] param, int[] idx, Date date) {
 		return param;
 	}
 	
