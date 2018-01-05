@@ -23,20 +23,20 @@ public class MethodCallAssert extends AbstractAssert<MethodCallAssert, MethodCal
 	}
 	
 	public MethodCallAssert returnType(String type) {
-		Assertions.assertThat(actual.returnType()).describedAs(propertyDescription("returnType")).isEqualTo(AType.of(type, 0));
+		Assertions.assertThat(actual.signature().returnType()).describedAs(propertyDescription("returnType")).isEqualTo(AType.of(type, 0));
 		return this;
 	}
 	
 	public MethodCallAssert returnType(AType type) {
-		Assertions.assertThat(actual.returnType()).describedAs(propertyDescription("returnType")).isEqualTo(type);
+		Assertions.assertThat(actual.signature().returnType()).describedAs(propertyDescription("returnType")).isEqualTo(type);
 		return this;
 	}
 	
 	public MethodCallAssert parameterTypes(AType ...types) {
 		if (types.length==0) {
-			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).isEmpty();
+			Assertions.assertThat(actual.signature().parameters()).describedAs(propertyDescription("parameterTypes")).isEmpty();
 		} else {
-			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).contains(types);
+			Assertions.assertThat(actual.signature().parameters()).describedAs(propertyDescription("parameterTypes")).contains(types);
 		}
 		return this;
 	}

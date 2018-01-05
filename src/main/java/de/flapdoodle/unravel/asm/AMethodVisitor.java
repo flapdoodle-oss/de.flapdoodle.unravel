@@ -11,15 +11,21 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
 
+import de.flapdoodle.checks.Preconditions;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.types.AMethod;
+import de.flapdoodle.unravel.types.AMethodSignature;
+import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.Calls;
 import de.flapdoodle.unravel.types.Calls.FieldCall;
+import de.flapdoodle.unravel.types.Calls.LambdaCall;
 import de.flapdoodle.unravel.types.Calls.MethodCall;
 import de.flapdoodle.unravel.types.Calls.TypeReferenceCall;
 import de.flapdoodle.unravel.types.ImmutableAMethod;
 import de.flapdoodle.unravel.types.ImmutableAMethod.Builder;
+import de.flapdoodle.unravel.types.ImmutableLambdaCall;
+import de.flapdoodle.unravel.types.InvocationType;
 import io.vavr.collection.List;
 
 
@@ -56,16 +62,16 @@ public class AMethodVisitor extends MethodVisitor {
 	@Override
 	public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
-		Type type = Type.getType(desc);
+		AMethodSignature methodSignature = Visitors.methodSignOf(desc);
 		callsBuilder.addMethodCalls(MethodCall.builder()
 				.clazz(Visitors.typeNameOf(owner))
 				.name(name)
-				.returnType(Visitors.typeOf(type.getReturnType()))
-				.parameters(List.of(type.getArgumentTypes()).map(Visitors::typeOf))
-				.interfaceMethod(itf)
+				.signature(methodSignature)
+				.invocationType(InvocationType.ofOpcode(opcode))
+				//.staticMethod(opcode==Opcodes.INVOKESTATIC)
 				.build());
 	}
-	
+
 	@Override
 	public void visitLdcInsn(Object cst) {
 		super.visitLdcInsn(cst);
@@ -120,13 +126,66 @@ public class AMethodVisitor extends MethodVisitor {
 	@Override
 	public void visitInvokeDynamicInsn(String name, String desc, Handle bsm, Object... bsmArgs) {
 		super.visitInvokeDynamicInsn(name, desc, bsm, bsmArgs);
-		try {
-			NotImplementedException.with("visitInvokeDynamicInsn", "name",name,"desc",desc,"bsmArgs",List.of(bsmArgs).map(s -> s+"("+s.getClass()+")"));
-		} catch (RuntimeException rx) {
-			rx.printStackTrace();
+		
+		switch (bsm.getOwner()) {
+			case "java/lang/invoke/LambdaMetafactory":
+				invokeDynamicLambda(name, desc, bsm, bsmArgs);
+				break;
+			default:
+				NotImplementedException.with("visitInvokeDynamicInsn", "name",name,"desc",desc,"bsm.name",bsm.getName(),"bsm.desc",bsm.getDesc(),"bsm.owner",bsm.getOwner(),"bsm.tag",bsm.getTag(),"bsmArgs",List.of(bsmArgs).map(s -> s+"("+s.getClass()+")"));
 		}
 	}
 	
+	private void invokeDynamicLambda(String name, String handlerMethodSignature, Handle bsm, Object[] bsmArgs) {
+
+		boolean descMatches = bsm.getDesc().equals("(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;");
+		Preconditions.checkArgument(descMatches, "invalid handle: %",bsm.getDesc());
+		Preconditions.checkArgument(bsmArgs.length==3, "unknown bsmArgs: %s",List.of(bsmArgs));
+		
+		AMethodSignature lambdaMethodSignature = Visitors.methodSignOf((Type) bsmArgs[0]);
+		Handle methodHandle = (Handle) bsmArgs[1];
+		AMethodSignature methodAsLambdaSignature = Visitors.methodSignOf((Type) bsmArgs[2]);
+		
+		AType functionalType = Visitors.methodSignOf(handlerMethodSignature).returnType();
+		
+		Preconditions.checkArgument(!functionalType.isArray(), "type is array: %s", functionalType);
+		
+		ImmutableLambdaCall lambdaCall = LambdaCall.builder()
+			.clazz(functionalType.clazz())
+			.name(name)
+			.signature(lambdaMethodSignature)
+			.methodAsLambdaSignature(methodAsLambdaSignature)
+			.factoryClass(Visitors.typeNameOf(bsm.getOwner()))
+			.factorySignature(Visitors.methodSignOf(bsm.getDesc()))
+			.delegate(MethodCall.builder()
+					.clazz(Visitors.typeNameOf(methodHandle.getOwner()))
+					.name(methodHandle.getName())
+					.signature(Visitors.methodSignOf(methodHandle.getDesc()))
+					.invocationType(InvocationType.INVOKEDYNAMIC)
+					.build())
+			.build();
+		
+    
+		
+		
+//		Preconditions.checkArgument(lambdaMethodSignature.toString().equals("(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), "unknown bsmArgType: %s",lambdaMethodSignature);
+//		
+//		NotImplementedException.with("lambda", "method.desc",methodSignature,"method.name",methodHandle.getName(),"method.owner",methodHandle.getOwner(),"method.tag",HandleTag.fromCode(methodHandle.getTag()),"sign",methodAsLambdaSignature);
+//		
+//
+//		lambdaCallBuilder.name(name)
+//			.clazz(functionalType.clazz());
+//		
+////		try {
+//			NotImplementedException.with("lambda", "name",name,"type",functionalType,"bsm.interface",bsm.isInterface(),"bsm.tag",bsm.getTag(),"bsmArgs",
+//				List.of(bsmArgs).map(s -> "("+s.getClass()+":"+s+")").foldLeft("", (a,b) -> a+" | "+b));
+////		} catch (RuntimeException rx) {
+////			rx.printStackTrace();
+////		}
+//		
+		callsBuilder.addLambdaCalls(lambdaCall);
+	}
+
 	@Override
 	public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
 		super.visitLookupSwitchInsn(dflt, keys, labels);

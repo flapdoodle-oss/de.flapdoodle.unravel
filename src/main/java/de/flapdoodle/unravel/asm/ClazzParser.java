@@ -13,13 +13,12 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.ModuleVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
 
 import de.flapdoodle.unravel.types.AClass;
 import de.flapdoodle.unravel.types.AField;
 import de.flapdoodle.unravel.types.AMethod;
-import de.flapdoodle.unravel.types.AType;
+import de.flapdoodle.unravel.types.AMethodSignature;
 import de.flapdoodle.unravel.types.AnInnerClass;
 import de.flapdoodle.unravel.types.ImmutableAClass.Builder;
 import de.flapdoodle.unravel.types.ImmutableAField;
@@ -110,14 +109,13 @@ public class ClazzParser {
 		
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-			Type type = Type.getMethodType(desc);
-			List<AType> argumentTypes = List.of(type.getArgumentTypes()).map(Visitors::typeOf);
+			AMethodSignature methodSign = Visitors.methodSignOf(desc);
 			
 			return new AMethodVisitor(AMethod.builder()
 				.access(access)
 				.name(name)
-				.returnType(Visitors.typeOf(type.getReturnType()))
-				.parameters(argumentTypes)
+				.returnType(methodSign.returnType())
+				.parameters(methodSign.parameters())
 				.genericSignature(Optional.ofNullable(signature))
 				.addAllExceptions(exceptions != null 
 					? List.of(exceptions)

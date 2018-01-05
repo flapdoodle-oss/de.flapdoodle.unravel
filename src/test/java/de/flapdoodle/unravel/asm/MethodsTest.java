@@ -28,14 +28,38 @@ public class MethodsTest extends AbstractClazzParserTest {
 		assertThat(parse(byteCodeOf(MethodLambdas.class)))
 		.isJava8()
 		.methods(methods -> {
-			methods.size().isEqualTo(4);
+			methods.size().isEqualTo(9);
 			methods.element(0).name("<init>");
 			methods.element(1).name("lambdas")
-				.accessFlags(AccessFlags.ACC_PUBLIC);
+				.accessFlags(AccessFlags.ACC_PUBLIC)
+				.returnType(Classnames.typeOf(String.class))
+				.parameterTypes(Classnames.typeOf(List.class))
+				.calls(calls -> {
+					calls.fieldCalls(FieldCallsAssert::isEmpty);
+					calls.methodCalls(methodCalls -> {
+						methodCalls.size().isEqualTo(9);
+						methodCalls.element(0)
+							.clazz(Classnames.nameOf(String.class))
+							.name("isEmpty")
+							.returnType(Classnames.typeOf(boolean.class));
+					});
+					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
+				});
 			methods.element(2).name("isEmpty")
 				.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
 				.returnType(Classnames.typeOf(boolean.class))
-				.parameterTypes(Classnames.typeOf(String.class));
+				.parameterTypes(Classnames.typeOf(String.class))
+				.calls(calls -> {
+					calls.fieldCalls(FieldCallsAssert::isEmpty);
+					calls.methodCalls(methodCalls -> {
+						methodCalls.size().isEqualTo(1);
+						methodCalls.element(0)
+							.clazz(Classnames.nameOf(String.class))
+							.name("isEmpty")
+							.returnType(Classnames.typeOf(boolean.class));
+					});
+					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
+				});
 			methods.element(3).name("lambda$0")
 				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
 				.returnType(Classnames.typeOf(boolean.class))

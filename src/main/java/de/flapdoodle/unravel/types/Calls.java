@@ -5,7 +5,6 @@ import org.immutables.value.Value.Parameter;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import io.vavr.collection.LinkedHashSet;
-import io.vavr.collection.List;
 
 @Immutable
 @VavrEncodingEnabled
@@ -13,6 +12,7 @@ public abstract class Calls {
 	
 	public abstract LinkedHashSet<FieldCall> fieldCalls();
 	public abstract LinkedHashSet<MethodCall> methodCalls();
+	public abstract LinkedHashSet<LambdaCall> lambdaCalls();
 	public abstract LinkedHashSet<TypeReferenceCall> typeReferenceCalls();
 	
 	@Immutable
@@ -29,16 +29,33 @@ public abstract class Calls {
 		}
 	}
 
+	
 	@Immutable
 	public static interface MethodCall {
 		ATypeName clazz();
 		String name();
-		AType returnType();
-		List<AType> parameters();
-		boolean interfaceMethod();
+		AMethodSignature signature();
+		InvocationType invocationType();
 
 		public static ImmutableMethodCall.Builder builder() {
 			return ImmutableMethodCall.builder();
+		}
+	}
+	
+	@Immutable
+	public static interface LambdaCall {
+		ATypeName clazz();
+		String name();
+		AMethodSignature signature();
+		AMethodSignature methodAsLambdaSignature();
+		
+		ATypeName factoryClass();
+		AMethodSignature factorySignature();
+		
+		MethodCall delegate();
+
+		public static ImmutableLambdaCall.Builder builder() {
+			return ImmutableLambdaCall.builder();
 		}
 	}
 	
