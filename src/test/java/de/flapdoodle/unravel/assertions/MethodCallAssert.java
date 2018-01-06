@@ -36,7 +36,7 @@ public class MethodCallAssert extends AbstractAssert<MethodCallAssert, MethodCal
 		if (types.length==0) {
 			Assertions.assertThat(actual.signature().parameters()).describedAs(propertyDescription("parameterTypes")).isEmpty();
 		} else {
-			Assertions.assertThat(actual.signature().parameters()).describedAs(propertyDescription("parameterTypes")).contains(types);
+			Assertions.assertThat(actual.signature().parameters()).describedAs(propertyDescription("parameterTypes")).containsExactly(types);
 		}
 		return this;
 	}

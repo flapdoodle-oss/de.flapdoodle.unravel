@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import de.flapdoodle.unravel.assertions.AnAnnotationsAssert;
 import de.flapdoodle.unravel.assertions.FieldCallsAssert;
+import de.flapdoodle.unravel.assertions.MethodCallsAssert;
 import de.flapdoodle.unravel.assertions.TypeReferenceCallsAssert;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.methods.MethodCode;
@@ -39,13 +40,20 @@ public class MethodsTest extends AbstractClazzParserTest {
 					calls.methodCalls(methodCalls -> {
 						methodCalls.size().isEqualTo(9);
 						methodCalls.element(0)
-							.clazz(Classnames.nameOf(String.class))
-							.name("isEmpty")
-							.returnType(Classnames.typeOf(boolean.class));
+							.clazz(Classnames.nameOf(Double.class))
+							.name("valueOf")
+							.returnType(Classnames.typeOf(Double.class));
 					});
-					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
+					calls.typeReferenceCalls(typeCalls -> {
+						typeCalls.size().isEqualTo(1);
+						typeCalls.element(0).clazz(Classnames.nameOf(String.class));
+					});
 				});
-			methods.element(2).name("isEmpty")
+			methods.element(2).name("func")
+			;
+			methods.element(3).name("biFunc")
+			;
+			methods.element(4).name("isEmpty")
 				.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
 				.returnType(Classnames.typeOf(boolean.class))
 				.parameterTypes(Classnames.typeOf(String.class))
@@ -60,7 +68,54 @@ public class MethodsTest extends AbstractClazzParserTest {
 					});
 					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
 				});
-			methods.element(3).name("lambda$0")
+			methods.element(5).name("mapNoop")
+				.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
+				.returnType(Classnames.typeOf(String.class))
+				.parameterTypes(Classnames.typeOf(int.class))
+				.calls(calls -> {
+					calls.fieldCalls(FieldCallsAssert::isEmpty);
+					calls.methodCalls(methodCalls -> {
+						methodCalls.size().isEqualTo(3);
+						methodCalls.element(0)
+							.clazz(Classnames.nameOf(StringBuilder.class))
+							.name("<init>")
+							.returnType(Classnames.typeOf(void.class));
+					});
+					calls.typeReferenceCalls(typeReferenceCalls -> {
+						typeReferenceCalls.size().isEqualTo(1);
+						typeReferenceCalls.element(0).clazz(Classnames.nameOf(StringBuilder.class));
+					});
+				});
+			;
+			methods.element(6).name("biMapNoop")
+				.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
+				.returnType(Classnames.typeOf(String.class))
+				.parameterTypes(Classnames.typeOf(double.class), Classnames.typeOf(int.class))
+				.calls(calls -> {
+					calls.fieldCalls(FieldCallsAssert::isEmpty);
+					calls.methodCalls(methodCalls -> {
+						methodCalls.size().isEqualTo(4);
+						methodCalls.element(0)
+							.clazz(Classnames.nameOf(StringBuilder.class))
+							.name("<init>")
+							.returnType(Classnames.typeOf(void.class));
+					});
+					calls.typeReferenceCalls(typeReferenceCalls -> {
+						typeReferenceCalls.size().isEqualTo(1);
+						typeReferenceCalls.element(0).clazz(Classnames.nameOf(StringBuilder.class));
+					});
+				});
+			;
+			methods.element(7).name("lambda$0")
+				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
+				.returnType(Classnames.typeOf(String.class))
+				.parameterTypes(Classnames.typeOf(String.class))
+				.calls(calls -> {
+					calls.fieldCalls(FieldCallsAssert::isEmpty);
+					calls.methodCalls(MethodCallsAssert::isEmpty);
+					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
+				});
+			methods.element(8).name("lambda$1")
 				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
 				.returnType(Classnames.typeOf(boolean.class))
 				.parameterTypes(Classnames.typeOf(String.class))
@@ -194,7 +249,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 
 				methods.element(14).name("generics")
 					.returnType(Classnames.typeOf(Map.class))
-					.parameterTypes(Classnames.typeOf(Object.class))
+					.parameterTypes(Classnames.typeOf(Object.class), Classnames.typeOf(List.class))
 					.exceptions(Classnames.nameOf(IOException.class))
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				

@@ -40,7 +40,7 @@ public class AMethodAssert extends AbstractAssert<AMethodAssert, AMethod> implem
 		if (types.length==0) {
 			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).isEmpty();
 		} else {
-			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).contains(types);
+			Assertions.assertThat(actual.parameters()).describedAs(propertyDescription("parameterTypes")).containsExactly(types);
 		}
 		return this;
 	}

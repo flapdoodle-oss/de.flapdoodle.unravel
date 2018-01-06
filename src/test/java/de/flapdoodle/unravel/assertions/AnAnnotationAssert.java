@@ -41,7 +41,7 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 		java.util.List<Object> values = actual.valueAttributes().get(key)
 				.map(t -> t.toJavaList())
 				.getOrElse(new ArrayList<>());
-		Assertions.assertThat(values).describedAs(propertyDescription("valueAttributes."+key)).contains(expected);
+		Assertions.assertThat(values).describedAs(propertyDescription("valueAttributes."+key)).containsExactly(expected);
 		return this;
 	}
 
