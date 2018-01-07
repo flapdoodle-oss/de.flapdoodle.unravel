@@ -23,9 +23,11 @@ public abstract class Calls {
 		String name();
 		@Parameter
 		AType type();
+		@Parameter
+		boolean staticCall();
 
-		public static FieldCall of(ATypeName clazz, String name, AType type) {
-			return ImmutableFieldCall.of(clazz, name, type);
+		public static FieldCall of(ATypeName clazz, String name, AType type, boolean staticCall) {
+			return ImmutableFieldCall.of(clazz, name, type, staticCall);
 		}
 	}
 
@@ -49,7 +51,7 @@ public abstract class Calls {
 		AMethodSignature signature();
 		AMethodSignature methodAsLambdaSignature();
 		
-		ATypeName factoryClass();
+		ATypeName factoryClazz();
 		AMethodSignature factorySignature();
 		
 		MethodCall delegate();

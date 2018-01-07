@@ -50,9 +50,16 @@ public class AMethodVisitor extends MethodVisitor {
 	@Override
 	public void visitFieldInsn(int opcode, String owner, String name, String desc) {
 		super.visitFieldInsn(opcode, owner, name, desc);
-		callsBuilder.addFieldCalls(FieldCall.of(Visitors.typeNameOf(owner), name, Visitors.typeOf(desc)));
+		callsBuilder.addFieldCalls(FieldCall.of(Visitors.typeNameOf(owner), name, Visitors.typeOf(desc), isStaticFieldAccess(opcode)));
 	}
 	
+	private boolean isStaticFieldAccess(int opcode) {
+		boolean staticAccess =  Opcodes.PUTSTATIC == opcode || Opcodes.GETSTATIC == opcode;
+		boolean nonStatic = Opcodes.PUTFIELD == opcode || Opcodes.GETFIELD == opcode;
+		Preconditions.checkArgument(staticAccess || nonStatic, "opcodes does not match", opcode);
+		return staticAccess;
+	}
+
 	@Override
 	public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
 		super.visitLocalVariable(name, desc, signature, start, end, index);
@@ -155,7 +162,7 @@ public class AMethodVisitor extends MethodVisitor {
 			.name(name)
 			.signature(lambdaMethodSignature)
 			.methodAsLambdaSignature(methodAsLambdaSignature)
-			.factoryClass(Visitors.typeNameOf(bsm.getOwner()))
+			.factoryClazz(Visitors.typeNameOf(bsm.getOwner()))
 			.factorySignature(Visitors.methodSignOf(bsm.getDesc()))
 			.delegate(MethodCall.builder()
 					.clazz(Visitors.typeNameOf(methodHandle.getOwner()))

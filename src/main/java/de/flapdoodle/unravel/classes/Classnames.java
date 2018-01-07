@@ -3,6 +3,7 @@ package de.flapdoodle.unravel.classes;
 import com.google.common.collect.ImmutableSet;
 
 import de.flapdoodle.unravel.types.AType;
+import de.flapdoodle.unravel.types.ATypeName;
 
 public abstract class Classnames {
 
@@ -29,7 +30,11 @@ public abstract class Classnames {
 	public static AType typeOf(Class<?> type, int arrayDimension) {
 		return AType.of(nameOf(type), arrayDimension);
 	}
-	
+
+	public static ATypeName typeNameOf(Class<?> type) {
+		return ATypeName.of(nameOf(type));
+	}
+
 	private static ImmutableSet<Class<?>> INTERNAL_TYPES=ImmutableSet.<Class<?>>builder()
 			.add(String.class)
 			.add(void.class)
@@ -53,5 +58,6 @@ public abstract class Classnames {
 	public static boolean isBuildInType(Class<? extends Object> clazz) {
 		return INTERNAL_TYPES.contains(clazz);
 	}
+
 
 }

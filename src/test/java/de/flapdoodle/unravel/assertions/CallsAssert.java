@@ -55,6 +55,11 @@ public class CallsAssert extends AbstractAssert<CallsAssert, Calls> implements C
 		return this;
 	}
 
+	public CallsAssert lambdaCalls(Consumer<LambdaCallsAssert> consumer) {
+		consumer.accept(LambdaCallsAssert.assertThatLambdaCalls(actual.lambdaCalls()).describedAs(propertyDescription("lambdaCalls")));
+		return this;
+	}
+
 	public CallsAssert typeReferenceCalls(Consumer<TypeReferenceCallsAssert> consumer) {
 		consumer.accept(TypeReferenceCallsAssert.assertThatTypeReferenceCalls(actual.typeReferenceCalls()).describedAs(propertyDescription("typeReferenceCalls")));
 		return this;

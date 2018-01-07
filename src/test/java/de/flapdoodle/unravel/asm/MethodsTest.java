@@ -4,10 +4,16 @@ import static de.flapdoodle.unravel.Assertions.assertThat;
 import static de.flapdoodle.unravel.Classes.byteCodeOf;
 
 import java.io.IOException;
+import java.lang.invoke.CallSite;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import org.junit.Test;
 
@@ -20,7 +26,9 @@ import de.flapdoodle.unravel.samples.asm.methods.MethodCode;
 import de.flapdoodle.unravel.samples.asm.methods.MethodLambdas;
 import de.flapdoodle.unravel.samples.asm.methods.MethodSignatures;
 import de.flapdoodle.unravel.samples.asm.methods.MethodsPlayground;
+import de.flapdoodle.unravel.types.AMethodSignature;
 import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.InvocationType;
 
 public class MethodsTest extends AbstractClazzParserTest {
 
@@ -42,7 +50,36 @@ public class MethodsTest extends AbstractClazzParserTest {
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(Double.class))
 							.name("valueOf")
-							.returnType(Classnames.typeOf(Double.class));
+							.returnType(Classnames.typeOf(Double.class))
+							.parameterTypes(Classnames.typeOf(double.class))
+							.invocationType(InvocationType.INVOKESTATIC);
+					});
+					calls.lambdaCalls(lambdaCalls -> {
+						lambdaCalls.size().isEqualTo(6);
+						lambdaCalls.element(0)
+							.clazz(Classnames.nameOf(BiFunction.class))
+							.name("apply")
+							.factoryClazz(Classnames.typeNameOf(LambdaMetafactory.class))
+							.factorySignature(AMethodSignature.builder()
+									.returnType(Classnames.typeOf(CallSite.class))
+									.addParameters(Classnames.typeOf(MethodHandles.Lookup.class))
+									.addParameters(Classnames.typeOf(String.class))
+									.addParameters(Classnames.typeOf(MethodType.class))
+									.addParameters(Classnames.typeOf(MethodType.class))
+									.addParameters(Classnames.typeOf(MethodHandle.class))
+									.addParameters(Classnames.typeOf(MethodType.class))
+									.build())
+							.returnType(Classnames.nameOf(Object.class))
+							.parameterTypes(Classnames.typeOf(Object.class), Classnames.typeOf(Object.class))
+							.methodAsLambdaReturnType(Classnames.typeOf(String.class))
+							.methodAsLambdaParameterTypes(Classnames.typeOf(Double.class), Classnames.typeOf(Integer.class))
+							.delegate(delegate -> {
+								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
+									.name("biMapNoop")
+									.returnType(Classnames.typeOf(String.class))
+									.parameterTypes(Classnames.typeOf(double.class), Classnames.typeOf(int.class))
+									.invocationType(InvocationType.INVOKEDYNAMIC);
+							});
 					});
 					calls.typeReferenceCalls(typeCalls -> {
 						typeCalls.size().isEqualTo(1);

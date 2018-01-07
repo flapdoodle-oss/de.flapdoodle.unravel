@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.Calls.MethodCall;
+import de.flapdoodle.unravel.types.InvocationType;
 
 public class MethodCallAssert extends AbstractAssert<MethodCallAssert, MethodCall> implements CommonAsserts {
 
@@ -29,6 +30,11 @@ public class MethodCallAssert extends AbstractAssert<MethodCallAssert, MethodCal
 	
 	public MethodCallAssert returnType(AType type) {
 		Assertions.assertThat(actual.signature().returnType()).describedAs(propertyDescription("returnType")).isEqualTo(type);
+		return this;
+	}
+	
+	public MethodCallAssert invocationType(InvocationType type) {
+		Assertions.assertThat(actual.invocationType()).describedAs(propertyDescription("invocationType")).isEqualTo(type);
 		return this;
 	}
 	
