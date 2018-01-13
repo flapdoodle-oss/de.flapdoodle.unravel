@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -98,6 +99,24 @@ public class MethodsTest extends AbstractClazzParserTest {
 							.returnType(typeOf(Stream.class))
 							.parameterTypes(typeOf(Function.class))
 							.invocationType(InvocationType.INVOKEINTERFACE);
+						methodCalls.element(6)
+							.clazz(Classnames.nameOf(Stream.class))
+							.name("filter")
+							.returnType(typeOf(Stream.class))
+							.parameterTypes(typeOf(Predicate.class))
+							.invocationType(InvocationType.INVOKEINTERFACE);
+						methodCalls.element(7)
+							.clazz(Classnames.nameOf(Stream.class))
+							.name("findAny")
+							.returnType(typeOf(Optional.class))
+							.parameterTypes()
+							.invocationType(InvocationType.INVOKEINTERFACE);
+						methodCalls.element(8)
+							.clazz(Classnames.nameOf(Optional.class))
+							.name("orElse")
+							.returnType(typeOf(Object.class))
+							.parameterTypes(typeOf(Object.class))
+							.invocationType(InvocationType.INVOKEVIRTUAL);
 					});
 					calls.lambdaCalls(lambdaCalls -> {
 						lambdaCalls.size().isEqualTo(6);
