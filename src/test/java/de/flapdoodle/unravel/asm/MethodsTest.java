@@ -2,6 +2,7 @@ package de.flapdoodle.unravel.asm;
 
 import static de.flapdoodle.unravel.Assertions.assertThat;
 import static de.flapdoodle.unravel.Classes.byteCodeOf;
+import static de.flapdoodle.unravel.classes.Classnames.typeOf;
 
 import java.io.IOException;
 import java.lang.invoke.CallSite;
@@ -14,6 +15,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -28,12 +32,23 @@ import de.flapdoodle.unravel.samples.asm.methods.MethodSignatures;
 import de.flapdoodle.unravel.samples.asm.methods.MethodsPlayground;
 import de.flapdoodle.unravel.types.AMethodSignature;
 import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.ImmutableAMethodSignature;
 import de.flapdoodle.unravel.types.InvocationType;
 
 public class MethodsTest extends AbstractClazzParserTest {
 
 	@Test
 	public void lambdaCalls() {
+		ImmutableAMethodSignature lambda8factorySignature = AMethodSignature.builder()
+				.returnType(typeOf(CallSite.class))
+				.addParameters(typeOf(MethodHandles.Lookup.class))
+				.addParameters(typeOf(String.class))
+				.addParameters(typeOf(MethodType.class))
+				.addParameters(typeOf(MethodType.class))
+				.addParameters(typeOf(MethodHandle.class))
+				.addParameters(typeOf(MethodType.class))
+				.build();
+
 		assertThat(parse(byteCodeOf(MethodLambdas.class)))
 		.isJava8()
 		.methods(methods -> {
@@ -41,8 +56,8 @@ public class MethodsTest extends AbstractClazzParserTest {
 			methods.element(0).name("<init>");
 			methods.element(1).name("lambdas")
 				.accessFlags(AccessFlags.ACC_PUBLIC)
-				.returnType(Classnames.typeOf(String.class))
-				.parameterTypes(Classnames.typeOf(List.class))
+				.returnType(typeOf(String.class))
+				.parameterTypes(typeOf(List.class))
 				.calls(calls -> {
 					calls.fieldCalls(FieldCallsAssert::isEmpty);
 					calls.methodCalls(methodCalls -> {
@@ -50,9 +65,39 @@ public class MethodsTest extends AbstractClazzParserTest {
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(Double.class))
 							.name("valueOf")
-							.returnType(Classnames.typeOf(Double.class))
-							.parameterTypes(Classnames.typeOf(double.class))
+							.returnType(typeOf(Double.class))
+							.parameterTypes(typeOf(double.class))
 							.invocationType(InvocationType.INVOKESTATIC);
+						methodCalls.element(1)
+							.clazz(Classnames.nameOf(Integer.class))
+							.name("valueOf")
+							.returnType(typeOf(Integer.class))
+							.parameterTypes(typeOf(int.class))
+							.invocationType(InvocationType.INVOKESTATIC);
+						methodCalls.element(2)
+							.clazz(Classnames.nameOf(MethodLambdas.class))
+							.name("biFunc")
+							.returnType(typeOf(Object.class))
+							.parameterTypes(typeOf(BiFunction.class), typeOf(Object.class), typeOf(Object.class))
+							.invocationType(InvocationType.INVOKESTATIC);
+						methodCalls.element(3)
+							.clazz(Classnames.nameOf(MethodLambdas.class))
+							.name("func")
+							.returnType(typeOf(Object.class))
+							.parameterTypes(typeOf(Function.class), typeOf(Object.class))
+							.invocationType(InvocationType.INVOKESTATIC);
+						methodCalls.element(4)
+							.clazz(Classnames.nameOf(List.class))
+							.name("stream")
+							.returnType(typeOf(Stream.class))
+							.parameterTypes()
+							.invocationType(InvocationType.INVOKEINTERFACE);
+						methodCalls.element(5)
+							.clazz(Classnames.nameOf(Stream.class))
+							.name("map")
+							.returnType(typeOf(Stream.class))
+							.parameterTypes(typeOf(Function.class))
+							.invocationType(InvocationType.INVOKEINTERFACE);
 					});
 					calls.lambdaCalls(lambdaCalls -> {
 						lambdaCalls.size().isEqualTo(6);
@@ -60,24 +105,96 @@ public class MethodsTest extends AbstractClazzParserTest {
 							.clazz(Classnames.nameOf(BiFunction.class))
 							.name("apply")
 							.factoryClazz(Classnames.typeNameOf(LambdaMetafactory.class))
-							.factorySignature(AMethodSignature.builder()
-									.returnType(Classnames.typeOf(CallSite.class))
-									.addParameters(Classnames.typeOf(MethodHandles.Lookup.class))
-									.addParameters(Classnames.typeOf(String.class))
-									.addParameters(Classnames.typeOf(MethodType.class))
-									.addParameters(Classnames.typeOf(MethodType.class))
-									.addParameters(Classnames.typeOf(MethodHandle.class))
-									.addParameters(Classnames.typeOf(MethodType.class))
-									.build())
+							.factorySignature(lambda8factorySignature)
 							.returnType(Classnames.nameOf(Object.class))
-							.parameterTypes(Classnames.typeOf(Object.class), Classnames.typeOf(Object.class))
-							.methodAsLambdaReturnType(Classnames.typeOf(String.class))
-							.methodAsLambdaParameterTypes(Classnames.typeOf(Double.class), Classnames.typeOf(Integer.class))
+							.parameterTypes(typeOf(Object.class), typeOf(Object.class))
+							.methodAsLambdaReturnType(typeOf(String.class))
+							.methodAsLambdaParameterTypes(typeOf(Double.class), typeOf(Integer.class))
 							.delegate(delegate -> {
 								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
 									.name("biMapNoop")
-									.returnType(Classnames.typeOf(String.class))
-									.parameterTypes(Classnames.typeOf(double.class), Classnames.typeOf(int.class))
+									.returnType(typeOf(String.class))
+									.parameterTypes(typeOf(double.class), typeOf(int.class))
+									.invocationType(InvocationType.INVOKEDYNAMIC);
+							});
+						lambdaCalls.element(1)
+							.clazz(Classnames.nameOf(Function.class))
+							.name("apply")
+							.factoryClazz(Classnames.typeNameOf(LambdaMetafactory.class))
+							.factorySignature(lambda8factorySignature)
+							.returnType(Classnames.nameOf(Object.class))
+							.parameterTypes(typeOf(Object.class))
+							.methodAsLambdaReturnType(typeOf(String.class))
+							.methodAsLambdaParameterTypes(typeOf(Integer.class))
+							.delegate(delegate -> {
+								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
+									.name("mapNoop")
+									.returnType(typeOf(String.class))
+									.parameterTypes(typeOf(int.class))
+									.invocationType(InvocationType.INVOKEDYNAMIC);
+							});
+						lambdaCalls.element(2)
+							.clazz(Classnames.nameOf(Function.class))
+							.name("apply")
+							.factoryClazz(Classnames.typeNameOf(LambdaMetafactory.class))
+							.factorySignature(lambda8factorySignature)
+							.returnType(Classnames.nameOf(Object.class))
+							.parameterTypes(typeOf(Object.class))
+							.methodAsLambdaReturnType(typeOf(String.class))
+							.methodAsLambdaParameterTypes(typeOf(String.class))
+							.delegate(delegate -> {
+								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
+									.name("lambda$0")
+									.returnType(typeOf(String.class))
+									.parameterTypes(typeOf(String.class))
+									.invocationType(InvocationType.INVOKEDYNAMIC);
+							});
+						lambdaCalls.element(3)
+							.clazz(Classnames.nameOf(Predicate.class))
+							.name("test")
+							.factoryClazz(Classnames.typeNameOf(LambdaMetafactory.class))
+							.factorySignature(lambda8factorySignature)
+							.returnType(Classnames.nameOf(boolean.class))
+							.parameterTypes(typeOf(Object.class))
+							.methodAsLambdaReturnType(typeOf(boolean.class))
+							.methodAsLambdaParameterTypes(typeOf(String.class))
+							.delegate(delegate -> {
+								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
+									.name("lambda$1")
+									.returnType(typeOf(boolean.class))
+									.parameterTypes(typeOf(String.class))
+									.invocationType(InvocationType.INVOKEDYNAMIC);
+							});
+						lambdaCalls.element(4)
+							.clazz(Classnames.nameOf(Predicate.class))
+							.name("test")
+							.factoryClazz(Classnames.typeNameOf(LambdaMetafactory.class))
+							.factorySignature(lambda8factorySignature)
+							.returnType(Classnames.nameOf(boolean.class))
+							.parameterTypes(typeOf(Object.class))
+							.methodAsLambdaReturnType(typeOf(boolean.class))
+							.methodAsLambdaParameterTypes(typeOf(String.class))
+							.delegate(delegate -> {
+								delegate.clazz(Classnames.nameOf(String.class))
+									.name("isEmpty")
+									.returnType(typeOf(boolean.class))
+									.parameterTypes()
+									.invocationType(InvocationType.INVOKEDYNAMIC);
+							});
+						lambdaCalls.element(5)
+							.clazz(Classnames.nameOf(Predicate.class))
+							.name("test")
+							.factoryClazz(Classnames.typeNameOf(LambdaMetafactory.class))
+							.factorySignature(lambda8factorySignature)
+							.returnType(Classnames.nameOf(boolean.class))
+							.parameterTypes(typeOf(Object.class))
+							.methodAsLambdaReturnType(typeOf(boolean.class))
+							.methodAsLambdaParameterTypes(typeOf(String.class))
+							.delegate(delegate -> {
+								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
+									.name("isEmpty")
+									.returnType(typeOf(boolean.class))
+									.parameterTypes(typeOf(String.class))
 									.invocationType(InvocationType.INVOKEDYNAMIC);
 							});
 					});
@@ -92,8 +209,8 @@ public class MethodsTest extends AbstractClazzParserTest {
 			;
 			methods.element(4).name("isEmpty")
 				.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
-				.returnType(Classnames.typeOf(boolean.class))
-				.parameterTypes(Classnames.typeOf(String.class))
+				.returnType(typeOf(boolean.class))
+				.parameterTypes(typeOf(String.class))
 				.calls(calls -> {
 					calls.fieldCalls(FieldCallsAssert::isEmpty);
 					calls.methodCalls(methodCalls -> {
@@ -101,14 +218,14 @@ public class MethodsTest extends AbstractClazzParserTest {
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(String.class))
 							.name("isEmpty")
-							.returnType(Classnames.typeOf(boolean.class));
+							.returnType(typeOf(boolean.class));
 					});
 					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
 				});
 			methods.element(5).name("mapNoop")
 				.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
-				.returnType(Classnames.typeOf(String.class))
-				.parameterTypes(Classnames.typeOf(int.class))
+				.returnType(typeOf(String.class))
+				.parameterTypes(typeOf(int.class))
 				.calls(calls -> {
 					calls.fieldCalls(FieldCallsAssert::isEmpty);
 					calls.methodCalls(methodCalls -> {
@@ -116,7 +233,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(StringBuilder.class))
 							.name("<init>")
-							.returnType(Classnames.typeOf(void.class));
+							.returnType(typeOf(void.class));
 					});
 					calls.typeReferenceCalls(typeReferenceCalls -> {
 						typeReferenceCalls.size().isEqualTo(1);
@@ -126,8 +243,8 @@ public class MethodsTest extends AbstractClazzParserTest {
 			;
 			methods.element(6).name("biMapNoop")
 				.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
-				.returnType(Classnames.typeOf(String.class))
-				.parameterTypes(Classnames.typeOf(double.class), Classnames.typeOf(int.class))
+				.returnType(typeOf(String.class))
+				.parameterTypes(typeOf(double.class), typeOf(int.class))
 				.calls(calls -> {
 					calls.fieldCalls(FieldCallsAssert::isEmpty);
 					calls.methodCalls(methodCalls -> {
@@ -135,7 +252,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(StringBuilder.class))
 							.name("<init>")
-							.returnType(Classnames.typeOf(void.class));
+							.returnType(typeOf(void.class));
 					});
 					calls.typeReferenceCalls(typeReferenceCalls -> {
 						typeReferenceCalls.size().isEqualTo(1);
@@ -145,8 +262,8 @@ public class MethodsTest extends AbstractClazzParserTest {
 			;
 			methods.element(7).name("lambda$0")
 				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
-				.returnType(Classnames.typeOf(String.class))
-				.parameterTypes(Classnames.typeOf(String.class))
+				.returnType(typeOf(String.class))
+				.parameterTypes(typeOf(String.class))
 				.calls(calls -> {
 					calls.fieldCalls(FieldCallsAssert::isEmpty);
 					calls.methodCalls(MethodCallsAssert::isEmpty);
@@ -154,8 +271,8 @@ public class MethodsTest extends AbstractClazzParserTest {
 				});
 			methods.element(8).name("lambda$1")
 				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
-				.returnType(Classnames.typeOf(boolean.class))
-				.parameterTypes(Classnames.typeOf(String.class))
+				.returnType(typeOf(boolean.class))
+				.parameterTypes(typeOf(String.class))
 				.calls(calls -> {
 					calls.fieldCalls(FieldCallsAssert::isEmpty);
 					calls.methodCalls(methodCalls -> {
@@ -163,7 +280,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(String.class))
 							.name("length")
-							.returnType(Classnames.typeOf(int.class));
+							.returnType(typeOf(int.class));
 					});
 					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
 				});
@@ -185,7 +302,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 			methods.size().isEqualTo(3);
 			methods.element(0)
 				.name("<init>")
-				.returnType(Classnames.typeOf(void.class))
+				.returnType(typeOf(void.class))
 				.parameterTypes()
 				.annotations(AnAnnotationsAssert::isEmpty)
 				.calls(calls -> {
@@ -201,8 +318,8 @@ public class MethodsTest extends AbstractClazzParserTest {
 				});
 			methods.element(1)
 				.name("simple")
-				.returnType(Classnames.typeOf(String.class))
-				.parameterTypes(Classnames.typeOf(List.class))
+				.returnType(typeOf(String.class))
+				.parameterTypes(typeOf(List.class))
 				.annotations(AnAnnotationsAssert::isEmpty)
 				.calls(calls -> {
 					calls.fieldCalls(fieldCalls -> {
@@ -210,22 +327,22 @@ public class MethodsTest extends AbstractClazzParserTest {
 						fieldCalls.element(0)
 							.clazz(Classnames.nameOf(Void.class))
 							.name("TYPE")
-							.type(Classnames.typeOf(Class.class));
+							.type(typeOf(Class.class));
 						fieldCalls.element(1)
-							.clazz(Classnames.nameOf(MethodCode.class)).name("y").type(Classnames.typeOf(String.class));
+							.clazz(Classnames.nameOf(MethodCode.class)).name("y").type(typeOf(String.class));
 						fieldCalls.element(2)
-							.clazz(Classnames.nameOf(MethodCode.class)).name("z").type(Classnames.typeOf(String.class));
+							.clazz(Classnames.nameOf(MethodCode.class)).name("z").type(typeOf(String.class));
 					});
 					calls.methodCalls(methodCalls -> {
 						methodCalls.size().isEqualTo(3);
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(List.class))
 							.name("get")
-							.parameterTypes(Classnames.typeOf(int.class));
+							.parameterTypes(typeOf(int.class));
 						methodCalls.element(1)
 							.clazz(Classnames.nameOf(MethodCode.class))
 							.name("len")
-							.parameterTypes(Classnames.typeOf(Class.class));
+							.parameterTypes(typeOf(Class.class));
 						methodCalls.element(2)
 							.clazz(Classnames.nameOf(String.class))
 							.name("length")
@@ -259,40 +376,40 @@ public class MethodsTest extends AbstractClazzParserTest {
 				methods.element(3).name("publicStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC);
 				
 				methods.element(4).name("<init>").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
-				methods.element(5).name("<init>").returnType("void").parameterTypes(Classnames.typeOf(String.class)).exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
+				methods.element(5).name("<init>").returnType("void").parameterTypes(typeOf(String.class)).exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(6).name("privateNonStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_PRIVATE);
 				methods.element(7).name("protectedNonStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_PROTECTED);
 				methods.element(8).name("packageProtectedNonStatic").returnType("void").parameterTypes().exceptions().accessFlags();
 				methods.element(9).name("publicNonStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
 
-				methods.element(10).name("stringInOut").returnType(Classnames.typeOf(String.class)).parameterTypes(Classnames.typeOf(String.class)).exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
+				methods.element(10).name("stringInOut").returnType(typeOf(String.class)).parameterTypes(typeOf(String.class)).exceptions().accessFlags(AccessFlags.ACC_PUBLIC);
 				methods.element(11).name("stringInOutThrowsRuntime")
-					.returnType(Classnames.typeOf(String.class))
-					.parameterTypes(Classnames.typeOf(String.class))
+					.returnType(typeOf(String.class))
+					.parameterTypes(typeOf(String.class))
 					.exceptions(Classnames.nameOf(RuntimeException.class))
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				methods.element(12).name("stringInOutThrowsChecked")
-					.returnType(Classnames.typeOf(String.class))
-					.parameterTypes(Classnames.typeOf(String.class))
+					.returnType(typeOf(String.class))
+					.parameterTypes(typeOf(String.class))
 					.exceptions(Classnames.nameOf(ParseException.class),Classnames.nameOf(IOException.class))
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(13).name("arrayInOut")
-					.returnType(Classnames.typeOf(String.class, 1))
-					.parameterTypes(Classnames.typeOf(String.class, 1), Classnames.typeOf(int.class, 1), Classnames.typeOf(Date.class))
+					.returnType(typeOf(String.class, 1))
+					.parameterTypes(typeOf(String.class, 1), typeOf(int.class, 1), typeOf(Date.class))
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 
 				methods.element(14).name("generics")
-					.returnType(Classnames.typeOf(Map.class))
-					.parameterTypes(Classnames.typeOf(Object.class), Classnames.typeOf(List.class))
+					.returnType(typeOf(Map.class))
+					.parameterTypes(typeOf(Object.class), typeOf(List.class))
 					.exceptions(Classnames.nameOf(IOException.class))
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(15).name("annotations")
-					.returnType(Classnames.typeOf(String.class))
-					.parameterTypes(Classnames.typeOf(String.class), Classnames.typeOf(String.class))
+					.returnType(typeOf(String.class))
+					.parameterTypes(typeOf(String.class), typeOf(String.class))
 					.exceptions()
 					.annotations(annotations -> {
 						annotations.size().isEqualTo(3);
@@ -303,20 +420,20 @@ public class MethodsTest extends AbstractClazzParserTest {
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				
 				methods.element(16).name("accept")
-					.returnType(Classnames.typeOf(void.class))
-					.parameterTypes(Classnames.typeOf(String.class))
+					.returnType(typeOf(void.class))
+					.parameterTypes(typeOf(String.class))
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 			
 				methods.element(17).name("abstractMethod")
-					.returnType(Classnames.typeOf(String.class))
+					.returnType(typeOf(String.class))
 					.parameterTypes()
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT);
 				
 				methods.element(18).name("accept")
-					.returnType(Classnames.typeOf(void.class))
-					.parameterTypes(Classnames.typeOf(Object.class))
+					.returnType(typeOf(void.class))
+					.parameterTypes(typeOf(Object.class))
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_BRIDGE);
 			});
@@ -335,13 +452,13 @@ public class MethodsTest extends AbstractClazzParserTest {
 				methods.element(1)
 					.name("hello")
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_STATIC)
-					.returnType(Classnames.typeOf(String.class))
+					.returnType(typeOf(String.class))
 					.parameterTypes();
 				methods.element(2)
 					.name("keys")
 					.accessFlags(AccessFlags.ACC_PUBLIC)
-					.returnType(Classnames.typeOf(List.class))
-					.parameterTypes(Classnames.typeOf(Map.class));
+					.returnType(typeOf(List.class))
+					.parameterTypes(typeOf(Map.class));
 			});
 	}
 }
