@@ -52,6 +52,21 @@ public class InheritanceMethodTest extends AbstractClazzParserTest {
 	}
 
 	@Test
+	public void methodsOfLocalInterface() {
+		assertThat(parse(byteCodeOf(LocalInterface.class)))
+			.isJava8()
+			.superClass(Object.class)
+			.interfaces()
+			.methods(methods -> {
+				methods.size().isEqualTo(2);
+					methods.element(0).name("interfaceMethod")
+						.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT);
+					methods.element(1).name("defaultMethod")
+						.accessFlags(AccessFlags.ACC_PUBLIC);
+				});
+	}
+	
+	@Test
 	public void methodsOfAbstractExtends() {
 		assertThat(parse(byteCodeOf(AbstractExtends.class)))
 			.isJava8()

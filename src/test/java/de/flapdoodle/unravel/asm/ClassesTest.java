@@ -182,6 +182,9 @@ public class ClassesTest extends AbstractClazzParserTest {
 			.isJava8()
 			.typeNameIs(Classnames.nameOf(InnerOuter.class,"Outer"))
 			.accessFlags(AccessFlags.ACC_SUPER)
-			.superClass(Object.class);
+			.superClass(Object.class)
+			.innerClasses(classes -> {
+				classes.isEmpty();
+			});
 	}
 }
