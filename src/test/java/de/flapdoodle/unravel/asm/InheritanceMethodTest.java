@@ -11,9 +11,11 @@ import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.inherit.AbstractBase;
 import de.flapdoodle.unravel.samples.asm.inherit.AbstractExtends;
 import de.flapdoodle.unravel.samples.asm.inherit.Base;
+import de.flapdoodle.unravel.samples.asm.inherit.Caller;
 import de.flapdoodle.unravel.samples.asm.inherit.ExtendsExtends;
 import de.flapdoodle.unravel.samples.asm.inherit.LocalInterface;
 import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.InvocationType;
 
 public class InheritanceMethodTest extends AbstractClazzParserTest {
 	
@@ -102,5 +104,88 @@ public class InheritanceMethodTest extends AbstractClazzParserTest {
 						.accessFlags(AccessFlags.ACC_PROTECTED)
 						.returnType(Classnames.typeOf(boolean.class));
 				});
+	}
+	
+	@Test
+	public void calls() {
+		assertThat(parse(byteCodeOf(Caller.class)))
+			.isJava8()
+			.superClass(Object.class)
+			.interfaces()
+			.methods(methods -> {
+				methods.size().isEqualTo(3);
+				methods.element(0).name("<init>");
+				methods.element(1)
+					.name("allMethodsOfExtendsExtends")
+					.calls(calls -> {
+						calls.methodCalls(methodCalls -> {
+							methodCalls.size().isEqualTo(7);
+							methodCalls.element(0)
+								.name("abstractAbstractBaseMethod")
+								.clazz(Classnames.nameOf(ExtendsExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(1)
+								.name("abstractBaseMethod")
+								.clazz(Classnames.nameOf(ExtendsExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(2)
+								.name("baseMethod")
+								.clazz(Classnames.nameOf(ExtendsExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(3)
+								.name("get")
+								.clazz(Classnames.nameOf(ExtendsExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(4)
+								.name("interfaceMethod")
+								.clazz(Classnames.nameOf(ExtendsExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(5)
+								.name("defaultMethod")
+								.clazz(Classnames.nameOf(ExtendsExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(6)
+								.name("toString")
+								.clazz(Classnames.nameOf(Object.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+						});
+					});
+				methods.element(2)
+					.name("allMethodsOfAbstractExtends")
+					.calls(calls -> {
+						calls.methodCalls(methodCalls -> {
+							methodCalls.size().isEqualTo(7);
+							methodCalls.element(0)
+								.name("abstractAbstractBaseMethod")
+								.clazz(Classnames.nameOf(AbstractExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(1)
+								.name("abstractBaseMethod")
+								.clazz(Classnames.nameOf(AbstractExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(2)
+								.name("baseMethod")
+								.clazz(Classnames.nameOf(AbstractExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(3)
+								.name("get")
+								.clazz(Classnames.nameOf(AbstractExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(4)
+								.name("interfaceMethod")
+								.clazz(Classnames.nameOf(AbstractExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(5)
+								.name("defaultMethod")
+								.clazz(Classnames.nameOf(AbstractExtends.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+							methodCalls.element(6)
+								.name("toString")
+								.clazz(Classnames.nameOf(Object.class))
+								.invocationType(InvocationType.INVOKEVIRTUAL);
+						});
+					});
+			});
+		
 	}
 }
