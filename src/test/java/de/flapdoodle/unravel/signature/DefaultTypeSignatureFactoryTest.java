@@ -37,7 +37,21 @@ public class DefaultTypeSignatureFactoryTest {
 		DefaultTypeSignatureFactory factory = new DefaultTypeSignatureFactory();
 		
 		TypeSignature result = factory.signatureOf(innerOuter, map::get);
+
+		assertEquals(4, result.innerClasses().size());
+		TypeSignature shouldBeInner_1 = result.innerClasses().get(0);
+		assertEquals(inner_1.typeName(), shouldBeInner_1.typeName());
+		assertEquals(3, shouldBeInner_1.innerClasses().size());
 		
-		assertEquals(4,result.innerClasses().size());
+		assertEquals(inner_2.typeName(), result.innerClasses().get(1).typeName());
+		assertEquals(inner_3.typeName(), result.innerClasses().get(2).typeName());
+		
+		TypeSignature shouldBeInner = result.innerClasses().get(3);
+		assertEquals(inner.typeName(), shouldBeInner.typeName());
+		assertEquals(1, shouldBeInner.innerClasses().size());
+		
+		TypeSignature shouldBeInnerInner = shouldBeInner.innerClasses().get(0);
+		assertEquals(innerInner.typeName(), shouldBeInnerInner.typeName());
+		assertEquals(0, shouldBeInnerInner.innerClasses().size());
 	}
 }
