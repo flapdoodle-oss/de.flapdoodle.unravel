@@ -7,13 +7,14 @@ import java.io.Serializable;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.Inheritance;
 
-public class InheritanceTest extends AbstractClazzParserTest {
+public class InheritanceTest {
 	@Test
 	public void innerOuter() {
-		assertThat(parse(byteCodeOf(Inheritance.B.class)))
+		assertThat(Classes.parse(byteCodeOf(Inheritance.B.class)))
 			.isJava8()
 			.superClass(Inheritance.A.class)
 			.interfaces(Classnames.nameOf(Inheritance.I.class),Classnames.nameOf(Serializable.class));

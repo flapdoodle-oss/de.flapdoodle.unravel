@@ -20,8 +20,10 @@ import de.flapdoodle.unravel.types.AField;
 import de.flapdoodle.unravel.types.AMethod;
 import de.flapdoodle.unravel.types.AMethodSignature;
 import de.flapdoodle.unravel.types.AnInnerClass;
+import de.flapdoodle.unravel.types.AnOuterClass;
 import de.flapdoodle.unravel.types.ImmutableAClass.Builder;
 import de.flapdoodle.unravel.types.ImmutableAField;
+import de.flapdoodle.unravel.types.ImmutableAnOuterClass;
 import io.vavr.collection.List;
 
 public class ClazzParser {
@@ -79,7 +81,12 @@ public class ClazzParser {
 		
 		@Override
 		public void visitOuterClass(String owner, String name, String desc) {
-			throw new NotImplementedException("owner: "+owner+",name: "+name+",desc:"+desc);
+			ImmutableAnOuterClass.Builder outerBuilder = AnOuterClass.builder(Visitors.typeNameOf(owner));
+			if (name!=null){
+				outerBuilder.methodName(name)
+					.methodSignature(Visitors.methodSignOf(desc));
+			}
+			builder.outerClazz(outerBuilder.build());
 		}
 		
 		@Override

@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.assertions.AnAnnotationsAssert;
 import de.flapdoodle.unravel.assertions.FieldCallsAssert;
 import de.flapdoodle.unravel.assertions.MethodCallsAssert;
@@ -36,7 +37,7 @@ import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.ImmutableAMethodSignature;
 import de.flapdoodle.unravel.types.InvocationType;
 
-public class MethodsTest extends AbstractClazzParserTest {
+public class MethodsTest {
 
 	@Test
 	public void lambdaCalls() {
@@ -50,7 +51,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 				.addParameters(typeOf(MethodType.class))
 				.build();
 
-		assertThat(parse(byteCodeOf(MethodLambdas.class)))
+		assertThat(Classes.parse(byteCodeOf(MethodLambdas.class)))
 		.isJava8()
 		.methods(methods -> {
 			methods.size().isEqualTo(9);
@@ -308,7 +309,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 	
 	@Test
 	public void methodCalls() {
-		assertThat(parse(byteCodeOf(MethodCode.class)))
+		assertThat(Classes.parse(byteCodeOf(MethodCode.class)))
 		.isJava8()
 		.fields(fields -> {
 			fields.size().isEqualTo(4);
@@ -385,7 +386,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 	
 	@Test
 	public void signatures() {
-		assertThat(parse(byteCodeOf(MethodSignatures.class)))
+		assertThat(Classes.parse(byteCodeOf(MethodSignatures.class)))
 			.isJava8()
 			.methods(methods -> {
 				methods.size().isEqualTo(19);
@@ -460,7 +461,7 @@ public class MethodsTest extends AbstractClazzParserTest {
 	
 	@Test
 	public void sample() {
-		assertThat(parse(byteCodeOf(MethodsPlayground.class)))
+		assertThat(Classes.parse(byteCodeOf(MethodsPlayground.class)))
 			.isJava8()
 			.methods(methods -> {
 				methods.size().isEqualTo(3);

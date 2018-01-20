@@ -5,15 +5,16 @@ import static de.flapdoodle.unravel.Classes.byteCodeOf;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.Fields;
 import de.flapdoodle.unravel.types.AccessFlags;
 
-public class FieldsTest extends AbstractClazzParserTest {
+public class FieldsTest {
 	
 	@Test
 	public void fieldTypes() {
-		assertThat(AbstractClazzParserTest.parse(byteCodeOf(Fields.class)))
+		assertThat(Classes.parse(byteCodeOf(Fields.class)))
 			.isJava8()
 			.typeNameIs(Classnames.nameOf(Fields.class))
 			.signature("<K:Ljava/lang/Object;V:Ljava/lang/Object;>Ljava/lang/Object;")

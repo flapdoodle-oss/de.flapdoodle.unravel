@@ -5,14 +5,15 @@ import static de.flapdoodle.unravel.Classes.byteCodeOf;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.Annotations;
 
-public class AnnotationsTest extends AbstractClazzParserTest {
+public class AnnotationsTest {
 	
 	@Test
 	public void retentions() {
-		assertThat(AbstractClazzParserTest.parse(byteCodeOf(Annotations.RetentionSample.class)))
+		assertThat(Classes.parse(byteCodeOf(Annotations.RetentionSample.class)))
 			.isJava8()
 			.annotations(annotations -> {
 				annotations.size().isEqualTo(2);
@@ -25,7 +26,7 @@ public class AnnotationsTest extends AbstractClazzParserTest {
 	
 	@Test
 	public void wrapped() {
-		assertThat(AbstractClazzParserTest.parse(byteCodeOf(Annotations.WrapperSample.class)))
+		assertThat(Classes.parse(byteCodeOf(Annotations.WrapperSample.class)))
 			.isJava8()
 			.annotations(annotations -> {
 				annotations.size().isEqualTo(1);
@@ -61,7 +62,7 @@ public class AnnotationsTest extends AbstractClazzParserTest {
 	
 	@Test
 	public void parameters() {
-		assertThat(AbstractClazzParserTest.parse(byteCodeOf(Annotations.ParameterSample.class)))
+		assertThat(Classes.parse(byteCodeOf(Annotations.ParameterSample.class)))
 			.isJava8()
 			.annotations(annotations -> {
 				annotations.size().isEqualTo(1);

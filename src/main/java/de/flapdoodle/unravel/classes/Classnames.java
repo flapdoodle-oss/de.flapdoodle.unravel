@@ -1,5 +1,6 @@
 package de.flapdoodle.unravel.classes;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 
 import de.flapdoodle.unravel.types.AType;
@@ -19,6 +20,10 @@ public abstract class Classnames {
 		return base.getPackage().getName() + "." + className;
 	}
 
+	public static String anonNameOf(Class<?> base, String ... className) {
+		return base.getName() + "$" + Joiner.on("$").join(className);
+	}
+
 	public static String nameOf(Class<?> type) {
 		return type.getName();
 	}
@@ -33,6 +38,14 @@ public abstract class Classnames {
 
 	public static ATypeName typeNameOf(Class<?> type) {
 		return ATypeName.of(nameOf(type));
+	}
+	
+	public static ATypeName typeNameOf(Class<?> base, String className) {
+		return ATypeName.of(nameOf(base, className));
+	}
+
+	public static ATypeName anonTypeNameOf(Class<?> base, String ... className) {
+		return ATypeName.of(anonNameOf(base, className));
 	}
 
 	private static ImmutableSet<Class<?>> INTERNAL_TYPES=ImmutableSet.<Class<?>>builder()

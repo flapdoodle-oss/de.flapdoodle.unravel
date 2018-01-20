@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.inherit.AbstractBase;
 import de.flapdoodle.unravel.samples.asm.inherit.AbstractExtends;
@@ -17,11 +18,11 @@ import de.flapdoodle.unravel.samples.asm.inherit.LocalInterface;
 import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.InvocationType;
 
-public class InheritanceMethodTest extends AbstractClazzParserTest {
+public class InheritanceMethodTest  {
 	
 	@Test
 	public void methodsOfAbstractBase() {
-		assertThat(parse(byteCodeOf(AbstractBase.class)))
+		assertThat(Classes.parse(byteCodeOf(AbstractBase.class)))
 			.isJava8()
 			.superClass(Object.class)
 			.interfaces()
@@ -38,7 +39,7 @@ public class InheritanceMethodTest extends AbstractClazzParserTest {
 
 	@Test
 	public void methodsOfBase() {
-		assertThat(parse(byteCodeOf(Base.class)))
+		assertThat(Classes.parse(byteCodeOf(Base.class)))
 			.isJava8()
 			.superClass(AbstractBase.class)
 			.interfaces()
@@ -55,7 +56,7 @@ public class InheritanceMethodTest extends AbstractClazzParserTest {
 
 	@Test
 	public void methodsOfLocalInterface() {
-		assertThat(parse(byteCodeOf(LocalInterface.class)))
+		assertThat(Classes.parse(byteCodeOf(LocalInterface.class)))
 			.isJava8()
 			.superClass(Object.class)
 			.interfaces()
@@ -70,7 +71,7 @@ public class InheritanceMethodTest extends AbstractClazzParserTest {
 	
 	@Test
 	public void methodsOfAbstractExtends() {
-		assertThat(parse(byteCodeOf(AbstractExtends.class)))
+		assertThat(Classes.parse(byteCodeOf(AbstractExtends.class)))
 			.isJava8()
 			.superClass(Base.class)
 			.interfaces(Classnames.nameOf(Supplier.class), Classnames.nameOf(LocalInterface.class))
@@ -89,7 +90,7 @@ public class InheritanceMethodTest extends AbstractClazzParserTest {
 
 	@Test
 	public void methodsOfExtendsExtends() {
-		assertThat(parse(byteCodeOf(ExtendsExtends.class)))
+		assertThat(Classes.parse(byteCodeOf(ExtendsExtends.class)))
 			.isJava8()
 			.superClass(AbstractExtends.class)
 			.interfaces()
@@ -108,7 +109,7 @@ public class InheritanceMethodTest extends AbstractClazzParserTest {
 	
 	@Test
 	public void calls() {
-		assertThat(parse(byteCodeOf(Caller.class)))
+		assertThat(Classes.parse(byteCodeOf(Caller.class)))
 			.isJava8()
 			.superClass(Object.class)
 			.interfaces()

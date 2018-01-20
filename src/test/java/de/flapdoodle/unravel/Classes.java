@@ -14,14 +14,29 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
 
+import de.flapdoodle.unravel.asm.ClazzParser;
+import de.flapdoodle.unravel.types.AClass;
 import io.vavr.collection.List;
 
 public class Classes {
 
+	public static Class<?> anonClass(Class<?> base, String ... anonName) {
+		try {
+			return Class.forName(base.getName()+"$"+Joiner.on("$").join(anonName));
+		}
+		catch (ClassNotFoundException e) {
+			throw new RuntimeException("could not load anonClass "+base+""+anonName,e);
+		}
+	}
 	
+	public static AClass parse(Supplier<InputStream> byteCodeOf) {
+		return new ClazzParser().parse(byteCodeOf);
+	}
+
 	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz) {
 		return () -> byteCodeInputStream(clazz);
 	}
