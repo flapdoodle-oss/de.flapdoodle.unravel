@@ -2,12 +2,16 @@ package de.flapdoodle.unravel.signature;
 
 import static org.junit.Assert.assertEquals;
 
+import org.assertj.core.api.IterableAssert;
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
+import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.InnerOuter;
 import de.flapdoodle.unravel.types.AClass;
 import de.flapdoodle.unravel.types.ATypeName;
+import de.flapdoodle.unravel.types.AccessFlags;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 
@@ -37,7 +41,26 @@ public class DefaultTypeSignatureFactoryTest {
 		DefaultTypeSignatureFactory factory = new DefaultTypeSignatureFactory();
 		
 		TypeSignature result = factory.signatureOf(innerOuter, map::get);
+		
+		Assertions.assertThat(result)
+			.isJava8()
+			.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC)
+			.typeNameIs(Classnames.typeNameOf(InnerOuter.class))
+			.innerClasses(level1 -> {
+				level1.size().isEqualTo(4);
+				level1.element(0)
+					.isJava8()
+					.accessFlags()
+					.typeNameIs(Classnames.anonTypeNameOf(InnerOuter.class,"1"))
+					.innerClasses(level1_0 -> {
+					level1_0.size().isEqualTo(3);
+				});
+			});
 
+		IterableAssert<TypeSignature> innerClassesAssert = Assertions.assertThat(result.innerClasses());
+		innerClassesAssert.size().isEqualTo(4);
+		innerClassesAssert.element(0).extracting(TypeSignature::innerClasses).hasSize(1);
+		
 		assertEquals(4, result.innerClasses().size());
 		TypeSignature shouldBeInner_1 = result.innerClasses().get(0);
 		assertEquals(inner_1.typeName(), shouldBeInner_1.typeName());
@@ -54,4 +77,6 @@ public class DefaultTypeSignatureFactoryTest {
 		assertEquals(innerInner.typeName(), shouldBeInnerInner.typeName());
 		assertEquals(0, shouldBeInnerInner.innerClasses().size());
 	}
+	
+	
 }
