@@ -12,7 +12,7 @@ import de.flapdoodle.unravel.samples.asm.basics.InnerOuter;
 import de.flapdoodle.unravel.types.AClass;
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
-import io.vavr.collection.HashMap;
+import io.vavr.collection.List;
 import io.vavr.collection.Map;
 
 public class DefaultTypeSignatureFactoryTest {
@@ -28,15 +28,8 @@ public class DefaultTypeSignatureFactoryTest {
 		AClass inner_2 = Classes.parse(Classes.byteCodeOf(Classes.anonClass(InnerOuter.class,"2")));
 		AClass inner_3 = Classes.parse(Classes.byteCodeOf(Classes.anonClass(InnerOuter.class,"3")));
 		
-		Map<ATypeName, AClass> map=HashMap.<ATypeName, AClass>empty()
-				.put(inner_1.typeName(),inner_1)
-				.put(inner_1_1.typeName(),inner_1_1)
-				.put(inner_1_anonInner.typeName(),inner_1_anonInner)
-				.put(inner.typeName(),inner)
-				.put(innerInner.typeName(),innerInner)
-				.put(inner_2.typeName(),inner_2)
-				.put(inner_3.typeName(),inner_3)
-				;
+		Map<ATypeName, AClass> map = List.of(inner_1, inner_1_1, inner_1_anonInner, inner, innerInner, inner_2, inner_3)
+			.toMap(AClass::typeName, clazz -> clazz);
 		
 		DefaultTypeSignatureFactory factory = new DefaultTypeSignatureFactory();
 		
@@ -74,8 +67,32 @@ public class DefaultTypeSignatureFactoryTest {
 							.typeNameIs(Classnames.typeNameOf(InnerOuter.Inner.class))
 							.innerClasses(level1_0_1 -> {
 								level1_0_1.size().isEqualTo(1);
-							});
+								level1_0_1.element(0)
+									.isJava8()
+									.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC)
+									.typeNameIs(Classnames.typeNameOf(InnerOuter.Inner.InnerInner.class))
+									.innerClasses(level1_0_1_0 -> level1_0_1_0.isEmpty());
+								});
 				});
+				level1.element(1)
+					.isJava8()
+					.accessFlags()
+					.typeNameIs(Classnames.anonNameOf(InnerOuter.class,"2"))
+					.innerClasses(level1_1 -> {
+						level1_1.size().isEqualTo(1);
+						level1_1.element(0)
+							.isJava8()
+							.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC)
+							.typeNameIs(Classnames.typeNameOf(InnerOuter.Inner.class))
+							.innerClasses(level1_1_0 -> {
+								level1_1_0.size().isEqualTo(1);
+								level1_1_0.element(0)
+									.isJava8()
+									.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC)
+									.typeNameIs(Classnames.typeNameOf(InnerOuter.Inner.InnerInner.class))
+									.innerClasses(level1_1_0_0 -> level1_1_0_0.isEmpty());
+							});
+					});
 			});
 
 		IterableAssert<TypeSignature> innerClassesAssert = Assertions.assertThat(result.innerClasses());
