@@ -53,7 +53,28 @@ public class DefaultTypeSignatureFactoryTest {
 					.accessFlags()
 					.typeNameIs(Classnames.anonTypeNameOf(InnerOuter.class,"1"))
 					.innerClasses(level1_0 -> {
-					level1_0.size().isEqualTo(3);
+						level1_0.size().isEqualTo(3);
+						level1_0.element(0)
+							.isJava8()
+							.accessFlags()
+							.typeNameIs(Classnames.anonTypeNameOf(InnerOuter.class,"1","1"))
+							.innerClasses(level1_0_0 -> {
+								level1_0_0.size().isEqualTo(0);
+							});
+						level1_0.element(1)
+							.isJava8()
+							.accessFlags()
+							.typeNameIs(Classnames.anonTypeNameOf(InnerOuter.class,"1","1AnonInner"))
+							.innerClasses(level1_0_1 -> {
+								level1_0_1.size().isEqualTo(0);
+							});
+						level1_0.element(2)
+							.isJava8()
+							.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_STATIC)
+							.typeNameIs(Classnames.typeNameOf(InnerOuter.Inner.class))
+							.innerClasses(level1_0_1 -> {
+								level1_0_1.size().isEqualTo(1);
+							});
 				});
 			});
 

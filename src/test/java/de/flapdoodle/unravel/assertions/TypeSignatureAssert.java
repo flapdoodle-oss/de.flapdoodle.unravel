@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.IterableAssert;
 
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.signature.TypeSignature;
@@ -25,9 +26,14 @@ public class TypeSignatureAssert extends AbstractAssert<TypeSignatureAssert, Typ
 	}
 	
 	public TypeSignatureAssert accessFlags(AccessFlags ... values) {
-		Assertions.assertThat(actual.accessFlags())
-			.describedAs(propertyDescription("accessFlags"))
-			.containsOnly(values);
+		IterableAssert<AccessFlags> current = Assertions.assertThat(actual.accessFlags())
+			.describedAs(propertyDescription("accessFlags"));
+		
+		if (values.length==0) {
+			current.isEmpty();
+		} else {
+			current.containsOnly(values);
+		}
 		return this;
 	}
 	
