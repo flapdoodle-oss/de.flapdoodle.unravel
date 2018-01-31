@@ -1,6 +1,7 @@
 package de.flapdoodle.unravel.signature;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import de.flapdoodle.checks.Preconditions;
 import de.flapdoodle.unravel.types.AClass;
@@ -18,32 +19,29 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	public TypeSignature signatureOf(AClass src, Function<ATypeName, Option<AClass>> classOfTypeName) {
 		return signatureOf(src, classOfTypeName, Option.none(), HashSet.empty());
 	}
-
-	private static List<TypeSignature> resolve(List<AnInnerClass> innerClasses, Function<ATypeName, Option<AClass>> classOfTypeName, Set<ATypeName> visitedTypes) {
-		return innerClasses.map(inner -> {
-			Option<AClass> resolvedClass = classOfTypeName.apply(inner.typeName());
-			Preconditions.checkArgument(resolvedClass.isDefined(), "could not resolve class %s", inner.typeName());
-			return signatureOf(resolvedClass.get(), classOfTypeName, Option.of(inner.accessFlags()), visitedTypes);
-		});
-	}
-
+	
 	private static TypeSignature signatureOf(AClass src, Function<ATypeName, Option<AClass>> classOfTypeName, Option<Set<AccessFlags>> overrideAccessFlags, Set<ATypeName> visitedTypes) {
-		System.out.println(src.typeName()+" -> "+src.innerClasses());
-		
-		Set<ATypeName> newFilter = visitedTypes.add(src.typeName());
-		
 		return TypeSignature.builder(src.typeName())
-				.javaVersion(src.javaVersion())
-				.accessFlags(overrideAccessFlags.getOrElse(src.accessFlags()))
-				.superClazz(src.superClazz())
-				.interfaces(src.interfaces())
-				.innerClasses(resolve(filtered(src.innerClasses(), newFilter), classOfTypeName, newFilter))
-				.build();
+			.javaVersion(src.javaVersion())
+			.accessFlags(src.accessFlags())
+			.superClazz(src.superClazz())
+			.interfaces(src.interfaces())
+			.innerClasses(innerClassesOf(src.typeName(), classOfTypeName, src.innerClasses(),visitedTypes.add(src.typeName())))
+			.build();
 	}
 
-	private static List<AnInnerClass> filtered(List<AnInnerClass> innerClasses, Set<ATypeName> skip) {
-		return innerClasses
-				.filter(in -> !skip.contains(in.typeName()));
+	private static List<TypeSignature> innerClassesOf(ATypeName typeName, Function<ATypeName, Option<AClass>> classOfTypeName, List<AnInnerClass> innerClasses, Set<ATypeName> visitedTypes) {
+		return innerClasses.filter(innerClassesWithoutOrWithMatchingParent(typeName, visitedTypes))
+				.map(inner -> {
+					Option<AClass> optResolved = classOfTypeName.apply(inner.typeName());
+					Preconditions.checkArgument(optResolved.isDefined(), "could not resolve %s", inner.typeName());
+					return signatureOf(optResolved.get(), classOfTypeName, Option.of(inner.accessFlags()), visitedTypes);
+				});
 	}
+
+	private static Predicate<? super AnInnerClass> innerClassesWithoutOrWithMatchingParent(ATypeName typeName, Set<ATypeName> visitedTypes) {
+		return inner -> !inner.typeName().equals(typeName) && !visitedTypes.contains(inner.typeName()) && (!inner.outerName().isPresent() || inner.outerName().get().equals(typeName));
+	}
+
 
 }
