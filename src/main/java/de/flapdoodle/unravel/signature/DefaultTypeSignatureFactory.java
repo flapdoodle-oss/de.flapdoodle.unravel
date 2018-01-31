@@ -21,6 +21,13 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	}
 	
 	private static TypeSignature signatureOf(AClass src, Function<ATypeName, Option<AClass>> classOfTypeName, Option<Set<AccessFlags>> overrideAccessFlags, Set<ATypeName> visitedTypes) {
+		// anon classes -> src.outerClazz is set
+		// non anon classes -> no outerClazz
+
+		src.annotations();
+		src.fields();
+		src.methods();
+		
 		return TypeSignature.builder(src.typeName())
 			.javaVersion(src.javaVersion())
 			.accessFlags(src.accessFlags())

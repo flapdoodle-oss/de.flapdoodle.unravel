@@ -28,7 +28,7 @@ public class DefaultTypeSignatureFactoryTest {
 		Map<ATypeName, AClass> map = List.of(inner_1, inner_1_1, inner_1_anonInner, inner, innerInner, inner_2, inner_3)
 			.toMap(AClass::typeName, clazz -> clazz);
 		
-		DefaultTypeSignatureFactory factory = new DefaultTypeSignatureFactory();
+		SignatureOfAClassFactory factory = new DefaultTypeSignatureFactory();
 		
 		TypeSignature result = factory.signatureOf(innerOuter, map::get);
 		

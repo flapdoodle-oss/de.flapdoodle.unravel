@@ -19,7 +19,7 @@ public class FieldsTest {
 			.typeNameIs(Classnames.nameOf(Fields.class))
 			.signature("<K:Ljava/lang/Object;V:Ljava/lang/Object;>Ljava/lang/Object;")
 			.fields(fields -> {
-				fields.size().isEqualTo(4);
+				fields.size().isEqualTo(6);
 				fields.element(0)
 					.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC, AccessFlags.ACC_FINAL)
 					.name("privateStaticFinalString")
@@ -48,6 +48,20 @@ public class FieldsTest {
 					.arrayDimension(0)
 					.signature("Ljava/util/Map<TK;TV;>;")
 					.hasNoValue();
+				fields.element(4)
+					.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_FINAL)
+					.name("privateStringFromMethod")
+					.clazz("java.lang.String")
+					.arrayDimension(0)
+					.hasNoSignature()
+					.hasNoValue();
+				fields.element(5)
+					.accessFlags(AccessFlags.ACC_PRIVATE, AccessFlags.ACC_FINAL)
+					.name("privateStringFromField")
+					.clazz("java.lang.String")
+					.arrayDimension(0)
+					.hasNoSignature()
+					.value("Foo");
 			});
 		
 	}

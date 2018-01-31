@@ -13,7 +13,15 @@ public class Fields<K,V> {
 	
 	public Map<K,V> publicMap=new LinkedHashMap<>();
 	
+	private final String privateStringFromMethod = someString();
+	
+	private final String privateStringFromField = privateStaticFinalString;
+	
 	public Fields() {
 		privateFinalString="Bar";
+	}
+	
+	public static String someString() {
+		return "some";
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.immutables.builder.Builder.Parameter;
 import org.immutables.value.Value.Immutable;
+import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
@@ -12,6 +13,7 @@ import io.vavr.collection.List;
 import io.vavr.collection.Set;
 
 @Immutable
+@VavrEncodingEnabled
 public interface TypeSignature {
 	@Parameter
 	ATypeName typeName();
@@ -19,7 +21,6 @@ public interface TypeSignature {
 	Set<AccessFlags> accessFlags();
 	Optional<ATypeName> superClazz();
 	List<ATypeName> interfaces();
-	
 	List<TypeSignature> innerClasses();
 	
 	// provides
