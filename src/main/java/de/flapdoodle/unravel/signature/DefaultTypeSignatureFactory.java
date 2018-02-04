@@ -4,10 +4,16 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import de.flapdoodle.checks.Preconditions;
+import de.flapdoodle.unravel.signature.TypeSignature.Field;
+import de.flapdoodle.unravel.signature.TypeSignature.Method;
+import de.flapdoodle.unravel.signature.TypeSignature.Uses;
 import de.flapdoodle.unravel.types.AClass;
+import de.flapdoodle.unravel.types.AField;
+import de.flapdoodle.unravel.types.AMethod;
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.AnInnerClass;
+import de.flapdoodle.unravel.types.Calls;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
@@ -21,12 +27,9 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	}
 	
 	private static TypeSignature signatureOf(AClass src, Function<ATypeName, Option<AClass>> classOfTypeName, Option<Set<AccessFlags>> overrideAccessFlags, Set<ATypeName> visitedTypes) {
-		// anon classes -> src.outerClazz is set
-		// non anon classes -> no outerClazz
-
 		src.annotations();
-		src.fields();
-		src.methods();
+		
+		// TODO uses
 		
 		return TypeSignature.builder(src.typeName())
 			.javaVersion(src.javaVersion())
@@ -34,9 +37,48 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 			.superClazz(src.superClazz())
 			.interfaces(src.interfaces())
 			.innerClasses(innerClassesOf(src.typeName(), classOfTypeName, src.innerClasses(),visitedTypes.add(src.typeName())))
+			.fields(asField(src.fields()))
+			.methods(asMethod(src.methods()))
+			.uses(usesOf(src))
 			.build();
 	}
 
+	private static Uses usesOf(AClass src) {
+		ImmutableUses.Builder builder = Uses.builder();
+		fillWith(builder, src);
+		return builder.build();
+	}
+
+	private static void fillWith(ImmutableUses.Builder builder, AClass src) {
+		src.methods().forEach(m -> {
+			Calls calls = m.calls();
+			
+			calls.typeReferenceCalls().forEach(tr -> {
+				builder.addTypes(tr.clazz());
+			});
+			calls.fieldCalls();
+		});
+	}
+
+	private static List<Method> asMethod(List<AMethod> methods) {
+		return methods.map(m -> Method.builder()
+				.name(m.name())
+				.accessFlags(m.accessFlags())
+				.returnType(m.returnType())
+				.parameters(m.parameters())
+				.build());
+	}
+
+	private static List<Field> asField(List<AField> fields) {
+		return fields.map(f -> Field.builder()
+				.name(f.name())
+				.type(f.type())
+				.accessFlags(f.accessFlags())
+				.build());
+	}
+
+	// anon classes -> src.outerClazz is set
+	// non anon classes -> no outerClazz
 	private static List<TypeSignature> innerClassesOf(ATypeName typeName, Function<ATypeName, Option<AClass>> classOfTypeName, List<AnInnerClass> innerClasses, Set<ATypeName> visitedTypes) {
 		return innerClasses.filter(innerClassesWithoutOrWithMatchingParent(typeName, visitedTypes))
 				.map(inner -> {
