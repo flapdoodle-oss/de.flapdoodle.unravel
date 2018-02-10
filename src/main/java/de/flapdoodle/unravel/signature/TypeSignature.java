@@ -54,6 +54,7 @@ public interface TypeSignature {
 	// uses
 	// -- fields, methods, annotations, types
 	Uses uses();
+	Usage usage();
 	
 	@Immutable
 	interface Uses {
