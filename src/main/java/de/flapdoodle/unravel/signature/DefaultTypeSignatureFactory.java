@@ -10,13 +10,17 @@ import de.flapdoodle.unravel.signature.TypeSignature.Uses;
 import de.flapdoodle.unravel.types.AClass;
 import de.flapdoodle.unravel.types.AField;
 import de.flapdoodle.unravel.types.AMethod;
+import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.AnAnnotation;
 import de.flapdoodle.unravel.types.AnInnerClass;
 import de.flapdoodle.unravel.types.Calls;
+import de.flapdoodle.unravel.types.Calls.MethodCall;
+import io.vavr.collection.HashMap;
 import io.vavr.collection.HashSet;
 import io.vavr.collection.List;
+import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import io.vavr.control.Option;
 
@@ -52,32 +56,48 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	}
 	
 	private static void usagesOf(AClass src, UsageListener usageListener) {
-		src.superClazz().ifPresent(usageListener::using);
-		src.interfaces().forEach(usageListener::using);
+		src.superClazz().ifPresent(usageListener::type);
+		src.interfaces().forEach(usageListener::type);
 		src.annotations().forEach(annotations -> usagesOf(annotations, usageListener));
 		src.fields().forEach(field -> {
 			field.annotations().forEach(annotation -> usagesOf(annotation, usageListener));
-			usageListener.using(field.type().clazz());
+			usageListener.type(field.type().clazz());
 		});
 		src.methods().forEach(method -> {
 			method.annotations().forEach(annotation -> usagesOf(annotation, usageListener));
-			method.exceptions().forEach(usageListener::using);
-			method.parameters().forEach(parameter -> usageListener.using(parameter.clazz()));
-			usageListener.using(method.returnType().clazz());
+			method.exceptions().forEach(usageListener::type);
+			method.parameters().forEach(parameter -> usageListener.type(parameter.clazz()));
+			usageListener.type(method.returnType().clazz());
 			usagesOf(method.calls(), usageListener);
 		});
 	}
 
 	private static void usagesOf(Calls calls, UsageListener usageListener) {
 		calls.fieldCalls().forEach(fieldCall -> {
-			usageListener.using(fieldCall.clazz());
-			usageListener.using(fieldCall.type().clazz());
+			usageListener.field(fieldCall.clazz(), fieldCall.name(), fieldCall.type(), fieldCall.staticCall());
+		});
+		
+		calls.methodCalls().forEach(methodCall -> {
+			usageOf(methodCall, usageListener);
+		});
+		
+		calls.lambdaCalls().forEach(lambda -> {
+			// TODO
+			usageOf(lambda.delegate(), usageListener);
 		});
 	}
 
+	private static void usageOf(MethodCall methodCall, UsageListener usageListener) {
+		usageListener.method(methodCall.clazz(), methodCall.name(), methodCall.signature(), methodCall.invocationType());
+	}
+
 	private static void usagesOf(AnAnnotation annotation, UsageListener usageListener) {
+		usageListener.annotation(annotation.clazz(), parametersOf(annotation));
+	}
+
+	private static Map<String, AType> parametersOf(AnAnnotation annotation) {
 		// TODO - lots of things to do
-		usageListener.using(annotation.clazz());
+		return HashMap.empty();
 	}
 
 	private static Uses usesOf(AClass src) {

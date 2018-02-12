@@ -53,7 +53,6 @@ public interface Usage {
 	
 	@Immutable
 	interface UsedAnnotation {
-		ATypeName type();
 		Map<String, AType> parameters();
 		
 		public static ImmutableUsedAnnotation.Builder builder() {
@@ -63,7 +62,6 @@ public interface Usage {
 	
 	@Immutable
 	interface UsedField {
-		ATypeName clazz();
 		String name();
 		AType type();
 		boolean staticCall();
@@ -75,7 +73,6 @@ public interface Usage {
 	
 	@Immutable
 	interface UsedMethod {
-		ATypeName clazz();
 		String name();
 		AMethodSignature signature();
 		InvocationType invocationType();
