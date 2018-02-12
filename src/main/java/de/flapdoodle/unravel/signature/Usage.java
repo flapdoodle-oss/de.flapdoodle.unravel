@@ -4,10 +4,10 @@ import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
-import de.flapdoodle.checks.Preconditions;
+import de.flapdoodle.unravel.types.AMethodSignature;
 import de.flapdoodle.unravel.types.AType;
 import de.flapdoodle.unravel.types.ATypeName;
-import io.vavr.collection.List;
+import de.flapdoodle.unravel.types.InvocationType;
 import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 
@@ -15,20 +15,35 @@ import io.vavr.collection.Set;
 @VavrEncodingEnabled
 public interface Usage {
 
-	List<UsedType> types();
+	Map<ATypeName, UsedType> types();
 	
+	@Auxiliary
+	default Usage merge(Usage other) {
+		return builder()
+				.types(types().merge(other.types(), UsedType::merge))
+				.build();
+	}
+	
+	public static ImmutableUsage.Builder builder() {
+		return ImmutableUsage.builder();
+	}
+		
 	@Immutable
 	interface UsedType {
-		ATypeName type();
 		Set<UsedAnnotation> annotations();
 		Set<UsedField> fields();
 		Set<UsedMethod> methods();
 		
 		@Auxiliary
 		default UsedType merge(UsedType other) {
-			Preconditions.checkArgument(type().equals(other.type()), "different types: %s != %s", type(), other.type());
-			
-			return this;
+			return builder()
+					.addAllAnnotations(annotations())
+					.addAllAnnotations(other.annotations())
+					.addAllFields(fields())
+					.addAllFields(other.fields())
+					.addAllMethods(methods())
+					.addAllMethods(other.methods())
+					.build();
 		}
 		
 		public static ImmutableUsedType.Builder builder() {
@@ -48,6 +63,10 @@ public interface Usage {
 	
 	@Immutable
 	interface UsedField {
+		ATypeName clazz();
+		String name();
+		AType type();
+		boolean staticCall();
 		
 		public static ImmutableUsedField.Builder builder() {
 			return ImmutableUsedField.builder();
@@ -56,13 +75,14 @@ public interface Usage {
 	
 	@Immutable
 	interface UsedMethod {
+		ATypeName clazz();
+		String name();
+		AMethodSignature signature();
+		InvocationType invocationType();
 		
 		public static ImmutableUsedMethod.Builder builder() {
 			return ImmutableUsedMethod.builder();
 		}
 	}
 	
-	public static ImmutableUsage.Builder builder() {
-		return ImmutableUsage.builder();
-	}
 }

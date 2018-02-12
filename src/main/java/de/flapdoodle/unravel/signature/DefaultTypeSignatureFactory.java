@@ -12,7 +12,6 @@ import de.flapdoodle.unravel.types.AField;
 import de.flapdoodle.unravel.types.AMethod;
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.AnAnnotation;
 import de.flapdoodle.unravel.types.AnInnerClass;
 import de.flapdoodle.unravel.types.Calls;
 import io.vavr.collection.HashSet;
@@ -46,17 +45,9 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	}
 	
 	private static Usage usagesOf(AClass src) {
-		return usagesOf(src.annotations());
+		return Usage.builder().build();
 	}
-
-	private static Usage usagesOf(List<AnAnnotation> annotations) {
-		ImmutableUsage.Builder builder = Usage.builder();
-		annotations.forEach(annotation -> {
-			//annotation.
-		});
-		return builder.build();
-	}
-
+	
 	private static Uses usesOf(AClass src) {
 		ImmutableUses.Builder builder = Uses.builder();
 		fillWith(builder, src);
