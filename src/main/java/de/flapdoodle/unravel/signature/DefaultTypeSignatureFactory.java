@@ -12,6 +12,7 @@ import de.flapdoodle.unravel.types.AField;
 import de.flapdoodle.unravel.types.AMethod;
 import de.flapdoodle.unravel.types.ATypeName;
 import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.AnAnnotation;
 import de.flapdoodle.unravel.types.AnInnerClass;
 import de.flapdoodle.unravel.types.Calls;
 import io.vavr.collection.HashSet;
@@ -45,9 +46,40 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	}
 	
 	private static Usage usagesOf(AClass src) {
-		return Usage.builder().build();
+		CollectingUsageListener usageListener = new CollectingUsageListener();
+		usagesOf(src, usageListener);
+		return usageListener.aggregate();
 	}
 	
+	private static void usagesOf(AClass src, UsageListener usageListener) {
+		src.superClazz().ifPresent(usageListener::using);
+		src.interfaces().forEach(usageListener::using);
+		src.annotations().forEach(annotations -> usagesOf(annotations, usageListener));
+		src.fields().forEach(field -> {
+			field.annotations().forEach(annotation -> usagesOf(annotation, usageListener));
+			usageListener.using(field.type().clazz());
+		});
+		src.methods().forEach(method -> {
+			method.annotations().forEach(annotation -> usagesOf(annotation, usageListener));
+			method.exceptions().forEach(usageListener::using);
+			method.parameters().forEach(parameter -> usageListener.using(parameter.clazz()));
+			usageListener.using(method.returnType().clazz());
+			usagesOf(method.calls(), usageListener);
+		});
+	}
+
+	private static void usagesOf(Calls calls, UsageListener usageListener) {
+		calls.fieldCalls().forEach(fieldCall -> {
+			usageListener.using(fieldCall.clazz());
+			usageListener.using(fieldCall.type().clazz());
+		});
+	}
+
+	private static void usagesOf(AnAnnotation annotation, UsageListener usageListener) {
+		// TODO - lots of things to do
+		usageListener.using(annotation.clazz());
+	}
+
 	private static Uses usesOf(AClass src) {
 		ImmutableUses.Builder builder = Uses.builder();
 		fillWith(builder, src);
