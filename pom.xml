@@ -45,6 +45,36 @@
 		https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven -->
 	<build>
 		<plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+            <configuration>
+                <compilerId>eclipse</compilerId>
+                <source>${source.jdk.version}</source>
+                <target>${target.jdk.version}</target>
+                <!-- Passing arguments is a trainwreck, see https://issues.apache.org/jira/browse/MCOMPILER-123 -->
+                <compilerArguments>
+                    <properties>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</properties>
+                </compilerArguments>
+                <showWarnings>true</showWarnings>
+                <showDeprecation>true</showDeprecation>
+            </configuration>
+
+            <dependencies>
+                <dependency>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-compiler-eclipse</artifactId>
+                    <version>2.8.4</version>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.eclipse.jdt</groupId>
+                    <artifactId>ecj</artifactId>
+                    <version>3.13.101</version>
+                </dependency>
+            </dependencies>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-toolchains-plugin</artifactId>
