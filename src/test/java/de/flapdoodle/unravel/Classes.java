@@ -54,6 +54,9 @@ public class Classes {
 	}
 
 	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz) {
+		if (true) {
+			return Compilers.JavaC.byteCodeOf(clazz);
+		}
 		return () -> byteCodeInputStream(clazz);
 	}
 	

@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import de.flapdoodle.unravel.Classes;
+import de.flapdoodle.unravel.Compilers;
 import de.flapdoodle.unravel.assertions.AnAnnotationsAssert;
 import de.flapdoodle.unravel.assertions.FieldCallsAssert;
 import de.flapdoodle.unravel.assertions.MethodCallsAssert;
@@ -67,7 +68,7 @@ public class MethodsTest {
 				.addParameters(typeOf(MethodType.class))
 				.build();
 
-		assertThat(Classes.parse(byteCodeOf(MethodLambdas.class)))
+		assertThat(Classes.parse(Compilers.JavaC.byteCodeOf(MethodLambdas.class)))
 		.isJava8()
 		.methods(methods -> {
 			methods.size().isEqualTo(9);
@@ -180,7 +181,7 @@ public class MethodsTest {
 							.methodAsLambdaParameterTypes(typeOf(String.class))
 							.delegate(delegate -> {
 								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
-									.name("lambda$3")
+									.name("lambda$lambdas$0")
 									.returnType(typeOf(String.class))
 									.parameterTypes(typeOf(String.class))
 									.invocationType(InvocationType.INVOKEDYNAMIC);
@@ -196,7 +197,7 @@ public class MethodsTest {
 							.methodAsLambdaParameterTypes(typeOf(String.class))
 							.delegate(delegate -> {
 								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
-									.name("lambda$4")
+									.name("lambda$lambdas$1")
 									.returnType(typeOf(boolean.class))
 									.parameterTypes(typeOf(String.class))
 									.invocationType(InvocationType.INVOKEDYNAMIC);
@@ -265,7 +266,7 @@ public class MethodsTest {
 				.calls(calls -> {
 					calls.fieldCalls(FieldCallsAssert::isEmpty);
 					calls.methodCalls(methodCalls -> {
-						methodCalls.size().isEqualTo(3);
+						methodCalls.size().isEqualTo(4);
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(StringBuilder.class))
 							.name("<init>")
@@ -284,7 +285,7 @@ public class MethodsTest {
 				.calls(calls -> {
 					calls.fieldCalls(FieldCallsAssert::isEmpty);
 					calls.methodCalls(methodCalls -> {
-						methodCalls.size().isEqualTo(4);
+						methodCalls.size().isEqualTo(5);
 						methodCalls.element(0)
 							.clazz(Classnames.nameOf(StringBuilder.class))
 							.name("<init>")
@@ -296,16 +297,7 @@ public class MethodsTest {
 					});
 				});
 			;
-			methods.element(7).name("lambda$3")
-				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
-				.returnType(typeOf(String.class))
-				.parameterTypes(typeOf(String.class))
-				.calls(calls -> {
-					calls.fieldCalls(FieldCallsAssert::isEmpty);
-					calls.methodCalls(MethodCallsAssert::isEmpty);
-					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
-				});
-			methods.element(8).name("lambda$4")
+			methods.element(7).name("lambda$lambdas$1")
 				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
 				.returnType(typeOf(boolean.class))
 				.parameterTypes(typeOf(String.class))
@@ -318,6 +310,15 @@ public class MethodsTest {
 							.name("length")
 							.returnType(typeOf(int.class));
 					});
+					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
+				});
+			methods.element(8).name("lambda$lambdas$0")
+				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
+				.returnType(typeOf(String.class))
+				.parameterTypes(typeOf(String.class))
+				.calls(calls -> {
+					calls.fieldCalls(FieldCallsAssert::isEmpty);
+					calls.methodCalls(MethodCallsAssert::isEmpty);
 					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
 				});
 		});
@@ -405,7 +406,7 @@ public class MethodsTest {
 		assertThat(Classes.parse(byteCodeOf(MethodSignatures.class)))
 			.isJava8()
 			.methods(methods -> {
-				methods.size().isEqualTo(19);
+				methods.size().isEqualTo(20);
 				methods.element(0).name("privateStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PRIVATE);
 				methods.element(1).name("protectedStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PROTECTED);
 				methods.element(2).name("packageProtectedStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC);
@@ -472,6 +473,11 @@ public class MethodsTest {
 					.parameterTypes(typeOf(Object.class))
 					.exceptions()
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_BRIDGE);
+				methods.element(19).name("<clinit>")
+					.returnType(typeOf(void.class))
+					.parameterTypes()
+					.exceptions()
+					.accessFlags(AccessFlags.ACC_STATIC);
 			});
 	}
 	

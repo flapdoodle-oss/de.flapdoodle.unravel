@@ -141,29 +141,29 @@ public class ClassesTest {
 			.innerClasses(classes -> {
 				classes.size().isEqualTo(8);
 				classes.element(0)
-					.typeName(Classnames.nameOf(Inner.AnnotationNonStatic.class))
-					.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION);
-				classes.element(1)
-					.typeName(Classnames.nameOf(Inner.AnnotationStatic.class))
-					.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION);
-				classes.element(2)
-					.typeName(Classnames.nameOf(Inner.ClassNonStatic.class))
-					.accessFlags(AccessFlags.ACC_PUBLIC);
-				classes.element(3)
-					.typeName(Classnames.nameOf(Inner.ClassStatic.class))
-					.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC);
-				classes.element(4)
-					.typeName(Classnames.nameOf(Inner.EnumNonStatic.class))
-					.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_FINAL);
-				classes.element(5)
 					.typeName(Classnames.nameOf(Inner.EnumStatic.class))
 					.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_FINAL);
-				classes.element(6)
-					.typeName(Classnames.nameOf(Inner.InterfaceNonStatic.class))
-					.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT);
-				classes.element(7)
+				classes.element(1)
+					.typeName(Classnames.nameOf(Inner.EnumNonStatic.class))
+					.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ENUM, AccessFlags.ACC_FINAL);
+				classes.element(2)
+					.typeName(Classnames.nameOf(Inner.AnnotationStatic.class))
+					.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION);
+				classes.element(3)
+					.typeName(Classnames.nameOf(Inner.AnnotationNonStatic.class))
+					.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_ABSTRACT, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ANNOTATION);
+				classes.element(4)
 					.typeName(Classnames.nameOf(Inner.InterfaceStatic.class))
 					.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT);
+				classes.element(5)
+					.typeName(Classnames.nameOf(Inner.InterfaceNonStatic.class))
+					.accessFlags(AccessFlags.ACC_STATIC /* <-- unexpected */, AccessFlags.ACC_PUBLIC, AccessFlags.ACC_INTERFACE, AccessFlags.ACC_ABSTRACT);
+				classes.element(6)
+					.typeName(Classnames.nameOf(Inner.ClassStatic.class))
+					.accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PUBLIC);
+				classes.element(7)
+					.typeName(Classnames.nameOf(Inner.ClassNonStatic.class))
+					.accessFlags(AccessFlags.ACC_PUBLIC);
 			});
 		assertThat(Classes.parse(byteCodeOf(Inner.ClassNonStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_SUPER).superClass(Object.class);
 		assertThat(Classes.parse(byteCodeOf(Inner.ClassStatic.class))).isJava8().accessFlags(AccessFlags.ACC_PUBLIC, /*AccessFlags.ACC_STATIC,*/ AccessFlags.ACC_SUPER).superClass(Object.class);
@@ -185,31 +185,31 @@ public class ClassesTest {
 			.innerClasses(classes -> {
 				classes.size().isEqualTo(4); 
 				classes.element(0)
-					.typeName(Classnames.nameOf(InnerOuter.class)+"$1")
-					.noInnerName()
-					.noOuterName()
-					.accessFlags();
-				classes.element(1)
-					.typeName(Classnames.nameOf(InnerOuter.class)+"$2")
-					.noInnerName()
-					.noOuterName()
-					.accessFlags();
-				classes.element(2)
-					.typeName(Classnames.nameOf(InnerOuter.class)+"$3")
-					.noInnerName()
-					.noOuterName()
-					.accessFlags();
-				classes.element(3)
 					.typeName(Classnames.nameOf(InnerOuter.Inner.class))
 					.innerName(Inner.class.getSimpleName())
 					.outerName(Classnames.nameOf(InnerOuter.class))
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_STATIC);
+				classes.element(1)
+					.typeName(Classnames.nameOf(InnerOuter.class)+"$3")
+					.noInnerName()
+					.noOuterName()
+					.accessFlags();
+				classes.element(2)
+					.typeName(Classnames.nameOf(InnerOuter.class)+"$2")
+					.noInnerName()
+					.noOuterName()
+					.accessFlags();
+				classes.element(3)
+					.typeName(Classnames.nameOf(InnerOuter.class)+"$1")
+					.noInnerName()
+					.noOuterName()
+					.accessFlags(AccessFlags.ACC_STATIC);
 			});
 		
 		assertThat(Classes.parse(byteCodeOf(Classes.anonClass(InnerOuter.class,"1"))))
 			.isJava8()
 			.typeNameIs(Classnames.nameOf(InnerOuter.class)+"$1")
-			.accessFlags(AccessFlags.ACC_SUPER)
+			.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_FINAL)
 			.superClass(InnerOuter.Inner.class)
 			.innerClasses(classes -> {
 				classes.size().isEqualTo(4); 
@@ -217,15 +217,15 @@ public class ClassesTest {
 					.typeName(Classnames.nameOf(InnerOuter.class)+"$1")
 					.noInnerName()
 					.noOuterName()
-					.accessFlags();
+					.accessFlags(AccessFlags.ACC_STATIC);
 				classes.element(1)
-					.typeName(Classnames.nameOf(InnerOuter.class)+"$1$1")
-					.noInnerName()
+					.typeName(Classnames.nameOf(InnerOuter.class)+"$1$1AnonInner")
+					.innerName("AnonInner")
 					.noOuterName()
 					.accessFlags();
 				classes.element(2)
-					.typeName(Classnames.nameOf(InnerOuter.class)+"$1$1AnonInner")
-					.innerName("AnonInner")
+					.typeName(Classnames.nameOf(InnerOuter.class)+"$1$1")
+					.noInnerName()
 					.noOuterName()
 					.accessFlags();
 				classes.element(3)

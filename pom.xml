@@ -44,6 +44,22 @@
 		https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide 
 		https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven -->
 	<build>
+		<testResources>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**/*.java</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.txt</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
 		<plugins>
 			<!-- 
 			https://stackoverflow.com/questions/33164976/using-eclipse-java-compiler-ecj-in-maven-builds

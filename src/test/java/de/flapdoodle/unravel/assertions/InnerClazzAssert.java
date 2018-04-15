@@ -30,7 +30,11 @@ public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, AnInnerCl
 	}
 	
 	public InnerClazzAssert accessFlags(AccessFlags ... values) {
-		Assertions.assertThat(actual.accessFlags()).describedAs(propertyDescription("accessFlags")).containsOnly(values);
+		if (values.length==0) {
+			Assertions.assertThat(actual.accessFlags()).describedAs(propertyDescription("accessFlags")).isEmpty();;
+		} else {
+			Assertions.assertThat(actual.accessFlags()).describedAs(propertyDescription("accessFlags")).containsOnly(values);
+		}
 		return this;
 	}
 	
