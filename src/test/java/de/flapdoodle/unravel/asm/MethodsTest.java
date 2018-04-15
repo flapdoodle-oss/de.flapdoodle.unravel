@@ -1,3 +1,19 @@
+/**
+ * Copyright (C) 2017
+ *   Michael Mosmann <michael@mosmann.de>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.flapdoodle.unravel.asm;
 
 import static de.flapdoodle.unravel.Assertions.assertThat;
@@ -164,7 +180,7 @@ public class MethodsTest {
 							.methodAsLambdaParameterTypes(typeOf(String.class))
 							.delegate(delegate -> {
 								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
-									.name("lambda$0")
+									.name("lambda$3")
 									.returnType(typeOf(String.class))
 									.parameterTypes(typeOf(String.class))
 									.invocationType(InvocationType.INVOKEDYNAMIC);
@@ -180,7 +196,7 @@ public class MethodsTest {
 							.methodAsLambdaParameterTypes(typeOf(String.class))
 							.delegate(delegate -> {
 								delegate.clazz(Classnames.nameOf(MethodLambdas.class))
-									.name("lambda$1")
+									.name("lambda$4")
 									.returnType(typeOf(boolean.class))
 									.parameterTypes(typeOf(String.class))
 									.invocationType(InvocationType.INVOKEDYNAMIC);
@@ -280,7 +296,7 @@ public class MethodsTest {
 					});
 				});
 			;
-			methods.element(7).name("lambda$0")
+			methods.element(7).name("lambda$3")
 				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
 				.returnType(typeOf(String.class))
 				.parameterTypes(typeOf(String.class))
@@ -289,7 +305,7 @@ public class MethodsTest {
 					calls.methodCalls(MethodCallsAssert::isEmpty);
 					calls.typeReferenceCalls(TypeReferenceCallsAssert::isEmpty);
 				});
-			methods.element(8).name("lambda$1")
+			methods.element(8).name("lambda$4")
 				.accessFlags(AccessFlags.ACC_SYNTHETIC, AccessFlags.ACC_PRIVATE, AccessFlags.ACC_STATIC)
 				.returnType(typeOf(boolean.class))
 				.parameterTypes(typeOf(String.class))
