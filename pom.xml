@@ -45,6 +45,10 @@
 		https://docs.sonatype.org/display/Repository/How+To+Generate+PGP+Signatures+With+Maven -->
 	<build>
 		<plugins>
+			<!-- 
+			https://stackoverflow.com/questions/33164976/using-eclipse-java-compiler-ecj-in-maven-builds
+			
+			eclipse compiler: problems so far -> apt classes generated to wrong directory
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.7.0</version>
@@ -52,7 +56,7 @@
                 <compilerId>eclipse</compilerId>
                 <source>${source.jdk.version}</source>
                 <target>${target.jdk.version}</target>
-                <!-- Passing arguments is a trainwreck, see https://issues.apache.org/jira/browse/MCOMPILER-123 -->
+                < ! - - Passing arguments is a trainwreck, see https://issues.apache.org/jira/browse/MCOMPILER-123 - - >
                 <compilerArguments>
                     <properties>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</properties>
                 </compilerArguments>
@@ -74,6 +78,7 @@
                 </dependency>
             </dependencies>
 			</plugin>
+			-->
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -400,6 +405,38 @@
 		  <artifactId>assertj-core</artifactId>
 		  <version>3.8.0</version>
 		  <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.testing.compile</groupId>
+			<artifactId>compile-testing</artifactId>
+			<version>0.15</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.truth</groupId>
+					<artifactId>truth</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.truth.extensions</groupId>
+					<artifactId>truth-java8-extension</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.google.truth</groupId>
+			<artifactId>truth</artifactId>
+			<version>0.39</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.truth.extensions</groupId>
+			<artifactId>truth-java8-extension</artifactId>
+			<version>0.39</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
