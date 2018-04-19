@@ -15,40 +15,33 @@ import com.google.testing.compile.Compilation;
 import com.google.testing.compile.Compilation.Status;
 import com.google.testing.compile.JavaFileObjects;
 
+import io.vavr.collection.List;
+import io.vavr.collection.Stream;
+
 public class Compilers {
 	
 	public static class JavaC {
-		public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz) {
-			return () -> byteCodeInputStream(JavaSource.of(clazz));
-		}
-		
-		public static Supplier<InputStream> byteCodeOf(Class<?> base, String realClassName) {
-			return () -> byteCodeInputStream(JavaSource.ofUnaccessableClass(base, realClassName));
-		}
-		
-		public static Supplier<InputStream> byteCodeOf(JavaSource javaSource) {
+		public static Supplier<InputStream> byteCodeOf(JavaSource javaSource, JavaSource ... otherSources) {
 			return () -> byteCodeInputStream(javaSource);
 		}
 		
-		private static InputStream byteCodeInputStream(JavaSource javaSource) {
+		private static InputStream byteCodeInputStream(JavaSource javaSource, JavaSource ... otherSources) {
 			try {
-				String sourceResourceName = javaSource.sourceFile();
-				
 				Compilation result = javac()
-						.withClasspathFrom(Compilers.class.getClassLoader())
-						.compile(JavaFileObjects.forResource(sourceResourceName));
+//						.withClasspathFrom(Compilers.class.getClassLoader())
+						.compile(forResources(javaSource, otherSources));
 					
-				assertThat(result.errors()).isEmpty();
+				assertThat(result.errors()).describedAs("compiler errors").isEmpty();
 				assertThat(result.status()).isEqualByComparingTo(Status.SUCCESS);
 				
-				return byteCodeInputStreamOf(result, javaSource.classFile(), sourceResourceName);
+				return byteCodeInputStreamOf(result, javaSource.classFile());
 			} catch (IOException iox) {
 				throw new RuntimeException("error compiling "+javaSource, iox);
 			}
 			
 		}
 
-		private static InputStream byteCodeInputStreamOf(Compilation result, String classFile, String sourceResourceName)
+		private static InputStream byteCodeInputStreamOf(Compilation result, String classFile)
 				throws IOException {
 			String byteCodeResourceName = classFile;
 			
@@ -89,6 +82,10 @@ public class Compilers {
 			return clazz.getName().replace('.', '/')+".class";
 		}
 
+		private static Iterable<? extends JavaFileObject> forResources(JavaSource source, JavaSource ... otherSources) {
+			return List.of(source).appendAll(List.of(otherSources))
+				.map(souce -> JavaFileObjects.forResource(source.sourceFile()));
+		}
 
 	}
 }

@@ -40,6 +40,7 @@ import org.junit.Test;
 
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.Compilers;
+import de.flapdoodle.unravel.JavaSource;
 import de.flapdoodle.unravel.assertions.AnAnnotationsAssert;
 import de.flapdoodle.unravel.assertions.FieldCallsAssert;
 import de.flapdoodle.unravel.assertions.MethodCallsAssert;
@@ -68,7 +69,7 @@ public class MethodsTest {
 				.addParameters(typeOf(MethodType.class))
 				.build();
 
-		assertThat(Classes.parse(Compilers.JavaC.byteCodeOf(MethodLambdas.class)))
+		assertThat(Classes.parse(Classes.byteCodeOf(MethodLambdas.class)))
 		.isJava8()
 		.methods(methods -> {
 			methods.size().isEqualTo(9);

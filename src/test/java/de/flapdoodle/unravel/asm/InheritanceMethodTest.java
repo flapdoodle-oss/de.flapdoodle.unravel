@@ -106,7 +106,7 @@ public class InheritanceMethodTest  {
 
 	@Test
 	public void methodsOfExtendsExtends() {
-		assertThat(Classes.parse(byteCodeOf(ExtendsExtends.class)))
+		assertThat(Classes.parse(byteCodeOf(ExtendsExtends.class, AbstractExtends.class)))
 			.isJava8()
 			.superClass(AbstractExtends.class)
 			.interfaces()
@@ -125,7 +125,7 @@ public class InheritanceMethodTest  {
 	
 	@Test
 	public void calls() {
-		assertThat(Classes.parse(byteCodeOf(Caller.class)))
+		assertThat(Classes.parse(byteCodeOf(Caller.class/*, ExtendsExtends.class, AbstractExtends.class, Base.class, AbstractBase.class, LocalInterface.class*/)))
 			.isJava8()
 			.superClass(Object.class)
 			.interfaces()

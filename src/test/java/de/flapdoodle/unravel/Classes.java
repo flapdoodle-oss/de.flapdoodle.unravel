@@ -53,22 +53,16 @@ public class Classes {
 		return new ClazzParser().parse(byteCodeOf);
 	}
 
-	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz) {
-		if (true) {
-			return Compilers.JavaC.byteCodeOf(clazz);
-		}
-		return () -> byteCodeInputStream(clazz);
-	}
+	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz,java.lang.Class<?> ... otherClasses) {
+		return Compilers.JavaC.byteCodeOf(JavaSource.of(clazz), JavaSource.of(otherClasses));
+	} 
 	
 	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> base, String className) {
-		if (true) {
-			return Compilers.JavaC.byteCodeOf(base, className);
-		}
-		return () -> byteCodeInputStream(base, className);
+		return Compilers.JavaC.byteCodeOf(JavaSource.ofUnaccessableClass(base, className));
 	}
 	
-	public static Supplier<InputStream> byteCodeOf(JavaSource javaSource) {
-		return Compilers.JavaC.byteCodeOf(javaSource);
+	public static Supplier<InputStream> byteCodeOf(JavaSource javaSource, JavaSource ... otherSources) {
+		return Compilers.JavaC.byteCodeOf(javaSource, otherSources);
 	}
 	
 	private static InputStream byteCodeInputStream(java.lang.Class<?> base, String className) {

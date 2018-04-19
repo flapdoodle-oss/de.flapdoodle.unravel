@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.immutables.value.Value.Immutable;
 
 import de.flapdoodle.unravel.ImmutableJavaSource.Builder;
+import io.vavr.collection.List;
 
 @Immutable
 public abstract class JavaSource {
@@ -16,6 +17,10 @@ public abstract class JavaSource {
 	
 	private static Builder builder() {
 		return ImmutableJavaSource.builder();
+	}
+	
+	public static JavaSource[] of(Class<?>... otherClasses) {
+		return List.of(otherClasses).map(JavaSource::of).toJavaArray(JavaSource.class);
 	}
 	
 	public static JavaSource of(Class<?> clazz) {
