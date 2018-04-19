@@ -33,7 +33,7 @@ public interface AMethodSignature {
 	public static ImmutableAMethodSignature.Builder builder() {
 		return ImmutableAMethodSignature.builder();
 	}
-	
+
 	public static AMethodSignature of(AType returnType, List<AType> parameters) {
 		return ImmutableAMethodSignature.of(returnType, parameters);
 	}

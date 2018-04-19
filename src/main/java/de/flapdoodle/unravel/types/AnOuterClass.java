@@ -27,7 +27,7 @@ public abstract class AnOuterClass {
 	public abstract ATypeName typeName();
 	public abstract Optional<String> methodName();
 	public abstract Optional<AMethodSignature> methodSignature();
-	
+
 	public static ImmutableAnOuterClass.Builder builder(ATypeName typeName) {
 		return ImmutableAnOuterClass.builder(typeName);
 	}

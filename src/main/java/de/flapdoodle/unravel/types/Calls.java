@@ -25,12 +25,12 @@ import io.vavr.collection.LinkedHashSet;
 @Immutable
 @VavrEncodingEnabled
 public abstract class Calls {
-	
+
 	public abstract LinkedHashSet<FieldCall> fieldCalls();
 	public abstract LinkedHashSet<MethodCall> methodCalls();
 	public abstract LinkedHashSet<LambdaCall> lambdaCalls();
 	public abstract LinkedHashSet<TypeReferenceCall> typeReferenceCalls();
-	
+
 	@Immutable
 	public static interface FieldCall {
 		@Parameter
@@ -47,7 +47,6 @@ public abstract class Calls {
 		}
 	}
 
-	
 	@Immutable
 	public static interface MethodCall {
 		ATypeName clazz();
@@ -59,29 +58,29 @@ public abstract class Calls {
 			return ImmutableMethodCall.builder();
 		}
 	}
-	
+
 	@Immutable
 	public static interface LambdaCall {
 		ATypeName clazz();
 		String name();
 		AMethodSignature signature();
 		AMethodSignature methodAsLambdaSignature();
-		
+
 		ATypeName factoryClazz();
 		AMethodSignature factorySignature();
-		
+
 		MethodCall delegate();
 
 		public static ImmutableLambdaCall.Builder builder() {
 			return ImmutableLambdaCall.builder();
 		}
 	}
-	
+
 	@Immutable
 	public static interface TypeReferenceCall {
 		@Parameter
 		ATypeName clazz();
-		
+
 		public static TypeReferenceCall of(ATypeName clazz) {
 			return ImmutableTypeReferenceCall.of(clazz);
 		}

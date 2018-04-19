@@ -27,7 +27,7 @@ public abstract class AnEnumValue {
 	public abstract ATypeName clazz();
 	@Parameter
 	public abstract String value();
-	
+
 	public static AnEnumValue of(ATypeName name, String value) {
 		return ImmutableAnEnumValue.of(name, value);
 	}

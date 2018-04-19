@@ -29,7 +29,7 @@ public abstract class AnInnerClass {
 	public abstract ATypeName typeName();
 	public abstract Optional<ATypeName> innerName();
 	public abstract Optional<ATypeName> outerName();
-	
+
 	@Auxiliary
 	public Set<AccessFlags> accessFlags() {
 		return AccessFlags.flags(Scope.Clazz, access());

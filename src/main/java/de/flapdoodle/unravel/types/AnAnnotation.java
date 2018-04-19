@@ -29,12 +29,12 @@ public abstract class AnAnnotation {
 	public abstract ATypeName clazz();
 	@Parameter
 	public abstract boolean visible();
-	
+
 	public abstract Multimap<String, Object> valueAttributes();
 	public abstract Multimap<String, AnAnnotation> annotationAttributes();
 	public abstract Multimap<String, ATypeName> clazzAttributes();
 	public abstract Multimap<String, AnEnumValue> enumAttributes();
-		
+
 	public static ImmutableAnAnnotation.Builder builder(ATypeName typeName, boolean visible) {
 		return ImmutableAnAnnotation.builder(typeName, visible);
 	}
