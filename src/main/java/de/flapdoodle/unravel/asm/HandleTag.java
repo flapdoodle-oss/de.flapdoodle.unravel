@@ -28,18 +28,18 @@ public enum HandleTag {
 	INVOKEVIRTUAL(Opcodes.H_INVOKEVIRTUAL),
 	INVOKESTATIC(Opcodes.H_INVOKESTATIC),
 	INVOKESPECIAL(Opcodes.H_INVOKESPECIAL),
-	NEWINVOKESPECIAL(Opcodes.H_NEWINVOKESPECIAL), 
+	NEWINVOKESPECIAL(Opcodes.H_NEWINVOKESPECIAL),
 	INVOKEINTERFACE(Opcodes.H_INVOKEINTERFACE);
-	
+
 	private final int code;
 
 	private HandleTag(int code) {
 		this.code = code;
 	}
-	
+
 	public static HandleTag fromCode(int code) {
 		for (HandleTag t : values()) {
-			if (t.code==code) {
+			if (t.code == code) {
 				return t;
 			}
 		}

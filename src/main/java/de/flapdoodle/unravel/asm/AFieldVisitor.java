@@ -38,23 +38,23 @@ public class AFieldVisitor extends FieldVisitor {
 		this.fieldBuilder = fieldBuilder;
 		this.fieldConsumer = fieldConsumer;
 	}
-	
+
 	@Override
 	public void visitAttribute(Attribute attr) {
 		super.visitAttribute(attr);
-		NotImplementedException.with("visitAttribute", "attr",attr);
+		NotImplementedException.with("visitAttribute", "attr", attr);
 	}
-	
+
 	@Override
 	public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String desc, boolean visible) {
 		return new AnAnnotationVisitor(desc, visible, fieldBuilder::addAnnotations);
 	}
-	
+
 	@Override
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 		return new AnAnnotationVisitor(desc, visible, fieldBuilder::addAnnotations);
 	}
-	
+
 	@Override
 	public void visitEnd() {
 		super.visitEnd();

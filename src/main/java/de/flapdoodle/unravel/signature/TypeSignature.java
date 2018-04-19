@@ -38,30 +38,30 @@ public interface TypeSignature {
 	Set<AccessFlags> accessFlags();
 	Optional<ATypeName> superClazz();
 	List<ATypeName> interfaces();
-	
+
 	List<TypeSignature> innerClasses();
 
 	List<Field> fields();
 	List<Method> methods();
-	
+
 	@Immutable
 	interface Field {
 		String name();
 		Set<AccessFlags> accessFlags();
 		AType type();
-		
+
 		static ImmutableField.Builder builder() {
 			return ImmutableField.builder();
 		}
 	}
-	
+
 	@Immutable
 	interface Method {
 		String name();
 		Set<AccessFlags> accessFlags();
 		AType returnType();
 		List<AType> parameters();
-		
+
 		static ImmutableMethod.Builder builder() {
 			return ImmutableMethod.builder();
 		}
@@ -71,11 +71,11 @@ public interface TypeSignature {
 	// -- fields, methods, annotations, types
 	Uses uses();
 	Usage usage();
-	
+
 	@Immutable
 	interface Uses {
 		Set<ATypeName> types();
-		
+
 		static ImmutableUses.Builder builder() {
 			return ImmutableUses.builder();
 		}

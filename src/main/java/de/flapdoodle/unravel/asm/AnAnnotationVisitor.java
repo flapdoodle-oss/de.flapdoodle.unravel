@@ -46,20 +46,20 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 			builder.putClazzAttributes(name, ATypeName.of(((Type) value).getClassName()));
 		}
 	}
-	
+
 	@Override
 	public AnnotationVisitor visitAnnotation(String name, String desc) {
 		return new AnAnnotationVisitor(desc, true, an -> builder.putAnnotationAttributes(name, an));
 	}
-	
+
 	@Override
 	public AnnotationVisitor visitArray(String name) {
 		return new Array(name, builder);
 	}
-	
+
 	@Override
 	public void visitEnum(String name, String desc, String value) {
-		builder.putEnumAttributes(name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()),value));
+		builder.putEnumAttributes(name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()), value));
 	}
 
 	@Override
@@ -67,9 +67,9 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 		super.visitEnd();
 		annotationConsumer.accept(builder.build());
 	}
-	
+
 	private static class Array extends AnnotationVisitor {
-		
+
 		private final Builder builder;
 		private final String name;
 
@@ -78,33 +78,33 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 			this.name = name;
 			this.builder = builder;
 		}
-		
+
 		@Override
 		public void visit(String name, Object value) {
-			Preconditions.checkArgument(name == null, "name is set: %s",name);
+			Preconditions.checkArgument(name == null, "name is set: %s", name);
 			builder.putValueAttributes(this.name, value);
 			if (value instanceof Type) {
 				builder.putClazzAttributes(this.name, ATypeName.of(((Type) value).getClassName()));
 			}
 		}
-		
+
 		@Override
 		public AnnotationVisitor visitAnnotation(String name, String desc) {
-			Preconditions.checkArgument(name == null, "name is set: %s",name);
+			Preconditions.checkArgument(name == null, "name is set: %s", name);
 			return new AnAnnotationVisitor(desc, true, an -> builder.putAnnotationAttributes(this.name, an));
 		}
-		
+
 		@Override
 		public AnnotationVisitor visitArray(String name) {
-			throw new NotImplementedException("visitArray name: "+name);
+			throw new NotImplementedException("visitArray name: " + name);
 		}
-		
+
 		@Override
 		public void visitEnum(String name, String desc, String value) {
-			Preconditions.checkArgument(name == null, "name is set: %s",name);
-			builder.putEnumAttributes(this.name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()),value));
+			Preconditions.checkArgument(name == null, "name is set: %s", name);
+			builder.putEnumAttributes(this.name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()), value));
 		}
-		
+
 		@Override
 		public void visitEnd() {
 			super.visitEnd();

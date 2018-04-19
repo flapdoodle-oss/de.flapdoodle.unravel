@@ -28,17 +28,17 @@ public abstract class Visitors {
 	static ATypeName typeNameOf(String name) {
 		return ATypeName.of(name.replace('/', '.'));
 	}
-	
+
 	static AType typeOf(String rawName) {
 		return typeOf(Type.getType(rawName));
 	}
 
 	public static AType typeOf(Type type) {
-		int arrayDimension = type.getSort()==Type.ARRAY ? type.getDimensions() : 0;
+		int arrayDimension = type.getSort() == Type.ARRAY ? type.getDimensions() : 0;
 		String className = arrayDimension == 0 ? type.getClassName() : type.getElementType().getClassName();
 		return AType.of(className, arrayDimension);
 	}
-	
+
 	public static AMethodSignature methodSignOf(String desc) {
 		Type type = Type.getMethodType(desc);
 		return methodSignOf(type);

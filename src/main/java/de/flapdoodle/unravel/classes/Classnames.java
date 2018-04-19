@@ -36,18 +36,18 @@ public abstract class Classnames {
 		return base.getPackage().getName() + "." + className;
 	}
 
-	public static String anonNameOf(Class<?> base, String ... className) {
+	public static String anonNameOf(Class<?> base, String... className) {
 		return base.getName() + "$" + Joiner.on("$").join(className);
 	}
 
 	public static String nameOf(Class<?> type) {
 		return type.getName();
 	}
-	
+
 	public static AType typeOf(Class<?> type) {
-		return typeOf(type,0);
+		return typeOf(type, 0);
 	}
-	
+
 	public static AType typeOf(Class<?> type, int arrayDimension) {
 		return AType.of(nameOf(type), arrayDimension);
 	}
@@ -55,16 +55,16 @@ public abstract class Classnames {
 	public static ATypeName typeNameOf(Class<?> type) {
 		return ATypeName.of(nameOf(type));
 	}
-	
+
 	public static ATypeName typeNameOf(Class<?> base, String className) {
 		return ATypeName.of(nameOf(base, className));
 	}
 
-	public static ATypeName anonTypeNameOf(Class<?> base, String ... className) {
+	public static ATypeName anonTypeNameOf(Class<?> base, String... className) {
 		return ATypeName.of(anonNameOf(base, className));
 	}
 
-	private static ImmutableSet<Class<?>> INTERNAL_TYPES=ImmutableSet.<Class<?>>builder()
+	private static ImmutableSet<Class<?>> INTERNAL_TYPES = ImmutableSet.<Class<?>> builder()
 			.add(String.class)
 			.add(void.class)
 			.add(boolean.class)
@@ -83,10 +83,9 @@ public abstract class Classnames {
 			.add(Float.class)
 			.add(Double.class)
 			.build();
-	
+
 	public static boolean isBuildInType(Class<? extends Object> clazz) {
 		return INTERNAL_TYPES.contains(clazz);
 	}
-
 
 }

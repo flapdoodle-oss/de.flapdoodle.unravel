@@ -55,24 +55,24 @@ public class ClazzParser {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private static class Visitor extends ClassVisitor {
-		
+
 		private final Builder builder = AClass.builder();
-		private Optional<AClass> clazz=Optional.empty();
-		
+		private Optional<AClass> clazz = Optional.empty();
+
 		public Visitor() {
 			super(Opcodes.ASM6);
 		}
-		
+
 		@Override
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 			builder.typeName(Visitors.typeNameOf(name))
-				.genericSignature(Optional.ofNullable(signature))
-				.version(version)
-				.access(access)
-				.superClazz(Visitors.typeNameOf(superName));
-			
+					.genericSignature(Optional.ofNullable(signature))
+					.version(version)
+					.access(access)
+					.superClazz(Visitors.typeNameOf(superName));
+
 			for (String interfaze : interfaces) {
 				builder.addInterfaces(Visitors.typeNameOf(interfaze));
 			}
@@ -86,25 +86,25 @@ public class ClazzParser {
 					.type(Visitors.typeOf(desc))
 					.genericSignature(Optional.ofNullable(signature))
 					.value(Optional.ofNullable(value));
-			
+
 			return new AFieldVisitor(fieldBuilder, builder::addFields);
 		}
-		
+
 		@Override
 		public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 			return new AnAnnotationVisitor(desc, visible, builder::addAnnotations);
 		}
-		
+
 		@Override
 		public void visitOuterClass(String owner, String name, String desc) {
 			ImmutableAnOuterClass.Builder outerBuilder = AnOuterClass.builder(Visitors.typeNameOf(owner));
-			if (name!=null){
+			if (name != null) {
 				outerBuilder.methodName(name)
-					.methodSignature(Visitors.methodSignOf(desc));
+						.methodSignature(Visitors.methodSignOf(desc));
 			}
 			builder.outerClazz(outerBuilder.build());
 		}
-		
+
 		@Override
 		public void visitInnerClass(String name, String outerName, String innerName, int access) {
 			builder.addInnerClasses(AnInnerClass.builder()
@@ -117,58 +117,57 @@ public class ClazzParser {
 
 		@Override
 		public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String desc, boolean visible) {
-			throw new NotImplementedException("typeRef: "+typeRef+",typePath: "+typePath+",desc:"+desc+",visible:"+visible);
+			throw new NotImplementedException("typeRef: " + typeRef + ",typePath: " + typePath + ",desc:" + desc + ",visible:" + visible);
 		}
-		
+
 		@Override
 		public void visitAttribute(Attribute attr) {
-			throw new NotImplementedException("attr: "+attr);
+			throw new NotImplementedException("attr: " + attr);
 		}
-		
+
 		@Override
 		public ModuleVisitor visitModule(String name, int access, String version) {
-			throw new NotImplementedException("name: "+name+",access: "+access+",version: "+version);
+			throw new NotImplementedException("name: " + name + ",access: " + access + ",version: " + version);
 		}
-		
+
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			AMethodSignature methodSign = Visitors.methodSignOf(desc);
-			
+
 			return new AMethodVisitor(AMethod.builder()
-				.access(access)
-				.name(name)
-				.returnType(methodSign.returnType())
-				.parameters(methodSign.parameters())
-				.genericSignature(Optional.ofNullable(signature))
-				.addAllExceptions(exceptions != null 
-					? List.of(exceptions)
-							.map(Visitors::typeNameOf)
-					: List.of()), 
-				builder::addMethods);
+					.access(access)
+					.name(name)
+					.returnType(methodSign.returnType())
+					.parameters(methodSign.parameters())
+					.genericSignature(Optional.ofNullable(signature))
+					.addAllExceptions(exceptions != null
+							? List.of(exceptions)
+									.map(Visitors::typeNameOf)
+							: List.of()),
+					builder::addMethods);
 		}
-		
+
 		@Override
 		public void visitEnd() {
 			super.visitEnd();
-			clazz=Optional.of(builder.build());
+			clazz = Optional.of(builder.build());
 		}
-		
+
 		public AClass clazz() {
 			return clazz.get();
 		}
 	}
-	
-//	private static class Fields extends FieldVisitor {
-//
-//		public Fields() {
-//			super(Opcodes.ASM6);
-//		}
-//		
-//	}
 
+	//	private static class Fields extends FieldVisitor {
+	//
+	//		public Fields() {
+	//			super(Opcodes.ASM6);
+	//		}
+	//		
+	//	}
 
-	private static void log(String method, Object ... parameter) {
-		System.out.print("call "+method);
+	private static void log(String method, Object... parameter) {
+		System.out.print("call " + method);
 		for (Object value : parameter) {
 			System.out.print(" ");
 			System.out.print(value);

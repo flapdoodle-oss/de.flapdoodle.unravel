@@ -46,31 +46,32 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	public TypeSignature signatureOf(AClass src, Function<ATypeName, Option<AClass>> classOfTypeName) {
 		return signatureOf(src, classOfTypeName, Option.none(), HashSet.empty());
 	}
-	
-	private static TypeSignature signatureOf(AClass src, Function<ATypeName, Option<AClass>> classOfTypeName, Option<Set<AccessFlags>> overrideAccessFlags, Set<ATypeName> visitedTypes) {
+
+	private static TypeSignature signatureOf(AClass src, Function<ATypeName, Option<AClass>> classOfTypeName, Option<Set<AccessFlags>> overrideAccessFlags,
+			Set<ATypeName> visitedTypes) {
 		src.annotations();
-		
+
 		// TODO uses
-		
+
 		return TypeSignature.builder(src.typeName())
-			.javaVersion(src.javaVersion())
-			.accessFlags(src.accessFlags())
-			.superClazz(src.superClazz())
-			.interfaces(src.interfaces())
-			.innerClasses(innerClassesOf(src.typeName(), classOfTypeName, src.innerClasses(),visitedTypes.add(src.typeName())))
-			.fields(asField(src.fields()))
-			.methods(asMethod(src.methods()))
-			.uses(usesOf(src))
-			.usage(usagesOf(src))
-			.build();
+				.javaVersion(src.javaVersion())
+				.accessFlags(src.accessFlags())
+				.superClazz(src.superClazz())
+				.interfaces(src.interfaces())
+				.innerClasses(innerClassesOf(src.typeName(), classOfTypeName, src.innerClasses(), visitedTypes.add(src.typeName())))
+				.fields(asField(src.fields()))
+				.methods(asMethod(src.methods()))
+				.uses(usesOf(src))
+				.usage(usagesOf(src))
+				.build();
 	}
-	
+
 	private static Usage usagesOf(AClass src) {
 		CollectingUsageListener usageListener = new CollectingUsageListener();
 		usagesOf(src, usageListener);
 		return usageListener.aggregate();
 	}
-	
+
 	private static void usagesOf(AClass src, UsageListener usageListener) {
 		src.superClazz().ifPresent(usageListener::type);
 		src.interfaces().forEach(usageListener::type);
@@ -92,11 +93,11 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 		calls.fieldCalls().forEach(fieldCall -> {
 			usageListener.field(fieldCall.clazz(), fieldCall.name(), fieldCall.type(), fieldCall.staticCall());
 		});
-		
+
 		calls.methodCalls().forEach(methodCall -> {
 			usageOf(methodCall, usageListener);
 		});
-		
+
 		calls.lambdaCalls().forEach(lambda -> {
 			// TODO
 			usageOf(lambda.delegate(), usageListener);
@@ -125,7 +126,7 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	private static void fillWith(ImmutableUses.Builder builder, AClass src) {
 		src.methods().forEach(m -> {
 			Calls calls = m.calls();
-			
+
 			calls.typeReferenceCalls().forEach(tr -> {
 				builder.addTypes(tr.clazz());
 			});
@@ -152,7 +153,8 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 
 	// anon classes -> src.outerClazz is set
 	// non anon classes -> no outerClazz
-	private static List<TypeSignature> innerClassesOf(ATypeName typeName, Function<ATypeName, Option<AClass>> classOfTypeName, List<AnInnerClass> innerClasses, Set<ATypeName> visitedTypes) {
+	private static List<TypeSignature> innerClassesOf(ATypeName typeName, Function<ATypeName, Option<AClass>> classOfTypeName, List<AnInnerClass> innerClasses,
+			Set<ATypeName> visitedTypes) {
 		return innerClasses.filter(innerClassesWithoutOrWithMatchingParent(typeName, visitedTypes))
 				.map(inner -> {
 					Option<AClass> optResolved = classOfTypeName.apply(inner.typeName());
@@ -162,8 +164,8 @@ public class DefaultTypeSignatureFactory implements SignatureOfAClassFactory {
 	}
 
 	private static Predicate<? super AnInnerClass> innerClassesWithoutOrWithMatchingParent(ATypeName typeName, Set<ATypeName> visitedTypes) {
-		return inner -> !inner.typeName().equals(typeName) && !visitedTypes.contains(inner.typeName()) && (!inner.outerName().isPresent() || inner.outerName().get().equals(typeName));
+		return inner -> !inner.typeName().equals(typeName) && !visitedTypes.contains(inner.typeName())
+				&& (!inner.outerName().isPresent() || inner.outerName().get().equals(typeName));
 	}
-
 
 }
