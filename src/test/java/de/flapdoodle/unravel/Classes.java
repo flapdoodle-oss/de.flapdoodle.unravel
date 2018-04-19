@@ -26,12 +26,12 @@ import de.flapdoodle.unravel.types.AClass;
 
 public class Classes {
 
-	public static Class<?> anonClass(Class<?> base, String ... anonName) {
+	public static Class<?> anonClass(Class<?> base, String... anonName) {
 		try {
-			return Class.forName(base.getName()+"$"+Joiner.on("$").join(anonName));
+			return Class.forName(base.getName() + "$" + Joiner.on("$").join(anonName));
 		}
 		catch (ClassNotFoundException e) {
-			throw new RuntimeException("could not load anonClass "+base+""+anonName,e);
+			throw new RuntimeException("could not load anonClass " + base + "" + anonName, e);
 		}
 	}
 
@@ -39,7 +39,7 @@ public class Classes {
 		return new ClazzParser().parse(byteCodeOf);
 	}
 
-	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz,java.lang.Class<?> ... otherClasses) {
+	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz, java.lang.Class<?>... otherClasses) {
 		return Compilers.JavaC.byteCodeOf(JavaSource.of(clazz), JavaSource.of(otherClasses));
 	}
 
@@ -47,7 +47,7 @@ public class Classes {
 		return Compilers.JavaC.byteCodeOf(JavaSource.ofUnaccessableClass(base, className));
 	}
 
-	public static Supplier<InputStream> byteCodeOf(JavaSource javaSource, JavaSource ... otherSources) {
+	public static Supplier<InputStream> byteCodeOf(JavaSource javaSource, JavaSource... otherSources) {
 		return Compilers.JavaC.byteCodeOf(javaSource, otherSources);
 	}
 }

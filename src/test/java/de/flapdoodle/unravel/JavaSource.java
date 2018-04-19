@@ -30,15 +30,15 @@ public abstract class JavaSource {
 	protected abstract Optional<String> realClassName();
 	public abstract String sourceFile();
 	public abstract String classFile();
-	
+
 	private static Builder builder() {
 		return ImmutableJavaSource.builder();
 	}
-	
+
 	public static JavaSource[] of(Class<?>... otherClasses) {
 		return List.of(otherClasses).map(JavaSource::of).toJavaArray(JavaSource.class);
 	}
-	
+
 	public static JavaSource of(Class<?> clazz) {
 		return builder()
 				.clazz(clazz)
@@ -46,29 +46,29 @@ public abstract class JavaSource {
 				.classFile(classFileNameOf(clazz))
 				.build();
 	}
-	
+
 	public static JavaSource ofUnaccessableClass(Class<?> baseClass, String realClassName) {
 		return builder()
 				.clazz(baseClass)
 				.realClassName(realClassName)
-				.sourceFile(classNameAsSourceFile(baseClass.getPackage().getName()+"."+realClassName))
-				.classFile(classAsFile(baseClass.getPackage().getName()+"."+realClassName)+".class")
+				.sourceFile(classNameAsSourceFile(baseClass.getPackage().getName() + "." + realClassName))
+				.classFile(classAsFile(baseClass.getPackage().getName() + "." + realClassName) + ".class")
 				.build();
 	}
-	
+
 	public static JavaSource ofOuterClass(Class<?> baseClass, String outerClassName) {
 		return builder()
 				.clazz(baseClass)
 				.realClassName(outerClassName)
 				.sourceFile(sourceResourceNameOf(baseClass))
-				.classFile(classAsFile(baseClass.getPackage().getName()+"."+outerClassName)+".class")
+				.classFile(classAsFile(baseClass.getPackage().getName() + "." + outerClassName) + ".class")
 				.build();
 	}
 
 	private static String classFileNameOf(Class<?> clazz) {
-		return classAsFile(clazz.getName())+".class";
+		return classAsFile(clazz.getName()) + ".class";
 	}
-	
+
 	private static String sourceResourceNameOf(Class<?> clazz) {
 		if (clazz.isMemberClass()) {
 			return sourceResourceNameOf(clazz.getEnclosingClass());
@@ -81,12 +81,12 @@ public abstract class JavaSource {
 		}
 		return classNameAsSourceFile(clazz.getName());
 	}
-	
+
 	private static String classAsFile(String className) {
 		return className.replace('.', '/');
 	}
-	
+
 	private static String classNameAsSourceFile(String className) {
-		return classAsFile(className)+".java";
+		return classAsFile(className) + ".java";
 	}
 }
