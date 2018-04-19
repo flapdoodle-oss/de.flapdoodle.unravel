@@ -32,13 +32,13 @@ public abstract class AMethod {
 	public abstract String name();
 	public abstract AType returnType();
 	public abstract List<AType> parameters();
-	
+
 	public abstract Optional<String> genericSignature();
 	public abstract List<ATypeName> exceptions();
 	public abstract List<AnAnnotation> annotations();
 
 	public abstract Calls calls();
-	
+
 	@Auxiliary
 	public Set<AccessFlags> accessFlags() {
 		return AccessFlags.flags(Scope.Method, access());
