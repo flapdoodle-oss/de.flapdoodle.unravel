@@ -22,6 +22,7 @@ import static de.flapdoodle.unravel.Classes.byteCodeOf;
 import org.junit.Test;
 
 import de.flapdoodle.unravel.Classes;
+import de.flapdoodle.unravel.JavaSource;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.AnnotationPublic;
 import de.flapdoodle.unravel.samples.asm.basics.ClassAbstractPublic;
@@ -292,7 +293,7 @@ public class ClassesTest {
 					.accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_STATIC);
 			});
 			
-		assertThat(Classes.parse(byteCodeOf(InnerOuter.class,"Outer")))
+		assertThat(Classes.parse(byteCodeOf(JavaSource.ofOuterClass(InnerOuter.class,"Outer"))))
 			.isJava8()
 			.typeNameIs(Classnames.nameOf(InnerOuter.class,"Outer"))
 			.accessFlags(AccessFlags.ACC_SUPER)

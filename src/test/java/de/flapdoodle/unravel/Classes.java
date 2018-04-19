@@ -61,7 +61,14 @@ public class Classes {
 	}
 	
 	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> base, String className) {
+		if (true) {
+			return Compilers.JavaC.byteCodeOf(base, className);
+		}
 		return () -> byteCodeInputStream(base, className);
+	}
+	
+	public static Supplier<InputStream> byteCodeOf(JavaSource javaSource) {
+		return Compilers.JavaC.byteCodeOf(javaSource);
 	}
 	
 	private static InputStream byteCodeInputStream(java.lang.Class<?> base, String className) {

@@ -19,12 +19,20 @@ public class Compilers {
 	
 	public static class JavaC {
 		public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz) {
-			return () -> byteCodeInputStream(clazz);
+			return () -> byteCodeInputStream(JavaSource.of(clazz));
 		}
 		
-		private static InputStream byteCodeInputStream(Class<?> clazz) {
+		public static Supplier<InputStream> byteCodeOf(Class<?> base, String realClassName) {
+			return () -> byteCodeInputStream(JavaSource.ofUnaccessableClass(base, realClassName));
+		}
+		
+		public static Supplier<InputStream> byteCodeOf(JavaSource javaSource) {
+			return () -> byteCodeInputStream(javaSource);
+		}
+		
+		private static InputStream byteCodeInputStream(JavaSource javaSource) {
 			try {
-				String sourceResourceName = sourceResourceNameOf(clazz);
+				String sourceResourceName = javaSource.sourceFile();
 				
 				Compilation result = javac()
 						.withClasspathFrom(Compilers.class.getClassLoader())
@@ -33,16 +41,16 @@ public class Compilers {
 				assertThat(result.errors()).isEmpty();
 				assertThat(result.status()).isEqualByComparingTo(Status.SUCCESS);
 				
-				return byteCodeInputStreamOf(result, clazz, sourceResourceName);
+				return byteCodeInputStreamOf(result, javaSource.classFile(), sourceResourceName);
 			} catch (IOException iox) {
-				throw new RuntimeException("error compiling "+clazz, iox);
+				throw new RuntimeException("error compiling "+javaSource, iox);
 			}
 			
 		}
 
-		private static InputStream byteCodeInputStreamOf(Compilation result, Class<?> clazz, String sourceResourceName)
+		private static InputStream byteCodeInputStreamOf(Compilation result, String classFile, String sourceResourceName)
 				throws IOException {
-			String byteCodeResourceName = byteCodeResourceNameOf(clazz);
+			String byteCodeResourceName = classFile;
 			
 			ImmutableList<JavaFileObject> generatedFiles = result.generatedFiles();
 			assertThat(generatedFiles).isNotEmpty();
@@ -52,27 +60,35 @@ public class Compilers {
 				.findFirst();
 			
 			assertThat(matching)
-				.describedAs("match from %s", generatedFiles)
+				.describedAs("match for '%s' from %s", byteCodeResourceName, generatedFiles)
 				.isNotEmpty();
 			
 			return matching.get().openInputStream();
 		}
 
-		private static String sourceResourceNameOf(Class<?> clazz) {
+		private static String sourceResourceNameOf(Class<?> clazz, Optional<String> realClassName) {
+			if (realClassName.isPresent()) {
+				return (clazz.getPackage().getName()+"."+realClassName.get()).replace('.', '/')+".java";
+			}
 			if (clazz.isMemberClass()) {
-				return sourceResourceNameOf(clazz.getEnclosingClass());
+				return sourceResourceNameOf(clazz.getEnclosingClass(), Optional.empty());
 			}
 			if (clazz.isAnonymousClass()) {
-				return sourceResourceNameOf(clazz.getEnclosingClass());
+				return sourceResourceNameOf(clazz.getEnclosingClass(), Optional.empty());
 			}
 			if (clazz.isLocalClass()) {
-				return sourceResourceNameOf(clazz.getEnclosingClass());
+				return sourceResourceNameOf(clazz.getEnclosingClass(), Optional.empty());
 			}
 			return clazz.getName().replace('.', '/')+".java";
 		}
 		
-		private static String byteCodeResourceNameOf(Class<?> clazz) {
+		private static String byteCodeResourceNameOf(Class<?> clazz, Optional<String> className) {
+			if (className.isPresent()) {
+				return (clazz.getPackage().getName()+"."+className.get()).replace('.', '/')+".class";
+			}
 			return clazz.getName().replace('.', '/')+".class";
 		}
+
+
 	}
 }
