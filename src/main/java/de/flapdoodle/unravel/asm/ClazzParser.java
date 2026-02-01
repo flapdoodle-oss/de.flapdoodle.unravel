@@ -62,7 +62,7 @@ public class ClazzParser {
 		private Optional<AClass> clazz = Optional.empty();
 
 		public Visitor() {
-			super(Opcodes.ASM6);
+			super(Opcodes.ASM9);
 		}
 
 		@Override

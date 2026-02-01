@@ -32,14 +32,21 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
 	public ClazzAssert(AClass actual) {
 		super(actual, ClazzAssert.class);
 	}
-	
-	public ClazzAssert isJava8() {
-    if (actual.javaVersion()!=JavaVersion.V1_8) {
-      failWithMessage("Expected java version to be <%s> but was <%s>", JavaVersion.V1_8, actual.javaVersion());
-    }
+
+	public ClazzAssert is(JavaVersion javaVersion) {
+		if (actual.javaVersion()!=javaVersion) {
+			failWithMessage("Expected java version to be <%s> but was <%s>", javaVersion, actual.javaVersion());
+		}
 		return this;
 	}
-	
+
+	public ClazzAssert isAtLeast(JavaVersion javaVersion) {
+        if (javaVersion.compareTo(actual.javaVersion()) > 0) {
+			failWithMessage("Expected java version to be at least <%s> but was <%s>", javaVersion, actual.javaVersion());
+		}
+		return this;
+	}
+
 	public ClazzAssert signature(String signature) {
 		Assertions.assertThat(actual.genericSignature()).describedAs("genericSignature").isPresent().contains(signature);
 		return this;

@@ -21,17 +21,18 @@ import static de.flapdoodle.unravel.Classes.byteCodeOf;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.Fields;
 import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.types.JavaVersion;
 
 public class FieldsTest {
 	
 	@Test
 	public void fieldTypes() {
-		assertThat(Classes.parse(byteCodeOf(Fields.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Fields.class))).isAtLeast(JavaVersion.V1_8)
 			.typeNameIs(Classnames.nameOf(Fields.class))
 			.signature("<K:Ljava/lang/Object;V:Ljava/lang/Object;>Ljava/lang/Object;")
 			.fields(fields -> {

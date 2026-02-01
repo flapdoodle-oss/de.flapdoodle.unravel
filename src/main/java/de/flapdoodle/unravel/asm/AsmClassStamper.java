@@ -50,7 +50,7 @@ public class AsmClassStamper {
 	private static class MethodCollectingClassVisitor extends ClassVisitor {
 
 		public MethodCollectingClassVisitor() {
-			super(Opcodes.ASM5);
+			super(Opcodes.ASM9);
 		}
 
 		@Override

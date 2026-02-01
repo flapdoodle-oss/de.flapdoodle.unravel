@@ -16,6 +16,8 @@
  */
 package de.flapdoodle.unravel.assertions;
 
+import java.util.function.Consumer;
+
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
@@ -36,4 +38,9 @@ public class TypeSignaturesAssert extends FactoryBasedNavigableIterableAssert<Ty
 	public AbstractIterableSizeAssert<TypeSignaturesAssert, Iterable<? extends TypeSignature>, TypeSignature, TypeSignatureAssert> size() {
 		return super.size().describedAs(propertyDescription("size"));
 	}
+
+	public TypeSignaturesAssert anyElement(Consumer<TypeSignatureAssert> consumer) {
+		return anySatisfy(it -> consumer.accept(new TypeSignatureAssert(it))).describedAs(propertyDescription("element"));
+	}
+
 }

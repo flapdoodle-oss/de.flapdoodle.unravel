@@ -21,16 +21,18 @@ import static de.flapdoodle.unravel.Classes.byteCodeOf;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.Annotations;
+import de.flapdoodle.unravel.types.JavaVersion;
 
 public class AnnotationsTest {
 	
 	@Test
 	public void retentions() {
-		assertThat(Classes.parse(byteCodeOf(Annotations.RetentionSample.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Annotations.RetentionSample.class)))
+				.isAtLeast(JavaVersion.V1_8)
 			.annotations(annotations -> {
 				annotations.size().isEqualTo(2);
 				annotations.element(0)
@@ -42,8 +44,8 @@ public class AnnotationsTest {
 	
 	@Test
 	public void wrapped() {
-		assertThat(Classes.parse(byteCodeOf(Annotations.WrapperSample.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Annotations.WrapperSample.class)))
+				.isAtLeast(JavaVersion.V1_8)
 			.annotations(annotations -> {
 				annotations.size().isEqualTo(1);
 				annotations.element(0)
@@ -78,8 +80,8 @@ public class AnnotationsTest {
 	
 	@Test
 	public void parameters() {
-		assertThat(Classes.parse(byteCodeOf(Annotations.ParameterSample.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Annotations.ParameterSample.class)))
+				.isAtLeast(JavaVersion.V1_8)
 			.annotations(annotations -> {
 				annotations.size().isEqualTo(1);
 				annotations.element(0)

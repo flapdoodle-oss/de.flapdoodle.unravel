@@ -16,6 +16,8 @@
  */
 package de.flapdoodle.unravel.assertions;
 
+import java.util.function.Consumer;
+
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
@@ -25,7 +27,7 @@ import io.vavr.collection.List;
 public class InnerClazzesAssert extends FactoryBasedNavigableIterableAssert<InnerClazzesAssert, Iterable<? extends AnInnerClass>, AnInnerClass, InnerClazzAssert> implements CommonAsserts {
 
 	public InnerClazzesAssert(List<AnInnerClass> actual) {
-		super(actual, InnerClazzesAssert.class, t -> new InnerClazzAssert(t));
+		super(actual, InnerClazzesAssert.class, InnerClazzAssert::new);
 	}
 
 	public static InnerClazzesAssert assertThatInnerClasses(List<AnInnerClass> fields) {
@@ -36,4 +38,14 @@ public class InnerClazzesAssert extends FactoryBasedNavigableIterableAssert<Inne
 	public AbstractIterableSizeAssert<InnerClazzesAssert, Iterable<? extends AnInnerClass>, AnInnerClass, InnerClazzAssert> size() {
 		return super.size().describedAs(propertyDescription("size"));
 	}
+
+	@Override
+	public InnerClazzAssert element(int index) {
+		return super.element(index);
+	}
+
+	public InnerClazzesAssert anyElement(Consumer<InnerClazzAssert> consumer) {
+		return anySatisfy(it -> consumer.accept(new InnerClazzAssert(it))).describedAs(propertyDescription("element"));
+	}
+
 }

@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.inherit.AbstractBase;
@@ -33,13 +34,13 @@ import de.flapdoodle.unravel.samples.asm.inherit.ExtendsExtends;
 import de.flapdoodle.unravel.samples.asm.inherit.LocalInterface;
 import de.flapdoodle.unravel.types.AccessFlags;
 import de.flapdoodle.unravel.types.InvocationType;
+import de.flapdoodle.unravel.types.JavaVersion;
 
 public class InheritanceMethodTest  {
 	
 	@Test
 	public void methodsOfAbstractBase() {
-		assertThat(Classes.parse(byteCodeOf(AbstractBase.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(AbstractBase.class))).isAtLeast(JavaVersion.V1_8)
 			.superClass(Object.class)
 			.interfaces()
 			.methods(methods -> {
@@ -55,8 +56,7 @@ public class InheritanceMethodTest  {
 
 	@Test
 	public void methodsOfBase() {
-		assertThat(Classes.parse(byteCodeOf(Base.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Base.class))).isAtLeast(JavaVersion.V1_8)
 			.superClass(AbstractBase.class)
 			.interfaces()
 			.methods(methods -> {
@@ -72,8 +72,7 @@ public class InheritanceMethodTest  {
 
 	@Test
 	public void methodsOfLocalInterface() {
-		assertThat(Classes.parse(byteCodeOf(LocalInterface.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(LocalInterface.class))).isAtLeast(JavaVersion.V1_8)
 			.superClass(Object.class)
 			.interfaces()
 			.methods(methods -> {
@@ -87,8 +86,7 @@ public class InheritanceMethodTest  {
 	
 	@Test
 	public void methodsOfAbstractExtends() {
-		assertThat(Classes.parse(byteCodeOf(AbstractExtends.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(AbstractExtends.class))).isAtLeast(JavaVersion.V1_8)
 			.superClass(Base.class)
 			.interfaces(Classnames.nameOf(Supplier.class), Classnames.nameOf(LocalInterface.class))
 			.methods(methods -> {
@@ -106,8 +104,8 @@ public class InheritanceMethodTest  {
 
 	@Test
 	public void methodsOfExtendsExtends() {
-		assertThat(Classes.parse(byteCodeOf(ExtendsExtends.class, AbstractExtends.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(ExtendsExtends.class, AbstractExtends.class)))
+				.isAtLeast(JavaVersion.V1_8)
 			.superClass(AbstractExtends.class)
 			.interfaces()
 			.methods(methods -> {
@@ -125,8 +123,10 @@ public class InheritanceMethodTest  {
 	
 	@Test
 	public void calls() {
-		assertThat(Classes.parse(byteCodeOf(Caller.class/*, ExtendsExtends.class, AbstractExtends.class, Base.class, AbstractBase.class, LocalInterface.class*/)))
-			.isJava8()
+		/*, ExtendsExtends.class, AbstractExtends.class, Base.class, AbstractBase.class, LocalInterface.class*/
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(
+						Caller.class/*, ExtendsExtends.class, AbstractExtends.class, Base.class, AbstractBase.class, LocalInterface.class*/)))
+				.isAtLeast(JavaVersion.V1_8)
 			.superClass(Object.class)
 			.interfaces()
 			.methods(methods -> {

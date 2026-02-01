@@ -23,15 +23,16 @@ import java.io.Serializable;
 
 import org.junit.Test;
 
+import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.Inheritance;
+import de.flapdoodle.unravel.types.JavaVersion;
 
 public class InheritanceTest {
 	@Test
 	public void innerOuter() {
-		assertThat(Classes.parse(byteCodeOf(Inheritance.B.class)))
-			.isJava8()
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Inheritance.B.class))).isAtLeast(JavaVersion.V1_8)
 			.superClass(Inheritance.A.class)
 			.interfaces(Classnames.nameOf(Inheritance.I.class),Classnames.nameOf(Serializable.class));
 	}
