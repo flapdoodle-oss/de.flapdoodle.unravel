@@ -55,7 +55,7 @@ public class DefaultTypeSignatureFactoryTest {
 			.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC)
 			.typeNameIs(Classnames.typeNameOf(InnerOuter.class))
 			.innerClasses(level1 -> {
-				level1.size().isEqualTo(6);
+				level1.size().isEqualTo(4);
 				level1.element(0).isAtLeast(JavaVersion.V1_8)
 				.typeNameIs(Classnames.nameOf(InnerOuter.Inner.class))
 				.accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC)

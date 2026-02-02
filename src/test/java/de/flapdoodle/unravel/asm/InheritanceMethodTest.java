@@ -104,7 +104,7 @@ public class InheritanceMethodTest  {
 
 	@Test
 	public void methodsOfExtendsExtends() {
-		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(ExtendsExtends.class, AbstractExtends.class)))
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(ExtendsExtends.class)))
 				.isAtLeast(JavaVersion.V1_8)
 			.superClass(AbstractExtends.class)
 			.interfaces()

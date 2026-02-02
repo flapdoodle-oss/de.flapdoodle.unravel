@@ -16,10 +16,6 @@
  */
 package de.flapdoodle.unravel.asm;
 
-import static de.flapdoodle.unravel.Assertions.assertThat;
-import static de.flapdoodle.unravel.Classes.byteCodeOf;
-import static de.flapdoodle.unravel.classes.Classnames.typeOf;
-
 import java.io.IOException;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -36,9 +32,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 
 import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
@@ -57,10 +51,13 @@ import de.flapdoodle.unravel.types.ImmutableAMethodSignature;
 import de.flapdoodle.unravel.types.InvocationType;
 import de.flapdoodle.unravel.types.JavaVersion;
 
+import static de.flapdoodle.unravel.Assertions.assertThat;
+import static de.flapdoodle.unravel.Classes.byteCodeOf;
+import static de.flapdoodle.unravel.classes.Classnames.typeOf;
+
 public class MethodsTest {
 
 	@Test
-	@Ignore("javac version dependend, lambda stuff and more")
 	public void lambdaCalls() {
 		ImmutableAMethodSignature lambda8factorySignature = AMethodSignature.builder()
 				.returnType(typeOf(CallSite.class))
@@ -72,7 +69,7 @@ public class MethodsTest {
 				.addParameters(typeOf(MethodType.class))
 				.build();
 
-		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(MethodLambdas.class))).isAtLeast(JavaVersion.V1_8)
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(JavaVersion.V1_8, MethodLambdas.class))).isAtLeast(JavaVersion.V1_8)
 		.methods(methods -> {
 			methods.size().isEqualTo(9);
 			methods.element(0).name("<init>");
@@ -404,9 +401,8 @@ public class MethodsTest {
 	}
 	
 	@Test
-	@Ignore("javac version dependend, lambda stuff and more")
 	public void signatures() {
-		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(MethodSignatures.class))).isAtLeast(JavaVersion.V1_8)
+		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(JavaVersion.V1_8, MethodSignatures.class))).isAtLeast(JavaVersion.V1_8)
 			.methods(methods -> {
 				methods.size().isEqualTo(20);
 				methods.element(0).name("privateStatic").returnType("void").parameterTypes().exceptions().accessFlags(AccessFlags.ACC_STATIC, AccessFlags.ACC_PRIVATE);
@@ -485,7 +481,7 @@ public class MethodsTest {
 	
 	@Test
 	public void sample() {
-		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(MethodsPlayground.class))).isAtLeast(JavaVersion.V1_8)
+		assertThat(Classes.parse(byteCodeOf(JavaVersion.V1_8, MethodsPlayground.class))).isAtLeast(JavaVersion.V1_8)
 			.methods(methods -> {
 				methods.size().isEqualTo(3);
 				methods.element(0)

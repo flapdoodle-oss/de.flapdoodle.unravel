@@ -23,6 +23,7 @@ import com.google.common.base.Joiner;
 
 import de.flapdoodle.unravel.asm.ClazzParser;
 import de.flapdoodle.unravel.types.AClass;
+import de.flapdoodle.unravel.types.JavaVersion;
 
 public class Classes {
 
@@ -39,15 +40,30 @@ public class Classes {
 		return new ClazzParser().parse(byteCodeOf);
 	}
 
+	public static Supplier<InputStream> byteCodeOf(JavaVersion javaVersion, java.lang.Class<?> clazz, java.lang.Class<?>... otherClasses) {
+		return Compilers.JavaC.byteCodeOf(javaVersion, JavaSource.of(clazz), JavaSource.of(otherClasses));
+	}
+
+	@Deprecated
 	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> clazz, java.lang.Class<?>... otherClasses) {
-		return Compilers.JavaC.byteCodeOf(JavaSource.of(clazz), JavaSource.of(otherClasses));
+		return Compilers.JavaC.byteCodeOf(JavaVersion.V1_8, JavaSource.of(clazz), JavaSource.of(otherClasses));
 	}
 
+	public static Supplier<InputStream> byteCodeOf(JavaVersion javaVersion, java.lang.Class<?> base, String className) {
+		return Compilers.JavaC.byteCodeOf(javaVersion, JavaSource.ofUnaccessableClass(base, className));
+	}
+
+	@Deprecated
 	public static Supplier<InputStream> byteCodeOf(java.lang.Class<?> base, String className) {
-		return Compilers.JavaC.byteCodeOf(JavaSource.ofUnaccessableClass(base, className));
+		return Compilers.JavaC.byteCodeOf(JavaVersion.V1_8, JavaSource.ofUnaccessableClass(base, className));
 	}
 
+	public static Supplier<InputStream> byteCodeOf(JavaVersion javaVersion, JavaSource javaSource, JavaSource... otherSources) {
+		return Compilers.JavaC.byteCodeOf(javaVersion, javaSource, otherSources);
+	}
+
+	@Deprecated
 	public static Supplier<InputStream> byteCodeOf(JavaSource javaSource, JavaSource... otherSources) {
-		return Compilers.JavaC.byteCodeOf(javaSource, otherSources);
+		return Compilers.JavaC.byteCodeOf(JavaVersion.V1_8, javaSource, otherSources);
 	}
 }

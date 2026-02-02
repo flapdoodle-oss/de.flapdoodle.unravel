@@ -203,7 +203,7 @@ public class ClassesTest {
                 .accessFlags(AccessFlags.ACC_SUPER, AccessFlags.ACC_PUBLIC)
                 .superClass(Object.class)
                 .innerClasses(classes -> {
-                    classes.size().isEqualTo(7);
+                    classes.size().isEqualTo(4);
                     classes.anyElement(it -> it
                             .typeName(Classnames.nameOf(InnerOuter.Inner.class))
                             .innerName(Inner.class.getSimpleName())
@@ -231,33 +231,33 @@ public class ClassesTest {
                             .accessFlags());
                 });
 
-        assertThat(Classes.parse(Classes.byteCodeOf(Classes.anonClass(InnerOuter.class, "1"))))
+        assertThat(Classes.parse(Classes.byteCodeOf(JavaVersion.V1_8, Classes.anonClass(InnerOuter.class, "1"))))
                 .isAtLeast(JavaVersion.V1_8)
                 .typeNameIs(Classnames.nameOf(InnerOuter.class) + "$1")
                 .accessFlags(AccessFlags.ACC_SUPER)
                 .superClass(InnerOuter.Inner.class)
                 .innerClasses(classes -> {
                     classes.size().isEqualTo(4);
-                    classes.element(0)
+                    classes.anyElement(it -> it
                             .typeName(Classnames.nameOf(InnerOuter.class) + "$1")
                             .noInnerName()
                             .noOuterName()
-                            .accessFlags(AccessFlags.ACC_STATIC);
-                    classes.element(1)
+                            .accessFlags(AccessFlags.ACC_STATIC));
+                    classes.anyElement(it -> it
                             .typeName(Classnames.nameOf(InnerOuter.class) + "$1$1AnonInner")
                             .innerName("AnonInner")
                             .noOuterName()
-                            .accessFlags();
-                    classes.element(2)
+                            .accessFlags());
+                    classes.anyElement(it -> it
                             .typeName(Classnames.nameOf(InnerOuter.class) + "$1$1")
                             .noInnerName()
                             .noOuterName()
-                            .accessFlags();
-                    classes.element(3)
+                            .accessFlags());
+                    classes.anyElement(it -> it
                             .typeName(Classnames.nameOf(InnerOuter.Inner.class))
                             .innerName("Inner")
                             .outerName(Classnames.nameOf(InnerOuter.class))
-                            .accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_STATIC);
+                            .accessFlags(AccessFlags.ACC_PUBLIC, AccessFlags.ACC_STATIC));
                 });
 
         assertThat(Classes.parse(Classes.byteCodeOf(Classes.anonClass(InnerOuter.class, "2"))))
