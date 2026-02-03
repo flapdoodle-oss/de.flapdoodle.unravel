@@ -14,28 +14,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
-import org.immutables.builder.Builder.Parameter;
+import java.util.Optional;
+
+import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
-import io.vavr.collection.Multimap;
+import io.vavr.collection.List;
+import io.vavr.collection.Set;
 
 @Immutable
 @VavrEncodingEnabled
-public abstract class AnAnnotation {
-	@Parameter
-	public abstract ATypeName clazz();
-	@Parameter
-	public abstract boolean visible();
+public abstract class AMethod {
+	protected abstract int access();
+	public abstract String name();
+	public abstract AType returnType();
+	public abstract List<AType> parameters();
 
-	public abstract Multimap<String, Object> valueAttributes();
-	public abstract Multimap<String, AnAnnotation> annotationAttributes();
-	public abstract Multimap<String, ATypeName> clazzAttributes();
-	public abstract Multimap<String, AnEnumValue> enumAttributes();
+	public abstract Optional<String> genericSignature();
+	public abstract List<ATypeName> exceptions();
+	public abstract List<AnAnnotation> annotations();
 
-	public static ImmutableAnAnnotation.Builder builder(ATypeName typeName, boolean visible) {
-		return ImmutableAnAnnotation.builder(typeName, visible);
+	public abstract Calls calls();
+
+	@Auxiliary
+	public Set<AccessFlags> accessFlags() {
+		return AccessFlags.flags(Scope.Method, access());
+	}
+
+	public static ImmutableAMethod.Builder builder() {
+		return ImmutableAMethod.builder();
 	}
 }

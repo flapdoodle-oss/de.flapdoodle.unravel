@@ -23,10 +23,10 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import de.flapdoodle.checks.Preconditions;
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.AnAnnotation;
-import de.flapdoodle.unravel.types.AnEnumValue;
-import de.flapdoodle.unravel.types.ImmutableAnAnnotation.Builder;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AnAnnotation;
+import de.flapdoodle.unravel.parser.types.AnEnumValue;
+import de.flapdoodle.unravel.parser.types.ImmutableAnAnnotation.Builder;
 
 public class AnAnnotationVisitor extends AnnotationVisitor {
 

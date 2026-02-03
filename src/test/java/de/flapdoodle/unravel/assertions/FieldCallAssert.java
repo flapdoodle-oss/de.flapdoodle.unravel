@@ -19,8 +19,8 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import de.flapdoodle.unravel.types.AType;
-import de.flapdoodle.unravel.types.Calls.FieldCall;
+import de.flapdoodle.unravel.parser.types.AType;
+import de.flapdoodle.unravel.parser.types.Calls.FieldCall;
 
 public class FieldCallAssert extends AbstractAssert<FieldCallAssert, FieldCall> implements CommonAsserts {
 

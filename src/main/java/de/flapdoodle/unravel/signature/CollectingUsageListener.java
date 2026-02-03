@@ -20,10 +20,10 @@ import de.flapdoodle.unravel.signature.Usage.UsedAnnotation;
 import de.flapdoodle.unravel.signature.Usage.UsedField;
 import de.flapdoodle.unravel.signature.Usage.UsedMethod;
 import de.flapdoodle.unravel.signature.Usage.UsedType;
-import de.flapdoodle.unravel.types.AMethodSignature;
-import de.flapdoodle.unravel.types.AType;
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.InvocationType;
+import de.flapdoodle.unravel.parser.types.AMethodSignature;
+import de.flapdoodle.unravel.parser.types.AType;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.InvocationType;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 

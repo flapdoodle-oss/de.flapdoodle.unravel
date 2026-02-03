@@ -19,9 +19,9 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import de.flapdoodle.unravel.types.AType;
-import de.flapdoodle.unravel.types.Calls.MethodCall;
-import de.flapdoodle.unravel.types.InvocationType;
+import de.flapdoodle.unravel.parser.types.AType;
+import de.flapdoodle.unravel.parser.types.Calls.MethodCall;
+import de.flapdoodle.unravel.parser.types.InvocationType;
 
 public class MethodCallAssert extends AbstractAssert<MethodCallAssert, MethodCall> implements CommonAsserts {
 

@@ -20,9 +20,9 @@ import org.assertj.core.api.IterableAssert;
 
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.signature.TypeSignature;
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 
 public class TypeSignatureAssert extends AbstractAssert<TypeSignatureAssert, TypeSignature> implements CommonAsserts {
 

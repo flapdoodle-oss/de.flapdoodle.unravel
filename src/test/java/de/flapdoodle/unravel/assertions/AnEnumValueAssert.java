@@ -19,7 +19,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import de.flapdoodle.unravel.types.AnEnumValue;
+import de.flapdoodle.unravel.parser.types.AnEnumValue;
 
 public class AnEnumValueAssert extends AbstractAssert<AnEnumValueAssert, AnEnumValue> implements CommonAsserts {
 

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
 import org.objectweb.asm.Opcodes;
 

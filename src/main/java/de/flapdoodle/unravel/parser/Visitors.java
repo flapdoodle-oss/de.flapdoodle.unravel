@@ -14,22 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.parser;
 
 import org.objectweb.asm.Type;
 
-import de.flapdoodle.unravel.types.AMethodSignature;
-import de.flapdoodle.unravel.types.AType;
-import de.flapdoodle.unravel.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AMethodSignature;
+import de.flapdoodle.unravel.parser.types.AType;
+import de.flapdoodle.unravel.parser.types.ATypeName;
 import io.vavr.collection.List;
 
 public abstract class Visitors {
 
-	static ATypeName typeNameOf(String name) {
+	public static ATypeName typeNameOf(String name) {
 		return ATypeName.of(name.replace('/', '.'));
 	}
 
-	static AType typeOf(String rawName) {
+	public static AType typeOf(String rawName) {
 		return typeOf(Type.getType(rawName));
 	}
 

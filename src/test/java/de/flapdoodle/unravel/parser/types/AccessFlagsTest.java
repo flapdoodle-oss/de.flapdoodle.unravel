@@ -14,21 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class ATypeNameTest {
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.Scope;
+import io.vavr.collection.Set;
+
+public class AccessFlagsTest {
 
 	@Test
-	public void anonTypeNames() {
-		assertTrue(ATypeName.of("foo.bar.Baz$1").isAnon());
-		assertTrue(ATypeName.of("foo.bar.Baz$1$2").isAnon());
-		assertTrue(ATypeName.of("foo.bar.Baz$1$2$12313").isAnon());
-		assertFalse(ATypeName.of("foo.bar.Baz").isAnon());
-		assertFalse(ATypeName.of("foo.bar.Baz$Inner").isAnon());
+	public void setShouldContainAllFlagsMatchingValueBits() {
+		Set<AccessFlags> result = AccessFlags.flags(Scope.Clazz, AccessFlags.ACC_PROTECTED.mask | AccessFlags.ACC_PUBLIC.mask);
+		
+		assertEquals(2,result.size());
+		assertTrue(result.contains(AccessFlags.ACC_PROTECTED));
+		assertTrue(result.contains(AccessFlags.ACC_PUBLIC));
 	}
 }

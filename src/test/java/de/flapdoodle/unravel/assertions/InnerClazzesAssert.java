@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
-import de.flapdoodle.unravel.types.AnInnerClass;
+import de.flapdoodle.unravel.parser.types.AnInnerClass;
 import io.vavr.collection.List;
 
 public class InnerClazzesAssert extends FactoryBasedNavigableIterableAssert<InnerClazzesAssert, Iterable<? extends AnInnerClass>, AnInnerClass, InnerClazzAssert> implements CommonAsserts {

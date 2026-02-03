@@ -22,10 +22,10 @@ import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
 import de.flapdoodle.unravel.classes.Classnames;
-import de.flapdoodle.unravel.types.AClass;
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.AClass;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 
 public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
 

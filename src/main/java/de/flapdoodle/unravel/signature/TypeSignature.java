@@ -22,10 +22,10 @@ import org.immutables.builder.Builder.Parameter;
 import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
-import de.flapdoodle.unravel.types.AType;
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.AType;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
 

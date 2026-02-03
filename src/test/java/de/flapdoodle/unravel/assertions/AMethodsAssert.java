@@ -19,7 +19,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
-import de.flapdoodle.unravel.types.AMethod;
+import de.flapdoodle.unravel.parser.types.AMethod;
 import io.vavr.collection.List;
 
 public class AMethodsAssert extends FactoryBasedNavigableIterableAssert<AMethodsAssert, Iterable<? extends AMethod>, AMethod, AMethodAssert> implements CommonAsserts {

@@ -18,8 +18,8 @@ package de.flapdoodle.unravel.signature;
 
 import java.util.function.Function;
 
-import de.flapdoodle.unravel.types.AClass;
-import de.flapdoodle.unravel.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AClass;
+import de.flapdoodle.unravel.parser.types.ATypeName;
 import io.vavr.control.Option;
 
 public interface SignatureOfAClassFactory {

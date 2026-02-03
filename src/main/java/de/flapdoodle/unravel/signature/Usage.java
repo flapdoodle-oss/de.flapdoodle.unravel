@@ -20,10 +20,10 @@ import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
-import de.flapdoodle.unravel.types.AMethodSignature;
-import de.flapdoodle.unravel.types.AType;
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.InvocationType;
+import de.flapdoodle.unravel.parser.types.AMethodSignature;
+import de.flapdoodle.unravel.parser.types.AType;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.InvocationType;
 import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 

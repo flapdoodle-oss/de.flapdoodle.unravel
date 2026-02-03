@@ -22,10 +22,9 @@ import javax.tools.JavaFileObject;
 import com.google.common.collect.ImmutableList;
 import com.google.testing.compile.Compilation;
 import com.google.testing.compile.Compilation.Status;
-import com.google.testing.compile.Compiler;
 import com.google.testing.compile.JavaFileObjects;
 
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 import io.vavr.collection.List;
 
 import static com.google.testing.compile.Compiler.javac;

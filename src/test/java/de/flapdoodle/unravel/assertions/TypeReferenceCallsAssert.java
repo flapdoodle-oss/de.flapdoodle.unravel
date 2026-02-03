@@ -19,7 +19,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
-import de.flapdoodle.unravel.types.Calls.TypeReferenceCall;
+import de.flapdoodle.unravel.parser.types.Calls.TypeReferenceCall;
 import io.vavr.collection.Set;
 
 public class TypeReferenceCallsAssert extends FactoryBasedNavigableIterableAssert<TypeReferenceCallsAssert, Iterable<? extends TypeReferenceCall>, TypeReferenceCall, TypeReferenceCallAssert> implements CommonAsserts {

@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 import org.assertj.core.api.AbstractAssert;
 
-import de.flapdoodle.unravel.types.Calls;
+import de.flapdoodle.unravel.parser.types.Calls;
 
 public class CallsAssert extends AbstractAssert<CallsAssert, Calls> implements CommonAsserts {
 

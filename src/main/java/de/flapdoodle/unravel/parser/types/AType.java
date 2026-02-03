@@ -14,28 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
-
-import java.util.Optional;
+package de.flapdoodle.unravel.parser.types;
 
 import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
-
-import io.vavr.collection.Set;
+import org.immutables.value.Value.Parameter;
 
 @Immutable
-public abstract class AnInnerClass {
-	protected abstract int access();
-	public abstract ATypeName typeName();
-	public abstract Optional<ATypeName> innerName();
-	public abstract Optional<ATypeName> outerName();
+public interface AType {
+	@Parameter
+	ATypeName clazz();
+	@Parameter
+	int arrayDimension();
 
 	@Auxiliary
-	public Set<AccessFlags> accessFlags() {
-		return AccessFlags.flags(Scope.Clazz, access());
+	default boolean isArray() {
+		return arrayDimension() > 0;
 	}
 
-	public static ImmutableAnInnerClass.Builder builder() {
-		return ImmutableAnInnerClass.builder();
+	public static AType of(String name, int arrayDimension) {
+		return ImmutableAType.of(ATypeName.of(name), arrayDimension);
+	}
+
+	public static AType of(ATypeName typeName, int arrayDimension) {
+		return ImmutableAType.of(typeName, arrayDimension);
+	}
+
+	public static AType of(ATypeName typeName) {
+		return of(typeName, 0);
 	}
 }

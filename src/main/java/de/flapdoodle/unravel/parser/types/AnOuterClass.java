@@ -14,23 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.Optional;
 
-import org.junit.Test;
+import org.immutables.builder.Builder.Parameter;
+import org.immutables.value.Value.Immutable;
 
-import io.vavr.collection.Set;
+@Immutable
+public abstract class AnOuterClass {
+	@Parameter
+	public abstract ATypeName typeName();
+	public abstract Optional<String> methodName();
+	public abstract Optional<AMethodSignature> methodSignature();
 
-public class AccessFlagsTest {
-
-	@Test
-	public void setShouldContainAllFlagsMatchingValueBits() {
-		Set<AccessFlags> result = AccessFlags.flags(Scope.Clazz, AccessFlags.ACC_PROTECTED.mask | AccessFlags.ACC_PUBLIC.mask);
-		
-		assertEquals(2,result.size());
-		assertTrue(result.contains(AccessFlags.ACC_PROTECTED));
-		assertTrue(result.contains(AccessFlags.ACC_PUBLIC));
+	public static ImmutableAnOuterClass.Builder builder(ATypeName typeName) {
+		return ImmutableAnOuterClass.builder(typeName);
 	}
 }

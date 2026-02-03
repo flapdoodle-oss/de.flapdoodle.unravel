@@ -19,8 +19,8 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import de.flapdoodle.unravel.types.AField;
-import de.flapdoodle.unravel.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.AField;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
 
 public class AFieldAssert extends AbstractAssert<AFieldAssert, AField> implements CommonAsserts {
 

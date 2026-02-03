@@ -19,9 +19,9 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.AnInnerClass;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.AnInnerClass;
 
 public class InnerClazzAssert extends AbstractAssert<InnerClazzAssert, AnInnerClass> implements CommonAsserts {
 

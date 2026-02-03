@@ -14,11 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
-public enum Visibility {
-	Private,
-	Protected,
-	PackageProtected,
-	Public;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import de.flapdoodle.unravel.parser.types.ATypeName;
+
+public class ATypeNameTest {
+
+	@Test
+	public void anonTypeNames() {
+		assertTrue(ATypeName.of("foo.bar.Baz$1").isAnon());
+		assertTrue(ATypeName.of("foo.bar.Baz$1$2").isAnon());
+		assertTrue(ATypeName.of("foo.bar.Baz$1$2$12313").isAnon());
+		assertFalse(ATypeName.of("foo.bar.Baz").isAnon());
+		assertFalse(ATypeName.of("foo.bar.Baz$Inner").isAnon());
+	}
 }

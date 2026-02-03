@@ -19,7 +19,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import de.flapdoodle.unravel.types.Calls.TypeReferenceCall;
+import de.flapdoodle.unravel.parser.types.Calls.TypeReferenceCall;
 
 public class TypeReferenceCallAssert extends AbstractAssert<TypeReferenceCallAssert, TypeReferenceCall> implements CommonAsserts {
 

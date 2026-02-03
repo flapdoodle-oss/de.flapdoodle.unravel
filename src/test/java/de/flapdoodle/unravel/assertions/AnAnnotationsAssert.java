@@ -19,7 +19,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
-import de.flapdoodle.unravel.types.AnAnnotation;
+import de.flapdoodle.unravel.parser.types.AnAnnotation;
 import io.vavr.collection.List;
 
 public class AnAnnotationsAssert extends FactoryBasedNavigableIterableAssert<AnAnnotationsAssert, Iterable<? extends AnAnnotation>, AnAnnotation, AnAnnotationAssert> implements CommonAsserts {

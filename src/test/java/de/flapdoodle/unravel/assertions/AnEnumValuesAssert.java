@@ -19,7 +19,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
-import de.flapdoodle.unravel.types.AnEnumValue;
+import de.flapdoodle.unravel.parser.types.AnEnumValue;
 import io.vavr.collection.List;
 
 public class AnEnumValuesAssert extends FactoryBasedNavigableIterableAssert<AnEnumValuesAssert, Iterable<? extends AnEnumValue>, AnEnumValue, AnEnumValueAssert> implements CommonAsserts {

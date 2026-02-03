@@ -19,8 +19,8 @@ package de.flapdoodle.unravel.classes;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 
-import de.flapdoodle.unravel.types.AType;
-import de.flapdoodle.unravel.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AType;
+import de.flapdoodle.unravel.parser.types.ATypeName;
 
 public abstract class Classnames {
 

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.asm;
+package de.flapdoodle.unravel.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,15 +31,19 @@ import org.objectweb.asm.ModuleVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.TypePath;
 
-import de.flapdoodle.unravel.types.AClass;
-import de.flapdoodle.unravel.types.AField;
-import de.flapdoodle.unravel.types.AMethod;
-import de.flapdoodle.unravel.types.AMethodSignature;
-import de.flapdoodle.unravel.types.AnInnerClass;
-import de.flapdoodle.unravel.types.AnOuterClass;
-import de.flapdoodle.unravel.types.ImmutableAClass.Builder;
-import de.flapdoodle.unravel.types.ImmutableAField;
-import de.flapdoodle.unravel.types.ImmutableAnOuterClass;
+import de.flapdoodle.unravel.asm.AFieldVisitor;
+import de.flapdoodle.unravel.asm.AMethodVisitor;
+import de.flapdoodle.unravel.asm.AnAnnotationVisitor;
+import de.flapdoodle.unravel.asm.NotImplementedException;
+import de.flapdoodle.unravel.parser.types.AClass;
+import de.flapdoodle.unravel.parser.types.AField;
+import de.flapdoodle.unravel.parser.types.AMethod;
+import de.flapdoodle.unravel.parser.types.AMethodSignature;
+import de.flapdoodle.unravel.parser.types.AnInnerClass;
+import de.flapdoodle.unravel.parser.types.AnOuterClass;
+import de.flapdoodle.unravel.parser.types.ImmutableAClass;
+import de.flapdoodle.unravel.parser.types.ImmutableAField;
+import de.flapdoodle.unravel.parser.types.ImmutableAnOuterClass;
 import io.vavr.collection.List;
 
 public class ClazzParser {
@@ -58,7 +62,7 @@ public class ClazzParser {
 
 	private static class Visitor extends ClassVisitor {
 
-		private final Builder builder = AClass.builder();
+		private final ImmutableAClass.Builder builder = AClass.builder();
 		private Optional<AClass> clazz = Optional.empty();
 
 		public Visitor() {

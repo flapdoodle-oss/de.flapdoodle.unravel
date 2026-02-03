@@ -14,33 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
-import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Parameter;
+import org.immutables.vavr.encodings.VavrEncodingEnabled;
+
+import io.vavr.collection.List;
 
 @Immutable
-public interface AType {
+@VavrEncodingEnabled
+public interface AMethodSignature {
 	@Parameter
-	ATypeName clazz();
+	AType returnType();
 	@Parameter
-	int arrayDimension();
+	List<AType> parameters();
 
-	@Auxiliary
-	default boolean isArray() {
-		return arrayDimension() > 0;
+	public static ImmutableAMethodSignature.Builder builder() {
+		return ImmutableAMethodSignature.builder();
 	}
 
-	public static AType of(String name, int arrayDimension) {
-		return ImmutableAType.of(ATypeName.of(name), arrayDimension);
-	}
-
-	public static AType of(ATypeName typeName, int arrayDimension) {
-		return ImmutableAType.of(typeName, arrayDimension);
-	}
-
-	public static AType of(ATypeName typeName) {
-		return of(typeName, 0);
+	public static AMethodSignature of(AType returnType, List<AType> parameters) {
+		return ImmutableAMethodSignature.of(returnType, parameters);
 	}
 }

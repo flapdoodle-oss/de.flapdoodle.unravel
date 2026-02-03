@@ -23,10 +23,10 @@ import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.InnerOuter;
-import de.flapdoodle.unravel.types.AClass;
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.AClass;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 import io.vavr.collection.List;
 import io.vavr.collection.Map;
 

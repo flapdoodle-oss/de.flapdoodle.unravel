@@ -14,34 +14,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
 import java.util.Optional;
 
 import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
+import org.immutables.value.Value.Style;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
 import io.vavr.collection.List;
 import io.vavr.collection.Set;
 
 @Immutable
+@Style(strictBuilder = true)
 @VavrEncodingEnabled
-public abstract class AField {
-	public abstract String name();
-	public abstract AType type();
+public abstract class AClass {
+	protected abstract int version();
+	protected abstract int access();
+	public abstract ATypeName typeName();
 	public abstract Optional<String> genericSignature();
-	public abstract Optional<Object> value();
+	public abstract Optional<ATypeName> superClazz();
+	public abstract List<ATypeName> interfaces();
+	public abstract List<AnInnerClass> innerClasses();
+	public abstract Optional<AnOuterClass> outerClazz();
 	public abstract List<AnAnnotation> annotations();
 
-	protected abstract int access();
+	public abstract List<AField> fields();
+	public abstract List<AMethod> methods();
+
+	@Auxiliary
+	public JavaVersion javaVersion() {
+		return JavaVersion.of(version());
+	}
 
 	@Auxiliary
 	public Set<AccessFlags> accessFlags() {
-		return AccessFlags.flags(Scope.Field, access());
+		return AccessFlags.flags(Scope.Clazz, access());
 	}
 
-	public static ImmutableAField.Builder builder() {
-		return ImmutableAField.builder();
+	public static ImmutableAClass.Builder builder() {
+		return ImmutableAClass.builder();
 	}
 }

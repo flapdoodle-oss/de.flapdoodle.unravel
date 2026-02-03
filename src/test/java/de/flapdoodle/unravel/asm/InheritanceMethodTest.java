@@ -32,9 +32,9 @@ import de.flapdoodle.unravel.samples.asm.inherit.Base;
 import de.flapdoodle.unravel.samples.asm.inherit.Caller;
 import de.flapdoodle.unravel.samples.asm.inherit.ExtendsExtends;
 import de.flapdoodle.unravel.samples.asm.inherit.LocalInterface;
-import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.InvocationType;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.InvocationType;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 
 public class InheritanceMethodTest  {
 	

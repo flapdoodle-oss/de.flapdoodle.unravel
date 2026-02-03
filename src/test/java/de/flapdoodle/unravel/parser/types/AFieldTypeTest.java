@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.objectweb.asm.Type;
 
-import de.flapdoodle.unravel.types.AFieldType;
+import de.flapdoodle.unravel.parser.types.AFieldType;
 
 public class AFieldTypeTest {
 

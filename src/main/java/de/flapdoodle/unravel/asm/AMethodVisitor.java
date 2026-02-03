@@ -29,26 +29,28 @@ import org.objectweb.asm.TypePath;
 
 import de.flapdoodle.checks.Preconditions;
 import de.flapdoodle.unravel.classes.Classnames;
-import de.flapdoodle.unravel.types.AMethod;
-import de.flapdoodle.unravel.types.AMethodSignature;
-import de.flapdoodle.unravel.types.AType;
-import de.flapdoodle.unravel.types.ATypeName;
-import de.flapdoodle.unravel.types.Calls;
-import de.flapdoodle.unravel.types.Calls.FieldCall;
-import de.flapdoodle.unravel.types.Calls.LambdaCall;
-import de.flapdoodle.unravel.types.Calls.MethodCall;
-import de.flapdoodle.unravel.types.Calls.TypeReferenceCall;
-import de.flapdoodle.unravel.types.ImmutableAMethod;
-import de.flapdoodle.unravel.types.ImmutableAMethod.Builder;
-import de.flapdoodle.unravel.types.ImmutableLambdaCall;
-import de.flapdoodle.unravel.types.InvocationType;
+import de.flapdoodle.unravel.parser.Visitors;
+import de.flapdoodle.unravel.parser.types.AMethod;
+import de.flapdoodle.unravel.parser.types.AMethodSignature;
+import de.flapdoodle.unravel.parser.types.AType;
+import de.flapdoodle.unravel.parser.types.ATypeName;
+import de.flapdoodle.unravel.parser.types.Calls;
+import de.flapdoodle.unravel.parser.types.Calls.FieldCall;
+import de.flapdoodle.unravel.parser.types.Calls.LambdaCall;
+import de.flapdoodle.unravel.parser.types.Calls.MethodCall;
+import de.flapdoodle.unravel.parser.types.Calls.TypeReferenceCall;
+import de.flapdoodle.unravel.parser.types.ImmutableAMethod;
+import de.flapdoodle.unravel.parser.types.ImmutableAMethod.Builder;
+import de.flapdoodle.unravel.parser.types.ImmutableCalls;
+import de.flapdoodle.unravel.parser.types.ImmutableLambdaCall;
+import de.flapdoodle.unravel.parser.types.InvocationType;
 import io.vavr.collection.List;
 
 public class AMethodVisitor extends MethodVisitor {
 
 	private final Builder builder;
 	private final Consumer<AMethod> methodConsumer;
-	private final de.flapdoodle.unravel.types.ImmutableCalls.Builder callsBuilder;
+	private final ImmutableCalls.Builder callsBuilder;
 
 	public AMethodVisitor(ImmutableAMethod.Builder builder, Consumer<AMethod> methodConsumer) {
 		super(Opcodes.ASM6);

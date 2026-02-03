@@ -19,7 +19,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
-import de.flapdoodle.unravel.types.Calls.LambdaCall;
+import de.flapdoodle.unravel.parser.types.Calls.LambdaCall;
 import io.vavr.collection.Set;
 
 public class LambdaCallsAssert extends FactoryBasedNavigableIterableAssert<LambdaCallsAssert, Iterable<? extends LambdaCall>, LambdaCall, LambdaCallAssert> implements CommonAsserts {

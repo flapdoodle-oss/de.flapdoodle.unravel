@@ -27,7 +27,7 @@ import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.Inheritance;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 
 public class InheritanceTest {
 	@Test

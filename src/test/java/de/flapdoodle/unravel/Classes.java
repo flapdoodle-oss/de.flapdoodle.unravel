@@ -21,9 +21,9 @@ import java.util.function.Supplier;
 
 import com.google.common.base.Joiner;
 
-import de.flapdoodle.unravel.asm.ClazzParser;
-import de.flapdoodle.unravel.types.AClass;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.ClazzParser;
+import de.flapdoodle.unravel.parser.types.AClass;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 
 public class Classes {
 

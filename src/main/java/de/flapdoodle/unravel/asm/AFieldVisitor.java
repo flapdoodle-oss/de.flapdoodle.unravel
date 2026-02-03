@@ -24,9 +24,9 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.TypePath;
 
-import de.flapdoodle.unravel.types.AField;
-import de.flapdoodle.unravel.types.ImmutableAField;
-import de.flapdoodle.unravel.types.ImmutableAField.Builder;
+import de.flapdoodle.unravel.parser.types.AField;
+import de.flapdoodle.unravel.parser.types.ImmutableAField;
+import de.flapdoodle.unravel.parser.types.ImmutableAField.Builder;
 
 public class AFieldVisitor extends FieldVisitor {
 

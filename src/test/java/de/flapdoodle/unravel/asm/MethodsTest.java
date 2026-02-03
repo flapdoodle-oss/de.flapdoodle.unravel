@@ -45,11 +45,11 @@ import de.flapdoodle.unravel.samples.asm.methods.MethodCode;
 import de.flapdoodle.unravel.samples.asm.methods.MethodLambdas;
 import de.flapdoodle.unravel.samples.asm.methods.MethodSignatures;
 import de.flapdoodle.unravel.samples.asm.methods.MethodsPlayground;
-import de.flapdoodle.unravel.types.AMethodSignature;
-import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.ImmutableAMethodSignature;
-import de.flapdoodle.unravel.types.InvocationType;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.AMethodSignature;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.ImmutableAMethodSignature;
+import de.flapdoodle.unravel.parser.types.InvocationType;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 
 import static de.flapdoodle.unravel.Assertions.assertThat;
 import static de.flapdoodle.unravel.Classes.byteCodeOf;

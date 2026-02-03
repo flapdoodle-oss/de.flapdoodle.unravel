@@ -14,9 +14,7 @@ package de.flapdoodle.unravel.asm;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 
-import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.JavaSource;
 import de.flapdoodle.unravel.classes.Classnames;
@@ -29,8 +27,8 @@ import de.flapdoodle.unravel.samples.asm.basics.Inner;
 import de.flapdoodle.unravel.samples.asm.basics.InnerOuter;
 import de.flapdoodle.unravel.samples.asm.basics.InnerOuter.Inner.InnerInner;
 import de.flapdoodle.unravel.samples.asm.basics.InterfacePublic;
-import de.flapdoodle.unravel.types.AccessFlags;
-import de.flapdoodle.unravel.types.JavaVersion;
+import de.flapdoodle.unravel.parser.types.AccessFlags;
+import de.flapdoodle.unravel.parser.types.JavaVersion;
 
 import static de.flapdoodle.unravel.Assertions.assertThat;
 import static de.flapdoodle.unravel.Classes.byteCodeOf;

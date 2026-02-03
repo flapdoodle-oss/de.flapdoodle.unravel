@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
-import static de.flapdoodle.unravel.types.Scope.Clazz;
-import static de.flapdoodle.unravel.types.Scope.Field;
-import static de.flapdoodle.unravel.types.Scope.Inner;
-import static de.flapdoodle.unravel.types.Scope.Method;
-import static de.flapdoodle.unravel.types.Scope.Module;
-import static de.flapdoodle.unravel.types.Scope.ModuleRequires;
-import static de.flapdoodle.unravel.types.Scope.Parameter;
+import static de.flapdoodle.unravel.parser.types.Scope.Clazz;
+import static de.flapdoodle.unravel.parser.types.Scope.Field;
+import static de.flapdoodle.unravel.parser.types.Scope.Inner;
+import static de.flapdoodle.unravel.parser.types.Scope.Method;
+import static de.flapdoodle.unravel.parser.types.Scope.Module;
+import static de.flapdoodle.unravel.parser.types.Scope.ModuleRequires;
+import static de.flapdoodle.unravel.parser.types.Scope.Parameter;
 
 import de.flapdoodle.checks.Preconditions;
 import io.vavr.collection.HashSet;

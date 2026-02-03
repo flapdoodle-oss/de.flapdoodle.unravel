@@ -19,7 +19,7 @@ package de.flapdoodle.unravel.assertions;
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
-import de.flapdoodle.unravel.types.Calls.FieldCall;
+import de.flapdoodle.unravel.parser.types.Calls.FieldCall;
 import io.vavr.collection.Set;
 
 public class FieldCallsAssert extends FactoryBasedNavigableIterableAssert<FieldCallsAssert, Iterable<? extends FieldCall>, FieldCall, FieldCallAssert> implements CommonAsserts {

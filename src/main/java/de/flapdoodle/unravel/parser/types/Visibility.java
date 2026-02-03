@@ -14,21 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.unravel.types;
+package de.flapdoodle.unravel.parser.types;
 
-import org.immutables.value.Value.Immutable;
-import org.immutables.value.Value.Parameter;
-import org.immutables.vavr.encodings.VavrEncodingEnabled;
-
-@Immutable
-@VavrEncodingEnabled
-public abstract class AnEnumValue {
-	@Parameter
-	public abstract ATypeName clazz();
-	@Parameter
-	public abstract String value();
-
-	public static AnEnumValue of(ATypeName name, String value) {
-		return ImmutableAnEnumValue.of(name, value);
-	}
+public enum Visibility {
+	Private,
+	Protected,
+	PackageProtected,
+	Public;
 }
