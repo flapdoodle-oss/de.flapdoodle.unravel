@@ -126,6 +126,7 @@
                         </goals>
                         <configuration>
                             <rules>
+                                <dependencyConvergence />
                                 <banDuplicateClasses>
                                     <ignoreClasses>
                                         <!-- example of ignoring one specific class -->
@@ -370,7 +371,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>21</java.version>
 
-        <immutables.version>2.5.6</immutables.version>
+        <immutables.version>2.12.1</immutables.version>
         <!-- eclipse apt switch -->
         <m2e.apt.activation>jdt_apt</m2e.apt.activation>
         <pitest.skip>false</pitest.skip>
@@ -410,7 +411,7 @@
         <dependency>
             <groupId>com.google.testing.compile</groupId>
             <artifactId>compile-testing</artifactId>
-            <version>0.15</version>
+            <version>0.21.0</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -427,18 +428,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.google.truth</groupId>
-            <artifactId>truth</artifactId>
-            <version>0.39</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.truth.extensions</groupId>
-            <artifactId>truth-java8-extension</artifactId>
-            <version>0.39</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.google.truth</groupId>-->
+<!--            <artifactId>truth</artifactId>-->
+<!--            <version>1.1.3</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.google.truth.extensions</groupId>-->
+<!--            <artifactId>truth-java8-extension</artifactId>-->
+<!--            <version>0.39</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.immutables</groupId>
@@ -457,13 +458,13 @@
         <dependency>
             <groupId>org.immutables.vavr</groupId>
             <artifactId>vavr</artifactId>
-            <version>0.4.0</version>
+            <version>0.6.2</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.immutables.vavr</groupId>
             <artifactId>vavr-encodings</artifactId>
-            <version>0.4.0</version>
+            <version>0.6.2</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -479,7 +480,7 @@
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
-            <version>0.9.1</version>
+            <version>0.11.0</version>
         </dependency>
 
         <dependency>
@@ -491,7 +492,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>24.1-jre</version>
+            <version>33.5.0-jre</version>
         </dependency>
 
 

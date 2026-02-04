@@ -37,7 +37,7 @@ public class Classes {
 	}
 
 	public static AClass parse(Supplier<InputStream> byteCodeOf) {
-		return new ClazzParser().parse(byteCodeOf);
+		return ClazzParser.parse(byteCodeOf);
 	}
 
 	public static Supplier<InputStream> byteCodeOf(JavaVersion javaVersion, java.lang.Class<?> clazz, java.lang.Class<?>... otherClasses) {

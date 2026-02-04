@@ -48,7 +48,11 @@ import io.vavr.collection.List;
 
 public class ClazzParser {
 
-	public AClass parse(Supplier<? extends InputStream> classStream) {
+	private ClazzParser() {
+		// no instance
+	}
+
+	public static AClass parse(Supplier<? extends InputStream> classStream) {
 		try (InputStream is = classStream.get()) {
 			ClassReader reader = new ClassReader(is);
 			Visitor classVisitor = new Visitor();

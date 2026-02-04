@@ -56,12 +56,17 @@ public class ClazzAssert extends AbstractAssert<ClazzAssert, AClass> {
 		Assertions.assertThat(actual.genericSignature()).describedAs("genericSignature").isEmpty();
 		return this;
 	}
-	
+
 	public ClazzAssert accessFlags(AccessFlags ... values) {
-		Assertions.assertThat(actual.accessFlags()).containsOnly(values);
+		Assertions.assertThat(actual.accessFlags()).containsExactlyInAnyOrder(values);
 		return this;
 	}
-	
+
+	public ClazzAssert hasAccessFlags(AccessFlags ... values) {
+		Assertions.assertThat(actual.accessFlags()).contains(values);
+		return this;
+	}
+
 	public ClazzAssert superClass(Class<?> type) {
 		Assertions.assertThat(actual.superClazz()).isPresent();
 		Assertions.assertThat(actual.superClazz().get().value()).isEqualTo(Classnames.nameOf(type));
