@@ -16,8 +16,8 @@
  */
 package de.flapdoodle.unravel.assertions;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.assertj.core.api.AbstractAssert;
 
@@ -25,7 +25,6 @@ import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.parser.types.ATypeName;
 import de.flapdoodle.unravel.parser.types.AnAnnotation;
 import de.flapdoodle.unravel.parser.types.AnEnumValue;
-import io.vavr.collection.List;
 
 public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnnotation> implements CommonAsserts {
 
@@ -54,9 +53,7 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 	}
 	
 	public AnAnnotationAssert valueAttributesContains(String key, Object ... expected) {
-		java.util.List<Object> values = actual.valueAttributes().get(key)
-				.map(t -> t.toJavaList())
-				.getOrElse(new ArrayList<>());
+		java.util.List<Object> values = actual.valueAttributes().get(key);
 		Assertions.assertThat(values).describedAs(propertyDescription("valueAttributes."+key)).containsExactly(expected);
 		return this;
 	}
@@ -68,18 +65,15 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 	}
 	
 	public AnAnnotationAssert enumAttributes(String key, Consumer<AnEnumValuesAssert> consumer) {
-		List<AnEnumValue> values = actual.enumAttributes().get(key)
-				.map(t -> t.toList())
-				.getOrElse(io.vavr.collection.List.empty());
+		java.util.List<AnEnumValue> values = actual.enumAttributes().get(key);
 		consumer.accept(AnEnumValuesAssert.assertThatFields(values).describedAs(propertyDescription("enumAttributes")));
 		return this;
 	}
 	
 	public AnAnnotationAssert classAttributes(String key, String ... match) {
-		List<ATypeName> values = actual.clazzAttributes().get(key)
-				.map(t -> t.toList())
-				.getOrElse(io.vavr.collection.List.empty());
-		Assertions.assertThat(values).describedAs(propertyDescription("classAttributes")).containsAll(List.of(match).map(ATypeName::of));
+		java.util.List<ATypeName> values = actual.clazzAttributes().get(key);
+		Assertions.assertThat(values).describedAs(propertyDescription("classAttributes")).containsAll(
+                Stream.of(match).map(ATypeName::of).toList());
 		return this;
 	}
 }

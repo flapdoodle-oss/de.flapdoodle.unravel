@@ -100,8 +100,8 @@
                     </compilerArgs>
                     <!-- Prevents an endPosTable exception during compilation -->
                     <useIncrementalCompilation>false</useIncrementalCompilation>
-                    <source>14</source>
-                    <target>14</target>
+                    <source>21</source>
+                    <target>21</target>
                 </configuration>
             </plugin>
 

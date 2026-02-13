@@ -24,11 +24,11 @@ import io.vavr.collection.List;
 
 public class AnEnumValuesAssert extends FactoryBasedNavigableIterableAssert<AnEnumValuesAssert, Iterable<? extends AnEnumValue>, AnEnumValue, AnEnumValueAssert> implements CommonAsserts {
 
-	public AnEnumValuesAssert(List<AnEnumValue> actual) {
-		super(actual, AnEnumValuesAssert.class, t -> new AnEnumValueAssert(t));
+	public AnEnumValuesAssert(Iterable<? extends AnEnumValue> actual) {
+		super(actual, AnEnumValuesAssert.class, AnEnumValueAssert::new);
 	}
 
-	public static AnEnumValuesAssert assertThatFields(List<AnEnumValue> enums) {
+	public static AnEnumValuesAssert assertThatFields(Iterable<? extends AnEnumValue> enums) {
 		return new AnEnumValuesAssert(enums);
 	}
 	

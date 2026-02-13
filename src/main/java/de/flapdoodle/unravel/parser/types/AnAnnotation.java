@@ -35,10 +35,10 @@ public abstract class AnAnnotation {
 	@Parameter
 	public abstract boolean visible();
 
-	public abstract Multimap<String, Object> valueAttributes();
+	public abstract ListMultimap<String, Object> valueAttributes();
 	public abstract ListMultimap<String, AnAnnotation> annotationAttributes();
-	public abstract Multimap<String, ATypeName> clazzAttributes();
-	public abstract Multimap<String, AnEnumValue> enumAttributes();
+	public abstract ListMultimap<String, ATypeName> clazzAttributes();
+	public abstract ListMultimap<String, AnEnumValue> enumAttributes();
 
 	public static ImmutableAnAnnotation.Builder builder(ATypeName typeName, boolean visible) {
 		return ImmutableAnAnnotation.builder(typeName, visible);
