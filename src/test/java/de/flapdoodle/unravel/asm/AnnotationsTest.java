@@ -47,6 +47,10 @@ public class AnnotationsTest {
 		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Annotations.WrapperSample.class)))
 			.isAtLeast(JavaVersion.V1_8)
 			.annotations(annotations -> {
+				annotations
+						.hasSize(1)
+						.anyAnnotation(it -> it.clazz(Classnames.nameOf(Annotations.Wrapper.class)));
+				
 				annotations.size().isEqualTo(1);
 				annotations.element(0)
 					.clazz(Classnames.nameOf(Annotations.Wrapper.class))

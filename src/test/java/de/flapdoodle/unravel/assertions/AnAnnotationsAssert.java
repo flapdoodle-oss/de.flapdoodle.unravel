@@ -16,11 +16,12 @@
  */
 package de.flapdoodle.unravel.assertions;
 
+import java.util.function.Consumer;
+
 import org.assertj.core.api.AbstractIterableSizeAssert;
 import org.assertj.core.api.FactoryBasedNavigableIterableAssert;
 
 import de.flapdoodle.unravel.parser.types.AnAnnotation;
-import io.vavr.collection.List;
 
 public class AnAnnotationsAssert extends FactoryBasedNavigableIterableAssert<AnAnnotationsAssert, Iterable<? extends AnAnnotation>, AnAnnotation, AnAnnotationAssert> implements CommonAsserts {
 
@@ -31,9 +32,14 @@ public class AnAnnotationsAssert extends FactoryBasedNavigableIterableAssert<AnA
 	public static AnAnnotationsAssert assertThatAnnotations(Iterable<? extends AnAnnotation> annotations) {
 		return new AnAnnotationsAssert(annotations);
 	}
-	
+
 	@Override
+	@Deprecated
 	public AbstractIterableSizeAssert<AnAnnotationsAssert, Iterable<? extends AnAnnotation>, AnAnnotation, AnAnnotationAssert> size() {
 		return super.size().describedAs(propertyDescription("size"));
+	}
+
+	public AnAnnotationsAssert anyAnnotation(Consumer<AnAnnotationAssert> consumer) {
+		return anySatisfy(it -> consumer.accept(new AnAnnotationAssert(it))).describedAs(propertyDescription("element"));
 	}
 }
