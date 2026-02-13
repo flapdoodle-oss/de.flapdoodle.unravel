@@ -47,26 +47,26 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 //		return this;
 //	}
 //	
-	public AnAnnotationAssert clazz(String type) {
+	public AnAnnotationAssert isClass(String type) {
 		Assertions.assertThat(actual.clazz().value()).describedAs(propertyDescription("clazz")).isEqualTo(type);
 		return this;
 	}
 	
-	public AnAnnotationAssert valueAttributesContains(String key, Object ... expected) {
+	public AnAnnotationAssert valueContainsExactly(String key, Object ... expected) {
 		java.util.List<Object> values = actual.valueAttributes().get(key);
-		Assertions.assertThat(values).describedAs(propertyDescription("valueAttributes."+key)).containsExactly(expected);
+		Assertions.assertThat(values).describedAs(indexedPropertyDescription("valueAttributes", key)).containsExactly(expected);
 		return this;
 	}
 
-	public AnAnnotationAssert annotationAttributes(String key, Consumer<AnAnnotationsAssert> consumer) {
+	public AnAnnotationAssert annotation(String key, Consumer<AnAnnotationsAssert> consumer) {
 		java.util.List<AnAnnotation> values = actual.annotationAttributes().get(key);
-		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(values).describedAs(propertyDescription("annotationAttributes["+key+"]")));
+		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(values).describedAs(indexedPropertyDescription("annotationAttributes",key)));
 		return this;
 	}
 	
-	public AnAnnotationAssert enumAttributes(String key, Consumer<AnEnumValuesAssert> consumer) {
+	public AnAnnotationAssert enumAttribute(String key, Consumer<AnEnumValuesAssert> consumer) {
 		java.util.List<AnEnumValue> values = actual.enumAttributes().get(key);
-		consumer.accept(AnEnumValuesAssert.assertThatFields(values).describedAs(propertyDescription("enumAttributes")));
+		consumer.accept(AnEnumValuesAssert.assertThatFields(values).describedAs(indexedPropertyDescription("enumAttributes", key)));
 		return this;
 	}
 	

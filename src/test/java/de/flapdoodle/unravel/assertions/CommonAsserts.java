@@ -22,5 +22,9 @@ public interface CommonAsserts {
 		return descriptionText().isEmpty() ? property : property+" of "+descriptionText();
 	}
 
+	default String indexedPropertyDescription(String property, Object index) {
+		return descriptionText().isEmpty() ? property+"["+index+"]" : property+"["+index+"]"+" of "+descriptionText();
+	}
+
 	String descriptionText();
 }

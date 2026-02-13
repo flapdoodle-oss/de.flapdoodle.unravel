@@ -31,14 +31,14 @@ class AnAnnotationTest {
                 );
 
         new AnAnnotationAssert(result)
-                .annotationAttributes("bar", it -> {
+                .annotation("bar", it -> {
                     it.size().isEqualTo(2);
-                    it.element(0).clazz("barOne");
-                    it.element(1).clazz("barTwo");
+                    it.element(0).isClass("barOne");
+                    it.element(1).isClass("barTwo");
                 })
-                .annotationAttributes("baz", it -> {
+                .annotation("baz", it -> {
                     it.size().isEqualTo(1);
-                    it.element(0).clazz("baz");
+                    it.element(0).isClass("baz");
                 });
     }
 }

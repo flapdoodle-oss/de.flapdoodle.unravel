@@ -448,9 +448,9 @@ public class MethodsTest {
 					.exceptions()
 					.annotations(annotations -> {
 						annotations.size().isEqualTo(3);
-						annotations.element(0).clazz(Classnames.nameOf(MethodSignatures.Sample.class));
-						annotations.element(1).clazz(Classnames.nameOf(MethodSignatures.Sample.class));
-						annotations.element(2).clazz(Classnames.nameOf(MethodSignatures.Sample.class));
+						annotations.element(0).isClass(Classnames.nameOf(MethodSignatures.Sample.class));
+						annotations.element(1).isClass(Classnames.nameOf(MethodSignatures.Sample.class));
+						annotations.element(2).isClass(Classnames.nameOf(MethodSignatures.Sample.class));
 					})
 					.accessFlags(AccessFlags.ACC_PUBLIC);
 				

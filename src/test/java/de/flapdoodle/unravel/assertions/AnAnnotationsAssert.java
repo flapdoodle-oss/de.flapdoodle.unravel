@@ -42,4 +42,9 @@ public class AnAnnotationsAssert extends FactoryBasedNavigableIterableAssert<AnA
 	public AnAnnotationsAssert anyAnnotation(Consumer<AnAnnotationAssert> consumer) {
 		return anySatisfy(it -> consumer.accept(new AnAnnotationAssert(it))).describedAs(propertyDescription("element"));
 	}
+
+	public AnAnnotationsAssert elementAt(int index, Consumer<AnAnnotationAssert> consumer) {
+		consumer.accept(element(index).describedAs(propertyDescription("elemment["+index+"]")));
+		return this;
+	}
 }
