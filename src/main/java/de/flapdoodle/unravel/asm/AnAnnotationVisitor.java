@@ -34,7 +34,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 	private final Consumer<AnAnnotation> annotationConsumer;
 
 	public AnAnnotationVisitor(String desc, boolean visible, Consumer<AnAnnotation> annotationConsumer) {
-		super(Opcodes.ASM6);
+		super(Opcodes.ASM9);
 		this.annotationConsumer = annotationConsumer;
 		this.builder = AnAnnotation.builder(ATypeName.of(Type.getType(desc).getClassName()), visible);
 	}
@@ -74,7 +74,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 		private final String name;
 
 		public Array(String name, Builder builder) {
-			super(Opcodes.ASM6);
+			super(Opcodes.ASM9);
 			this.name = name;
 			this.builder = builder;
 		}

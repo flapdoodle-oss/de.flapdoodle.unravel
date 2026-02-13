@@ -24,11 +24,11 @@ import io.vavr.collection.List;
 
 public class AnAnnotationsAssert extends FactoryBasedNavigableIterableAssert<AnAnnotationsAssert, Iterable<? extends AnAnnotation>, AnAnnotation, AnAnnotationAssert> implements CommonAsserts {
 
-	public AnAnnotationsAssert(List<AnAnnotation> actual) {
-		super(actual, AnAnnotationsAssert.class, t -> new AnAnnotationAssert(t));
+	public AnAnnotationsAssert(Iterable<? extends AnAnnotation> actual) {
+		super(actual, AnAnnotationsAssert.class, AnAnnotationAssert::new);
 	}
 
-	public static AnAnnotationsAssert assertThatAnnotations(List<AnAnnotation> annotations) {
+	public static AnAnnotationsAssert assertThatAnnotations(Iterable<? extends AnAnnotation> annotations) {
 		return new AnAnnotationsAssert(annotations);
 	}
 	

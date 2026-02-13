@@ -45,7 +45,7 @@ public class AnnotationsTest {
 	@Test
 	public void wrapped() {
 		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Annotations.WrapperSample.class)))
-				.isAtLeast(JavaVersion.V1_8)
+			.isAtLeast(JavaVersion.V1_8)
 			.annotations(annotations -> {
 				annotations.size().isEqualTo(1);
 				annotations.element(0)
@@ -53,6 +53,9 @@ public class AnnotationsTest {
 					.annotationAttributes("value", sub -> {
 						sub.size().isEqualTo(3);
 						sub.element(0)
+								.clazz(Classnames.nameOf(Annotations.Wrapped.class))
+								.annotationAttributes("value", subSub -> subSub.isEmpty());
+						sub.element(1)
 							.clazz(Classnames.nameOf(Annotations.Wrapped.class))
 							.annotationAttributes("value", subSub -> { 
 								subSub.size().isEqualTo(1);
@@ -60,7 +63,7 @@ public class AnnotationsTest {
 									.clazz(Classnames.nameOf(Annotations.WrappedWrapped.class))
 									.valueAttributesContains("value", "a");
 							});
-						sub.element(1)
+						sub.element(2)
 							.clazz(Classnames.nameOf(Annotations.Wrapped.class))
 							.annotationAttributes("value", subSub -> { 
 								subSub.size().isEqualTo(2);
@@ -71,9 +74,6 @@ public class AnnotationsTest {
 									.clazz(Classnames.nameOf(Annotations.WrappedWrapped.class))
 									.valueAttributesContains("value", "c");
 							});
-						sub.element(2)
-							.clazz(Classnames.nameOf(Annotations.Wrapped.class))
-							.annotationAttributes("value", subSub -> subSub.isEmpty());
 					});
 			});
 	}

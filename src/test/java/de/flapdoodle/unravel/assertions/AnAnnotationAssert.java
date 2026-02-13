@@ -62,10 +62,8 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 	}
 
 	public AnAnnotationAssert annotationAttributes(String key, Consumer<AnAnnotationsAssert> consumer) {
-		List<AnAnnotation> values = actual.annotationAttributes().get(key)
-				.map(t -> t.toList())
-				.getOrElse(io.vavr.collection.List.empty());
-		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(values).describedAs(propertyDescription("annotationAttributes")));
+		java.util.List<AnAnnotation> values = actual.annotationAttributes().get(key);
+		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(values).describedAs(propertyDescription("annotationAttributes["+key+"]")));
 		return this;
 	}
 	

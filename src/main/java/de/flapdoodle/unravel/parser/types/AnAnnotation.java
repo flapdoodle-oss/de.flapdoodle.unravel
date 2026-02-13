@@ -16,9 +16,14 @@
  */
 package de.flapdoodle.unravel.parser.types;
 
+import java.util.LinkedHashMap;
+
 import org.immutables.builder.Builder.Parameter;
 import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
+
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
 
 import io.vavr.collection.Multimap;
 
@@ -31,7 +36,7 @@ public abstract class AnAnnotation {
 	public abstract boolean visible();
 
 	public abstract Multimap<String, Object> valueAttributes();
-	public abstract Multimap<String, AnAnnotation> annotationAttributes();
+	public abstract ListMultimap<String, AnAnnotation> annotationAttributes();
 	public abstract Multimap<String, ATypeName> clazzAttributes();
 	public abstract Multimap<String, AnEnumValue> enumAttributes();
 
