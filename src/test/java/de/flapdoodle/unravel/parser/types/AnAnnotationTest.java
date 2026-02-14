@@ -11,14 +11,14 @@ class AnAnnotationTest {
     @Test
     void builderResults() {
         ImmutableAnAnnotation result = AnAnnotation.builder(ATypeName.of("foo"), true)
-                .putAnnotationAttributes("bar", AnAnnotation.builder(ATypeName.of("barOne"), true).build())
-                .putAnnotationAttributes("bar", AnAnnotation.builder(ATypeName.of("barTwo"), true).build())
-                .putAnnotationAttributes("baz", AnAnnotation.builder(ATypeName.of("baz"), true).build())
+                .putAnnotations("bar", AnAnnotation.builder(ATypeName.of("barOne"), true).build())
+                .putAnnotations("bar", AnAnnotation.builder(ATypeName.of("barTwo"), true).build())
+                .putAnnotations("baz", AnAnnotation.builder(ATypeName.of("baz"), true).build())
                 .build();
 
         assertThat(result).isNotNull();
 
-        assertThat(result.annotationAttributes().asMap())
+        assertThat(result.annotations().asMap())
                 .hasSize(2)
                 .containsKeys("bar", "baz")
                 .anySatisfy((key, value) -> assertThat(value)

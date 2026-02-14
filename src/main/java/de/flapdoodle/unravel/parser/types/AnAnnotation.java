@@ -16,16 +16,11 @@
  */
 package de.flapdoodle.unravel.parser.types;
 
-import java.util.LinkedHashMap;
-
 import org.immutables.builder.Builder.Parameter;
 import org.immutables.value.Value.Immutable;
 import org.immutables.vavr.encodings.VavrEncodingEnabled;
 
-import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
-
-import io.vavr.collection.Multimap;
 
 @Immutable
 @VavrEncodingEnabled
@@ -35,10 +30,11 @@ public abstract class AnAnnotation {
 	@Parameter
 	public abstract boolean visible();
 
-	public abstract ListMultimap<String, Object> valueAttributes();
-	public abstract ListMultimap<String, AnAnnotation> annotationAttributes();
-	public abstract ListMultimap<String, ATypeName> clazzAttributes();
-	public abstract ListMultimap<String, AnEnumValue> enumAttributes();
+	// todo use sealed records and just one map
+	public abstract ListMultimap<String, Object> constants();
+	public abstract ListMultimap<String, ATypeName> classes();
+	public abstract ListMultimap<String, AnAnnotation> annotations();
+	public abstract ListMultimap<String, AnEnumValue> enums();
 
 	public static ImmutableAnAnnotation.Builder builder(ATypeName typeName, boolean visible) {
 		return ImmutableAnAnnotation.builder(typeName, visible);

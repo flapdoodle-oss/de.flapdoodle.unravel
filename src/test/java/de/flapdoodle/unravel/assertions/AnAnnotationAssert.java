@@ -53,25 +53,25 @@ public class AnAnnotationAssert extends AbstractAssert<AnAnnotationAssert, AnAnn
 	}
 	
 	public AnAnnotationAssert valueContainsExactly(String key, Object ... expected) {
-		java.util.List<Object> values = actual.valueAttributes().get(key);
+		java.util.List<Object> values = actual.constants().get(key);
 		Assertions.assertThat(values).describedAs(indexedPropertyDescription("valueAttributes", key)).containsExactly(expected);
 		return this;
 	}
 
 	public AnAnnotationAssert annotation(String key, Consumer<AnAnnotationsAssert> consumer) {
-		java.util.List<AnAnnotation> values = actual.annotationAttributes().get(key);
+		java.util.List<AnAnnotation> values = actual.annotations().get(key);
 		consumer.accept(AnAnnotationsAssert.assertThatAnnotations(values).describedAs(indexedPropertyDescription("annotationAttributes",key)));
 		return this;
 	}
 	
 	public AnAnnotationAssert enumAttribute(String key, Consumer<AnEnumValuesAssert> consumer) {
-		java.util.List<AnEnumValue> values = actual.enumAttributes().get(key);
+		java.util.List<AnEnumValue> values = actual.enums().get(key);
 		consumer.accept(AnEnumValuesAssert.assertThatFields(values).describedAs(indexedPropertyDescription("enumAttributes", key)));
 		return this;
 	}
 	
 	public AnAnnotationAssert classAttributes(String key, String ... match) {
-		java.util.List<ATypeName> values = actual.clazzAttributes().get(key);
+		java.util.List<ATypeName> values = actual.classes().get(key);
 		Assertions.assertThat(values).describedAs(propertyDescription("classAttributes")).containsAll(
                 Stream.of(match).map(ATypeName::of).toList());
 		return this;

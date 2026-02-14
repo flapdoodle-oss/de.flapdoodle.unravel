@@ -41,15 +41,16 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 
 	@Override
 	public void visit(String name, Object value) {
-		builder.putValueAttributes(name, value);
 		if (value instanceof Type) {
-			builder.putClazzAttributes(name, ATypeName.of(((Type) value).getClassName()));
+			builder.putClasses(name, ATypeName.of(((Type) value).getClassName()));
+		} else {
+			builder.putConstants(name, value);
 		}
 	}
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String name, String desc) {
-		return new AnAnnotationVisitor(desc, true, an -> builder.putAnnotationAttributes(name, an));
+		return new AnAnnotationVisitor(desc, true, an -> builder.putAnnotations(name, an));
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 
 	@Override
 	public void visitEnum(String name, String desc, String value) {
-		builder.putEnumAttributes(name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()), value));
+		builder.putEnums(name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()), value));
 	}
 
 	@Override
@@ -82,16 +83,17 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 		@Override
 		public void visit(String name, Object value) {
 			Preconditions.checkArgument(name == null, "name is set: %s", name);
-			builder.putValueAttributes(this.name, value);
 			if (value instanceof Type) {
-				builder.putClazzAttributes(this.name, ATypeName.of(((Type) value).getClassName()));
+				builder.putClasses(this.name, ATypeName.of(((Type) value).getClassName()));
+			} else {
+				builder.putConstants(this.name, value);
 			}
 		}
 
 		@Override
 		public AnnotationVisitor visitAnnotation(String name, String desc) {
 			Preconditions.checkArgument(name == null, "name is set: %s", name);
-			return new AnAnnotationVisitor(desc, true, an -> builder.putAnnotationAttributes(this.name, an));
+			return new AnAnnotationVisitor(desc, true, an -> builder.putAnnotations(this.name, an));
 		}
 
 		@Override
@@ -102,7 +104,7 @@ public class AnAnnotationVisitor extends AnnotationVisitor {
 		@Override
 		public void visitEnum(String name, String desc, String value) {
 			Preconditions.checkArgument(name == null, "name is set: %s", name);
-			builder.putEnumAttributes(this.name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()), value));
+			builder.putEnums(this.name, AnEnumValue.of(ATypeName.of(Type.getType(desc).getClassName()), value));
 		}
 
 		@Override
