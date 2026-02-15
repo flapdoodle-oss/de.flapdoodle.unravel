@@ -16,24 +16,42 @@
  */
 package de.flapdoodle.unravel.asm;
 
-import static de.flapdoodle.unravel.Assertions.assertThat;
-import static de.flapdoodle.unravel.Classes.byteCodeOf;
-
 import java.io.Serializable;
-
-import org.junit.Test;
 
 import de.flapdoodle.unravel.Assertions;
 import de.flapdoodle.unravel.Classes;
 import de.flapdoodle.unravel.classes.Classnames;
 import de.flapdoodle.unravel.samples.asm.basics.Inheritance;
 import de.flapdoodle.unravel.parser.types.JavaVersion;
+import de.flapdoodle.unravel.samples.asm.inherit.ClassImplementsAnnotation;
+import de.flapdoodle.unravel.samples.asm.inherit.InterfaceExtendsAnnotation;
+import de.flapdoodle.unravel.samples.asm.inherit.SomeAnnotation;
+import org.junit.jupiter.api.Test;
+
+import static de.flapdoodle.unravel.Assertions.assertThat;
+import static de.flapdoodle.unravel.Classes.byteCodeOf;
+import static de.flapdoodle.unravel.Classes.parse;
+import static de.flapdoodle.unravel.classes.Classnames.nameOf;
 
 public class InheritanceTest {
 	@Test
 	public void innerOuter() {
-		Assertions.assertThat(Classes.parse(Classes.byteCodeOf(Inheritance.B.class))).isAtLeast(JavaVersion.V1_8)
+		assertThat(parse(byteCodeOf(JavaVersion.V1_8, Inheritance.B.class))).isAtLeast(JavaVersion.V1_8)
 			.superClass(Inheritance.A.class)
-			.interfaces(Classnames.nameOf(Inheritance.I.class),Classnames.nameOf(Serializable.class));
+			.interfaces(nameOf(Inheritance.I.class), nameOf(Serializable.class));
+	}
+
+	@Test
+	void interfaceExtendsAnnotation() {
+		assertThat(parse(byteCodeOf(JavaVersion.V1_8, InterfaceExtendsAnnotation.class))).isAtLeast(JavaVersion.V1_8)
+			.superClass(Object.class)
+			.interfaces(nameOf(SomeAnnotation.class));
+	}
+
+	@Test
+	void classExtendsAnnotation() {
+		assertThat(parse(byteCodeOf(JavaVersion.V1_8, ClassImplementsAnnotation.class))).isAtLeast(JavaVersion.V1_8)
+			.superClass(Object.class)
+			.interfaces(nameOf(SomeAnnotation.class));
 	}
 }

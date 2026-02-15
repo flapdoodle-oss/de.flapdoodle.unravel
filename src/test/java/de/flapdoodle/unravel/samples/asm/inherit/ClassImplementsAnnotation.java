@@ -3,10 +3,10 @@ package de.flapdoodle.unravel.samples.asm.inherit;
 import java.lang.annotation.Annotation;
 import java.util.Objects;
 
-public class ExtendsAnnotation implements SomeAnnotation {
+public class ClassImplementsAnnotation implements SomeAnnotation {
 
 	private final String value;
-	public ExtendsAnnotation(String value) {
+	public ClassImplementsAnnotation(String value) {
 		this.value = value;
 	}
 
@@ -18,7 +18,7 @@ public class ExtendsAnnotation implements SomeAnnotation {
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass()) return false;
-		ExtendsAnnotation that = (ExtendsAnnotation) o;
+		ClassImplementsAnnotation that = (ClassImplementsAnnotation) o;
 		return Objects.equals(value, that.value);
 	}
 
@@ -28,7 +28,7 @@ public class ExtendsAnnotation implements SomeAnnotation {
 	}
 	@Override
 	public String toString() {
-		return "ExtendsAnnotation{}";
+		return "ClassImplementsAnnotation{}";
 	}
 
 	@Override
